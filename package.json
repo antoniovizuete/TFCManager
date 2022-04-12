@@ -1,0 +1,13 @@
+{
+  "name": "tfcmanager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "cd ./backend && yarn start",
+    "start:frontend": "cd ./frontend && yarn start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
