@@ -1,22 +1,54 @@
 
-const mongoose = require('mongoose');
+const mysql = require('mysql');
+const dbConnection = mysql.createConnection({
+    host: process.env.HOST,
+    database: process.env.DATABASE,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+});
 
-const dbConnection = async() =>{
-
-    try{
-
-        await mongoose.connect(process.env.MONGODB_CNN, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+const dbConnect = () =>{
+    return new Promise((resolve, reject) => {
+        dbConnection.connect((err) => {
+            if(err){
+                console.error('Error de conexion: ' + err.stack);
+                reject(err);
+                return;
+            }
+            console.log('Conectado con el identificador '+dbConnection.threadId);
+            resolve();
         });
-        console.log('Base de datos online');
+    });
+};
 
-    }catch(error){
-        console.log(error);
-        throw new Error('Error al inicializar la Base de Datos');
-    }
-}
+const dbQuery = (sql, parameters) =>{
+    return new Promise((resolve, reject) => {
+        dbConnection.query(sql, parameters, (err, results)=>{
+            if(err){
+                reject(err);
+            }
+            resolve(results);
+        });
+    });
+};
+
+const dbQueryCount = (countSql, parameters) =>{
+    return new Promise((resolve, reject) => {
+        dbConnection.query(countSql, parameters, (err, results)=>{
+            if(err){
+                reject(err);
+            }else if(results && results.length>0){
+                resolve(results[0].count);
+            }else{
+               reject('No se ha pasado una sentencia count.'); 
+            }
+        });
+    });
+};
 
 module.exports = {
-    dbConnection
-}
+    dbConnection,
+    dbQuery,
+    dbQueryCount,
+    dbConnect
+};

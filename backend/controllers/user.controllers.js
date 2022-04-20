@@ -1,19 +1,18 @@
 
-const {response} =  require('express');
 const bcryptjs = require('bcryptjs');
+const { dbQuery, dbQueryCount } = require('../database/config.db');
 
 const User = require('../models/user');
 
-const userGet = async(req, res = response) => {
+const userGet = async(req, res) => {
 
     const {limit=5, from=0} = req.query;
-    const stateQuery = { state: true};
+    const sql = 'SELECT * from users WHERE state=true LIMIT ? OFFSET ?';
+    const countSql = 'SELECT COUNT (id) as count from users WHERE state=true';
 
     const [ total, users ] = await Promise.all([
-        User.countDocuments(stateQuery),
-        User.find(stateQuery)
-            .limit(Number(limit))
-            .skip(Number(from))
+        dbQueryCount(countSql),
+        dbQuery(sql,[limit, from])
     ]);
 
     res.json({
@@ -32,7 +31,8 @@ const userPost = async(req, res) => {
     user.password = bcryptjs.hashSync(password, salt);
 
     //guardar en BD
-
+    // const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
+    // dbQuery(sql, []);
     await user.save();
 
     res.json({
@@ -41,7 +41,7 @@ const userPost = async(req, res) => {
     })
 }
 
-const userPut = async(req, res = response) => {
+const userPut = async(req, res) => {
 
     const {id} = req.params;
     const {_id, password, google, email, ...other } =req.body;
