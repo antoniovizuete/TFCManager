@@ -3,7 +3,6 @@ import React from 'react'
 import { getUsers } from '../services/user.services';
 import { useEffect, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
-import { withRouter } from 'react-router-dom';
 
 const Login = (props) => {
 
@@ -41,11 +40,11 @@ const Login = (props) => {
 
     return (
         <div className='p-5'>
-            <div className='border'>
-            <LockIcon />
-                <h3 className="text-center info mt-3" color='info'>Acceso Empleados</h3>
-                <hr className='ms-5 me-5'/>
-                <div className="row justify-content-center mt-3">
+            <div className= 'mt-5'>
+                <LockIcon fontSize="large" className='position-sticky start-50 translate-middle'/>
+                <h3 className="text-center info mt-2" color='info'>Acceso Empleados</h3>
+                <hr className='ms-5 me-5 mt-4'/>
+                <div className="row justify-content-center mt-4">
                     <div className="col-12 col-sm-8 col-md-6 col-xl-4">
                         <form onSubmit ={procesarDatos}>
                             {
@@ -66,4 +65,4 @@ const Login = (props) => {
     )
 }
 
-export default withRouter(Login);
+export default Login;

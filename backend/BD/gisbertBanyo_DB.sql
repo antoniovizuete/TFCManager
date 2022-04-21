@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS customers (
     city VARCHAR (30),
     province VARCHAR (30),
     cp INT (5),
-    phone VARCHAR (9)
+    phone VARCHAR (9),
+    state BIT DEFAULT 1
 );
 
 INSERT INTO customers (dni, name, email, address, city, province, cp, phone)

@@ -2,6 +2,7 @@
 import React from 'react';
 import { AppBar, Button, IconButton, makeStyles, Toolbar, Typography, Hidden } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import {NavLink} from 'react-router-dom';
 
 const useStyle = makeStyles((theme) =>({
     menuButton:{
@@ -41,7 +42,9 @@ const Navbar = (props) => {
                         </Typography>
                     </Hidden>
 
-                    <Button variant='text' color='inherit'>SALIR</Button>
+                    <Button variant='text' color='inherit'>
+                        <NavLink to="/login">SALIR</NavLink>
+                    </Button>
              </Toolbar>
            </AppBar>
         </div>

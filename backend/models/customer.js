@@ -1,6 +1,6 @@
 
-export class Customer{
-    constructor(id, dni, name, email, address, city, province, phone){
+class Customer{
+    constructor(id, dni, name, email, address, city, province, phone, state){
         this.id = id;
         this.dni = dni;
         this.name = name;
@@ -10,6 +10,7 @@ export class Customer{
         this.province = province;
         this.cp = cp;
         this.phone = phone;
+        this.state = state;
     };
 
     getId(){
@@ -83,5 +84,15 @@ export class Customer{
     setPhone(){
         return $this.phone;
     };
+
+    getState(){
+        return $this.state;
+    };
+
+    setState(){
+        return $this.state;
+    };
     
 }
+
+module.export = Customer;

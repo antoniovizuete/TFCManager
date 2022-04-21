@@ -1,12 +1,10 @@
 
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {ThemeProvider} from '@material-ui/core/styles';
 import theme from './themeConfig';
 import Login from './components/Login';
-import { Button } from '@material-ui/core';
-import {Icon, IconButton, Typography} from '@material-ui/core';
 import Containercomp from './components/Containercomp';
 
 const useStyle = makeStyles({
@@ -28,16 +26,10 @@ function App() {
     <ThemeProvider theme={theme}>   
       <Router>
         <div className='container'>
-          <Switch>
-            <Route path="/" exact>
-              <Login />
-            </Route>
-            <Route path="/menu">
-              <Containercomp>
-                
-              </Containercomp>
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/login" strict element={<Login />} />
+            <Route path="/menu/*" element={<Containercomp />} />
+          </Routes>
         </div>
       </Router>
     </ThemeProvider>

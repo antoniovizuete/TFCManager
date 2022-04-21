@@ -5,7 +5,7 @@ import Lists from './Lists';
 
 const styles = makeStyles(theme => ({
     drawer: {
-        width: 240,
+        width: 150,
         flexShrink: 0,
     },
     drawerPaper:{

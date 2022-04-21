@@ -11,9 +11,10 @@ class Server {
         this. port = process.env.PORT;
         this.usersPath = '/api/users';
         this. authPath = '/api/auth';
+        this.customersPath = '/api/customers';
 
         //Conectar a BD
-        this.conectDB();
+        this.connectDB();
 
         //Middlewares
         this.middlewares();
@@ -23,7 +24,7 @@ class Server {
         this.routes();
     }
 
-    async conectDB(){
+    async connectDB(){
         await dbConnect();
     }
 
@@ -42,7 +43,7 @@ class Server {
        
         this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.usersPath, require('../routes/user.routes'));
-
+        this.app.use(this.customersPath, require('../routes/customer.routes'));
     }
 
     listen(){

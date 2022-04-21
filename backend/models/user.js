@@ -1,5 +1,5 @@
 
-export class User{
+class User{
     constructor(id, name, email, password, role, state){
         this.id = id;
         this.name = name;
@@ -58,6 +58,8 @@ export class User{
     };
 
 }
+
+module.export = User;
 
 // const {Schema, model } = require('mongoose');
 

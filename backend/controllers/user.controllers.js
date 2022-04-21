@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 const userGet = async(req, res) => {
 
-    const {limit=5, from=0} = req.query;
+    const {limit=100, from=0} = req.query;
     const sql = 'SELECT * from users WHERE state=true LIMIT ? OFFSET ?';
     const countSql = 'SELECT COUNT (id) as count from users WHERE state=true';
 

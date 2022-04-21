@@ -1,9 +1,11 @@
 
 import React from 'react';
 import {makeStyles, Hidden} from '@material-ui/core';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Navbar from './Navbar';
 import Drawercomp from './Drawercomp';
-import Smallbox from './Smallbox';
+import CustomersBox from './CustomersBox';
+import UsersBox from './UsersBox';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -13,7 +15,7 @@ const styles = makeStyles(theme => ({
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
+        padding: theme.spacing(3)
     }
 }));
 
@@ -36,7 +38,10 @@ const Containercomp = () => {
             </Hidden>
             <div className={classes.content}>
                 <div className={classes.toolbar}></div>
-               <Smallbox />
+                <Routes>
+                    <Route path="/customers" element={<CustomersBox />}/>
+                    <Route path="/users" element={<UsersBox />}/>
+                </Routes>
             </div>
         </div>
     )
