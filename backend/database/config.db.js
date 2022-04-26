@@ -1,54 +1,29 @@
 
-const mysql = require('mysql');
-const dbConnection = mysql.createConnection({
-    host: process.env.HOST,
-    database: process.env.DATABASE,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize(process.env.DATABASE, process.env.USER, process.env.PASSWORD, {
+    host:  process.env.HOST,
+    dialect: 'mariadb'
 });
 
-const dbConnect = () =>{
-    return new Promise((resolve, reject) => {
-        dbConnection.connect((err) => {
-            if(err){
-                console.error('Error de conexion: ' + err.stack);
-                reject(err);
-                return;
-            }
-            console.log('Conectado con el identificador '+dbConnection.threadId);
-            resolve();
-        });
-    });
+const dbConnect = async() =>{
+
+    try{
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+    }catch(error){
+        console.error('Unable to connect to the database:', error);
+    }
+    
+    return sequelize;
+
 };
 
-const dbQuery = (sql, parameters) =>{
-    return new Promise((resolve, reject) => {
-        dbConnection.query(sql, parameters, (err, results)=>{
-            if(err){
-                reject(err);
-            }
-            resolve(results);
-        });
-    });
-};
-
-const dbQueryCount = (countSql, parameters) =>{
-    return new Promise((resolve, reject) => {
-        dbConnection.query(countSql, parameters, (err, results)=>{
-            if(err){
-                reject(err);
-            }else if(results && results.length>0){
-                resolve(results[0].count);
-            }else{
-               reject('No se ha pasado una sentencia count.'); 
-            }
-        });
-    });
-};
+const getDbConnection = () => {
+    return sequelize;
+}
 
 module.exports = {
-    dbConnection,
-    dbQuery,
-    dbQueryCount,
-    dbConnect
+    dbConnect,
+    getDbConnection
 };

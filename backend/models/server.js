@@ -13,8 +13,12 @@ class Server {
         this. authPath = '/api/auth';
         this.customersPath = '/api/customers';
 
+        this.init();
+    }
+
+    async init(){
         //Conectar a BD
-        this.connectDB();
+        await this.connectDB();
 
         //Middlewares
         this.middlewares();

@@ -1,23 +1,15 @@
 
 const bcryptjs = require('bcryptjs');
-const { dbQuery, dbQueryCount } = require('../database/config.db');
-
 const User = require('../models/user');
 
 const userGet = async(req, res) => {
-
     const {limit=100, from=0} = req.query;
-    const sql = 'SELECT * from users WHERE state=true LIMIT ? OFFSET ?';
-    const countSql = 'SELECT COUNT (id) as count from users WHERE state=true';
 
-    const [ total, users ] = await Promise.all([
-        dbQueryCount(countSql),
-        dbQuery(sql,[limit, from])
-    ]);
-
+    const {users} = await User.findAll({where: {state: true}, offset: from, limit});
+   
     res.json({
-       total,
-       users
+        count: 5,
+        users
     });
 }
 

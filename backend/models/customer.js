@@ -1,4 +1,21 @@
 
+// import { Sequelize, Model, DataTypes } from 'sequelize';
+
+// const sequelize = new Sequelize('sqlite::memory:');
+// const Customers = sequelize.define('Customers', {
+//     dni: DataTypes.STRING,
+//     name: DataTypes.STRING,
+//     email: DataTypes.STRING,
+//     address: DataTypes.STRING,
+//     city: DataTypes.STRING,
+//     province: DataTypes.STRING,
+//     cp: DataTypes.NUMBER,
+//     phone: DataTypes.NUMBER,
+//     state: DataTypes.BOOLEAN
+// });
+
+// module.export = Customers;
+
 class Customer{
     constructor(id, dni, name, email, address, city, province, phone, state){
         this.id = id;
