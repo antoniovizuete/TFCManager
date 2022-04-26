@@ -27,7 +27,7 @@ function App() {
       <Router>
         <div className='container'>
           <Routes>
-            <Route path="/login" strict element={<Login />} />
+            <Route path="/" strict element={<Login />} />
             <Route path="/menu/*" element={<Containercomp />} />
           </Routes>
         </div>

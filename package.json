@@ -9,5 +9,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "sequelize": "^6.19.0",
+    "sqlite3": "^5.0.5"
+  }
 }

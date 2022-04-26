@@ -28,7 +28,7 @@ export default function CustomersTable() {
       }, []);
 
   return (
-    <div style={{ height: 650, width: '100%'}}>
+    <div style={{ height: 660, width: '100%'}}>
       <DataGrid
         rows={customers}
         columns={columns}
