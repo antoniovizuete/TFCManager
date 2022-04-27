@@ -1,12 +1,7 @@
 
-const { response } = require('express');
-const bcryptjs = require('bcryptjs');
 
-const User = require('../models/user');
 
-const { generateJWT } = require('../helpers/generateJWT');
-
-const loginController = async(req, res = response) => {
+const loginController = async(req = request, res = response) => {
 
     const { email, password } = req.body;
 
