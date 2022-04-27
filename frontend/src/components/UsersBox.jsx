@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Grid } from '@material-ui/core';
 import UsersTable from './UsersTable';
 import CrudButtons from './CrudButtons';
-import FormModal from './FormModal';
+import UsersFormModal from './UsersFormModal';
 
 
 
@@ -25,7 +25,7 @@ const UserBox = () => {
           <Grid item xs={12} sm={12} md={12} xl={12}>
             <CrudButtons createHandler={openModalHandler}/>
             <UsersTable />
-            <FormModal open={openModal} handleClose={closeModalHandler}/>
+            <UsersFormModal open={openModal} handleClose={closeModalHandler}/>
           </Grid>
        </Grid>
     </div>

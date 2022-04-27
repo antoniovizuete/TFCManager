@@ -6,7 +6,6 @@ import Navbar from './Navbar';
 import Drawercomp from './Drawercomp';
 import CustomersBox from './CustomersBox';
 import UsersBox from './UsersBox';
-import UserForm from './FormModal';
 
 const styles = makeStyles(theme => ({
     root: {
