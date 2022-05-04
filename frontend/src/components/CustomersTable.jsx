@@ -18,7 +18,6 @@ const columns = [
 ];
 
 export default function CustomersTable() {
-
     const [customers, setCustomers] = useState([]);
     useEffect( () =>{
         const getAllCustomers = async() => {

@@ -24,20 +24,18 @@ const userGet = async(req, res) => {
 const userPost = async(req, res) => {
 
     const { name, email, password, role } = req.body;
-    const user = new User({name, email, password, role});
 
+    console.log(name);
     //encriptar password
     const salt = bcryptjs.genSaltSync();
-    user.password = bcryptjs.hashSync(password, salt);
+    const hashedPassword = bcryptjs.hashSync(password, salt);
 
     //guardar en BD
-    // const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
-    // dbQuery(sql, []);
-    await user.save();
+    const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
+    dbQuery(sql, [name, email, hashedPassword, role]);
 
     res.json({
-        mssg: 'post API',
-        user
+        mssg: 'post API'
     })
 }
 

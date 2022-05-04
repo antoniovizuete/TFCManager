@@ -8,9 +8,9 @@ class Server {
 
     constructor(){
         this.app = express();
-        this. port = process.env.PORT;
+        this.port = process.env.PORT;
         this.usersPath = '/api/users';
-        this. authPath = '/api/auth';
+        this.authPath = '/api/auth';
         this.customersPath = '/api/customers';
 
         //Conectar a BD

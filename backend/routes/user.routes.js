@@ -17,8 +17,8 @@ router.post('/', [
     check('name', 'El nombre es obligatorio.').not().isEmpty(),
     check('email', 'El email no es válido.').isEmail(),
     check('email').custom(validEmail),
-    check('password', 'El password debe tener más de 10 letras.').isLength({min:10}), 
-    check('role').custom(validRole),
+    check('password', 'El password debe tener más de 8 letras.').isLength({min:8}), 
+    //check('role').custom(validRole),
     validateFields
 ], userPost);
 

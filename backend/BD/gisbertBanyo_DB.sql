@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS users(
 
 INSERT INTO users (name, email, password, role)
 VALUES
-('PedroCalvo', 'pedrojcalvo@gmail.com', '1234567890', 'Administrador')
+('PedroCalvo', 'pedrojcalvo@gmail.com', '1234567890', 'Administrador'),
+('José Gisbert', 'jgb@gmail.com', '12345677890', 'Empleado')
 
 -- CREATE TABLE IF NOT EXISTS materiales(
 --     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -65,5 +66,7 @@ VALUES
 -- ('90608 TIS', 'EFAPEL', 'TECLA INT. BIPOLAR GRIS', '3,35', 'No', '200'),
 -- ('10295 RBR', 'EFAPEL', 'TOPE P/CANAL 180X50 BLANCO', '2,28', 'No', '34'),
 -- ('90605 TAL', 'EFAPEL', 'TECLA SIMPLE CON SIMBOLO DE CAMPANA ALUMINIO', '3,35', 'Si', '90');
+
+
 
 -- SOURCE C:/Users/34744/Desktop/TFCManager/backend/BD/gisbertBanyo_DB.sql;

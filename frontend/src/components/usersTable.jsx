@@ -13,7 +13,7 @@ const columns = [
   { field: 'state', headerName: 'Estado', width: 130 },
 ];
 
-export default function CustomersTable() {
+export default function UserTable() {
 
     const [users, setUsers] = useState([]);
     useEffect( () =>{

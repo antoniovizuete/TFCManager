@@ -32,6 +32,15 @@ const dbQuery = (sql, parameters) =>{
     });
 };
 
+const dbQueryExists = async(sql, parameters) => {
+   
+    const results = await dbQuery(sql, parameters);
+    console.log(results);
+    console.log(results && results.length>0)
+    return results && results.length>0;
+   
+}
+
 const dbQueryCount = (countSql, parameters) =>{
     return new Promise((resolve, reject) => {
         dbConnection.query(countSql, parameters, (err, results)=>{
@@ -47,8 +56,8 @@ const dbQueryCount = (countSql, parameters) =>{
 };
 
 module.exports = {
-    dbConnection,
     dbQuery,
     dbQueryCount,
-    dbConnect
+    dbConnect,
+    dbQueryExists
 };
