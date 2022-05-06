@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import Drawercomp from './Drawercomp';
 import CustomersBox from './CustomersBox';
 import UsersBox from './UsersBox';
+import MaterialsBox from './MaterialsBox';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -41,6 +42,7 @@ const Containercomp = () => {
                 <Routes>
                     <Route path="/customers" element={<CustomersBox />}/>
                     <Route path="/users" element={<UsersBox />}/>
+                    <Route path="/materials" element={<MaterialsBox />}/>
                 </Routes>
             </div>
         </div>

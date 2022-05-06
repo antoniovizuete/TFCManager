@@ -7,6 +7,5 @@ export const getUsers = async() =>{
 };
 
 export const postUsers = async(newUser) =>{ 
-    console.log(newUser);   
     const response = await axios.post('/api/users', newUser);
 };

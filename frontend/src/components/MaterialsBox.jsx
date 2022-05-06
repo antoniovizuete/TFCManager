@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
 import { Grid } from '@material-ui/core';
-import CustomersTable3 from './CustomersTable3';
+import MaterialsTable3 from './MaterialsTable3';
 import CreateButton from './CreateButton';
-import CustomersFormModal from './CustomersFormModal';
+import MaterialsFormModal from './MaterialsFormModal';
 
-const CustomerBox = () => {
+
+
+const MaterialBox = () => {
 
   const [openModal, setOpenModal] = useState(false);  
 
@@ -19,15 +21,15 @@ const CustomerBox = () => {
 
   return(
     <div>
-      <Grid container className='mt-5'>
+        <Grid container className='mt-5'>
           <Grid item xs={12} sm={12} md={12} xl={12}>
             <CreateButton createHandler={openModalHandler}/>
-            <CustomersTable3 />
-            <CustomersFormModal open={openModal} handleClose={closeModalHandler}/>
+            <MaterialsTable3 />
+            <MaterialsFormModal open={openModal} handleClose={closeModalHandler}/>
           </Grid>
-      </Grid>
+       </Grid>
     </div>
   )
 };
 
-export default CustomerBox;
+export default MaterialBox;
