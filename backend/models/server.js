@@ -12,6 +12,7 @@ class Server {
         this.usersPath = '/api/users';
         this.authPath = '/api/auth';
         this.customersPath = '/api/customers';
+        this.materialsPath = '/api/materials'
 
         //Conectar a BD
         this.connectDB();
@@ -44,6 +45,7 @@ class Server {
         this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.usersPath, require('../routes/user.routes'));
         this.app.use(this.customersPath, require('../routes/customer.routes'));
+        this.app.use(this.materialsPath, require('../routes/material.routes'));
     }
 
     listen(){

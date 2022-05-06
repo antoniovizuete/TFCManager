@@ -1,42 +1,36 @@
 
-const bcryptjs = require('bcryptjs');
 const { dbQuery, dbQueryCount } = require('../database/config.db');
 
-const userGet = async(req, res) => {
+const materialGet = async(req, res) => {
 
     const {limit=100, from=0} = req.query;
-    const sql = 'SELECT * from users WHERE state=true LIMIT ? OFFSET ?';
+    const sql = 'SELECT * from materials WHERE state=true LIMIT ? OFFSET ?';
     const countSql = 'SELECT COUNT (id) as count from users WHERE state=true';
 
-    const [ total, users ] = await Promise.all([
+    const [ total, materials ] = await Promise.all([
         dbQueryCount(countSql),
         dbQuery(sql,[limit, from])
     ]);
 
     res.json({
        total,
-       users
+       materials
     });
 }
 
-const userPost = async(req, res) => {
+const materialPost = async(req, res) => {
 
-    const { name, email, password, role } = req.body;
+    const { reference, brand, description, pvp, ecotax } = req.body;
 
-    //encriptar password
-    const salt = bcryptjs.genSaltSync();
-    const hashedPassword = bcryptjs.hashSync(password, salt);
-
-    //guardar en BD
-    const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
-    dbQuery(sql, [name, email, hashedPassword, role]);
+    const sql = 'INSERT INTO materials ( reference, brand, description, pvp, ecotax) VALUES (?, ?, ?, ?, ?)';
+    dbQuery(sql, [ reference, brand, description, pvp, ecotax]);
 
     res.json({
         mssg: 'post API'
     })
 }
 
-const userPut = async(req, res) => {
+const materialPut = async(req, res) => {
 
     const {id} = req.params;
     const {_id, password, google, email, ...other } =req.body;
@@ -52,15 +46,15 @@ const userPut = async(req, res) => {
     res.json(user);
 }
 
-const userPatch = (req, res) => {
+const materialPatch = async(req, res) => {
     res.json({
         mssg: 'patch API'
     })
 }
 
-const userDelete = async(req, res) => {
+const materialDelete = async(req, res) => {
 
-    const { id } = req.params;
+    //const { id } = req.params;
 
     //const user = await User.findByIdAndUpdate(id, {state: false});
 
@@ -70,7 +64,7 @@ const userDelete = async(req, res) => {
 }
 
 module.exports = {
-    userGet, userPut,
-    userPost, userDelete,
-    userPatch
+    materialGet, materialPut,
+    materialPost, materialDelete,
+    materialPatch
 }

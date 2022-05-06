@@ -1,8 +1,6 @@
 
 const { dbQuery, dbQueryCount } = require('../database/config.db');
 
-const Customer = require('../models/customer');
-
 const customerGet = async(req, res) => {
 
     const {limit=100, from=0} = req.query;
@@ -22,17 +20,14 @@ const customerGet = async(req, res) => {
 
 const customerPost = async(req, res) => {
 
-    const { name, email, password, role } = req.body;
-    const  customer = new Customer({dni, name, email, address, city, province, cp, phone});
+    const { dni, name, email, address, city, province, cp, phone } = req.body;
 
     //guardar en BD
-    // const sql = 'INSERT INTO customers (dni, name, email, address, city, province, cp, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    // dbQuery(sql, []);
-    await customer.save();
+    const sql = 'INSERT INTO customers (dni, name, email, address, city, province, cp, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    dbQuery(sql, [dni, name, email, address, city, province, cp, phone]);
 
     res.json({
-        mssg: 'post API',
-        customer
+        mssg: 'post API'
     })
 }
 

@@ -36,6 +36,8 @@ VALUES
 ('68542142H', 'Philip K. Dick',            'philipkdick@gmail.com',          'Paseo de Gracia 41 5D',      'Barcelona',         'Barcelona',   '08001',  '658965874'),
 ('32154785G', 'Gabriel García Márquez',    'gabrielgarciamarquez@gmail.com', 'Ruta de los Molinos 49 4A',  'Campo de Criptana', 'Ciudad Real', '13610',  '673198654');
 
+
+
 CREATE TABLE IF NOT EXISTS users(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR (20),
@@ -48,24 +50,38 @@ CREATE TABLE IF NOT EXISTS users(
 INSERT INTO users (name, email, password, role)
 VALUES
 ('PedroCalvo', 'pedrojcalvo@gmail.com', '1234567890', 'Administrador'),
-('José Gisbert', 'jgb@gmail.com', '12345677890', 'Empleado')
+('José Gisbert', 'jgb@gmail.com', '12345677890', 'Empleado');
 
--- CREATE TABLE IF NOT EXISTS materiales(
---     id INT PRIMARY KEY AUTO_INCREMENT,
---     referencia VARCHAR (50),
---     marca VARCHAR (50),
---     descripcion VARCHAR (50),
---     pvp DECIMAL (6,2),
---     ecotasa VARCHAR (10),
---     cantidad INT (6)
--- );
 
--- INSERT INTO materiales (referencia, marca, descripcion, pvp, ecotasa, cantidad)
--- VALUES
--- ('10950 ABR', 'EFAPEL', 'ADAPT MODULAR Q45 P/CANALES C/TAPA L75 BLANCO', '1,45', 'Si', '124'),
--- ('90608 TIS', 'EFAPEL', 'TECLA INT. BIPOLAR GRIS', '3,35', 'No', '200'),
--- ('10295 RBR', 'EFAPEL', 'TOPE P/CANAL 180X50 BLANCO', '2,28', 'No', '34'),
--- ('90605 TAL', 'EFAPEL', 'TECLA SIMPLE CON SIMBOLO DE CAMPANA ALUMINIO', '3,35', 'Si', '90');
+
+CREATE TABLE IF NOT EXISTS roles(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    role VARCHAR (30)
+);
+
+INSERT INTO roles (role)
+VALUES
+('Administrador'),
+('Empleado');
+
+
+
+CREATE TABLE IF NOT EXISTS materials(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    reference VARCHAR (50),
+    brand VARCHAR (50),
+    description VARCHAR (50),
+    pvp DECIMAL (6,2),
+    ecotax VARCHAR (10),
+    state BIT DEFAULT 1
+);
+
+INSERT INTO materials (reference, brand, description, pvp, ecotax)
+VALUES
+('10950-ABR', 'EFAPEL', 'ADAPT MODULAR Q45 P/CANALES C/TAPA L75 BLANCO', '1.45', 'Si'),
+('90608-TIS', 'EFAPEL', 'TECLA INT. BIPOLAR GRIS', '3.35', 'No'),
+('10295-RBR', 'EFAPEL', 'TOPE P/CANAL 180X50 BLANCO', '2.28', 'No'),
+('90605-TAL', 'EFAPEL', 'TECLA SIMPLE CON SIMBOLO DE CAMPANA ALUMINIO', '3.35', 'Si');
 
 
 

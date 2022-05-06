@@ -1,7 +1,5 @@
 
 const { dbQueryExists } = require('../database/config.db');
-const Role = require('../models/role');
-const User = require('../models/user');
 
 const validRole = async(role = '') => {
 
@@ -13,7 +11,16 @@ const validRole = async(role = '') => {
     }
 };
 
-const validEmail = async(email = '') => {
+const validCustomerEmail = async(email='') => {
+    const sql ='SELECT email from customers WHERE email = ?';
+    const emailExists = await dbQueryExists(sql, [email]);
+    if(emailExists){
+        throw new Error(`El correo ${email} ya fue registrado.`);
+    };
+
+};
+
+const validUserEmail = async(email = '') => {
 
     const sql ='SELECT email from users WHERE email = ?';
     const emailExists = await dbQueryExists(sql, [email]);
@@ -30,6 +37,12 @@ const validUserId = async(id) => {
     };
 };
 
+const validPhone = async(phone) => {
+    if(!(/^[0-9]{9}$/.test(phone))){
+        throw new Error(`El formato del teléfono ${phone} es erróneo`)
+    }
+}
+
 module.exports = {
-    validRole, validEmail, validUserId
+    validRole, validUserEmail, validUserId, validCustomerEmail, validPhone
 }
