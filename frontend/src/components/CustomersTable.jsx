@@ -13,15 +13,15 @@ import TableEditButton  from './TableEditButton';
 import TableDeleteButton from './TableDeleteButton';
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'dni', label: 'DNI', minWidth: 50 },
-  { id: 'name', label: 'Nombre', minWidth: 80 },
-  { id: 'email', label: 'Email', minWidth: 100 },
-  { id: 'address', label: 'Dirección', minWidth: 50},
-  { id: 'city', label: 'Ciudad', minWidth: 40 },
-  { id: 'province', label: 'Provincia', minWidth: 50 },
-  { id: 'cp', label: 'CP', minWidth: 30 },
-  { id: 'phone', label: 'Teléfono', minWidth: 50 },
+  { id: 'customer_id', label: 'ID', minWidth: 50 },
+  { id: 'customer_dni', label: 'DNI', minWidth: 50 },
+  { id: 'customer_name', label: 'Nombre', minWidth: 80 },
+  { id: 'customer_email', label: 'Email', minWidth: 100 },
+  { id: 'customer_address', label: 'Dirección', minWidth: 50},
+  { id: 'customer_city', label: 'Ciudad', minWidth: 40 },
+  { id: 'customer_province', label: 'Provincia', minWidth: 50 },
+  { id: 'customer_cp', label: 'CP', minWidth: 30 },
+  { id: 'customer_phone', label: 'Teléfono', minWidth: 50 },
 ];
 
 export default function CustomersTable() {

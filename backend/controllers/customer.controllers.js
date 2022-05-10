@@ -4,8 +4,8 @@ const { dbQuery, dbQueryCount } = require('../database/config.db');
 const customerGet = async(req, res) => {
 
     const {limit=100, from=0} = req.query;
-    const sql = 'SELECT * from customers WHERE state=true LIMIT ? OFFSET ?';
-    const countSql = 'SELECT COUNT (id) as count from customers WHERE state=true';
+    const sql = 'SELECT * from customers WHERE customer_state=true LIMIT ? OFFSET ?';
+    const countSql = 'SELECT COUNT (customer_id) as count from customers WHERE customer_state=true';
 
     const [ total, customers ] = await Promise.all([
         dbQueryCount(countSql),
@@ -20,11 +20,11 @@ const customerGet = async(req, res) => {
 
 const customerPost = async(req, res) => {
 
-    const { dni, name, email, address, city, province, cp, phone } = req.body;
+    const { customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone } = req.body;
 
     //guardar en BD
-    const sql = 'INSERT INTO customers (dni, name, email, address, city, province, cp, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    dbQuery(sql, [dni, name, email, address, city, province, cp, phone]);
+    const sql = 'INSERT INTO customers (customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    dbQuery(sql, [customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone]);
 
     res.json({
         mssg: 'post API'

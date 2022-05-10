@@ -27,7 +27,7 @@ const Lists = () => {
                     <ListItemText primary='Empleados'/>
                 </ListItem>
 
-            <ListItem button>
+            <ListItem button component={NavLink} to={"/menu/projects"}>
                 <ListItemIcon>
                     <DescriptionIcon />
                 </ListItemIcon>

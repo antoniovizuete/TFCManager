@@ -7,64 +7,64 @@ import { postCustomers } from "../services/customer.services";
 
 const CustomersFormModal = ({open, handleClose}) => {
 
-  const [dni, setDni] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [province, setProvince] = useState('');
-  const [cp, setCp] = useState('');
-  const [phone, setPhone] = useState('');
+  const [customer_dni, setCustomer_dni] = useState('');
+  const [customer_name, setCustomer_name] = useState('');
+  const [customer_email, setCustomer_email] = useState('');
+  const [customer_address, setCustomer_address] = useState('');
+  const [customer_city, setCustomer_city] = useState('');
+  const [customer_province, setCustomer_province] = useState('');
+  const [customer_cp, setCustomer_cp] = useState('');
+  const [customer_phone, setCustomer_phone] = useState('');
   const [error, setError] = useState(null);
 
   const saveData = (event) => {
     event.preventDefault();
 
-    if(!name.trim()){
+    if(!customer_name.trim()){
       setError('Introduce un nombre de usuario.');
       return
     }
 
-    if(!email.trim()){
+    if(!customer_email.trim()){
       setError('Es necesario introducir un email.');
       return
     }
 
-    if(!phone.trim()){
+    if(!customer_phone.trim()){
       setError('Es necesario introducir un teléfono.');
       return
     }
 
-    if(!validator.isMobilePhone(phone, 'es-ES')){
-      setError(`El teléfono ${phone} no es válido.`);
+    if(!validator.isMobilePhone(customer_phone, 'es-ES')){
+      setError(`El teléfono ${customer_phone} no es válido.`);
       return
     }
 
-    if(!validator.isEmail(email)){
+    if(!validator.isEmail(customer_email)){
       setError('El email introducido no es válido.');
       return
     }
 
     const newCustomer = {
-      dni: dni,
-      name: name,
-      email: email,
-      address: address,
-      city: city,
-      province: province,
-      cp: cp,
-      phone: phone
+      customer_dni: customer_dni,
+      customer_name: customer_name,
+      customer_email: customer_email,
+      customer_address: customer_address,
+      customer_city: customer_city,
+      customer_province: customer_province,
+      customer_cp: customer_cp,
+      customer_phone: customer_phone
     }
 
     event.target.reset();
-    setDni('');
-    setName('');
-    setEmail('');
-    setAddress('');
-    setCity('');
-    setProvince('');
-    setCp('');
-    setPhone('');
+    setCustomer_dni('');
+    setCustomer_name('');
+    setCustomer_email('');
+    setCustomer_address('');
+    setCustomer_city('');
+    setCustomer_province('');
+    setCustomer_cp('');
+    setCustomer_phone('');
     setError(null);
 
     postCustomers(newCustomer);
@@ -77,37 +77,37 @@ const CustomersFormModal = ({open, handleClose}) => {
       <DialogContent>
         <form onSubmit={ saveData } id="customerForm">
           {error ? <span className="text-danger">{error}</span> : null}
-          <TextField autoFocus margin="dense" id="dni"
+          <TextField autoFocus margin="dense" id="customer_dni"
               label="DNI" type="text" fullWidth variant="standard"
-              onChange={ event => setDni(event.target.value) }
+              onChange={ event => setCustomer_dni(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="name"
+          <TextField autoFocus margin="dense" id="customer_name"
               label="Nombre" type="text" fullWidth variant="standard"
-              onChange={ event => setName(event.target.value) }
+              onChange={ event => setCustomer_name(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="email"
+          <TextField autoFocus margin="dense" id="customer_email"
               label="Dirección Email" type="email" fullWidth variant="standard"
-              onChange={ event => setEmail(event.target.value) }
+              onChange={ event => setCustomer_email(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="address"
+          <TextField autoFocus margin="dense" id="customer_address"
               label="Dirección" type="text" fullWidth variant="standard"
-              onChange={ event => setAddress(event.target.value) }
+              onChange={ event => setCustomer_address(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="city"
+          <TextField autoFocus margin="dense" id="customer_city"
               label="Ciudad" type="text" fullWidth variant="standard"
-              onChange={ event => setCity(event.target.value) }
+              onChange={ event => setCustomer_city(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="province"
+          <TextField autoFocus margin="dense" id="customer_province"
               label="Provincia" type="text" fullWidth variant="standard"
-              onChange={ event => setProvince(event.target.value) }
+              onChange={ event => setCustomer_province(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="cp"
+          <TextField autoFocus margin="dense" id="customer_cp"
               label="CP" type="number" fullWidth variant="standard"
-              onChange={ event => setCp(event.target.value) }
+              onChange={ event => setCustomer_cp(event.target.value) }
           />
-          <TextField autoFocus margin="dense" id="phone"
+          <TextField autoFocus margin="dense" id="customer_phone"
               label="Teléfono" type="number" fullWidth variant="standard"
-              onChange={ event => setPhone(event.target.value) }
+              onChange={ event => setCustomer_phone(event.target.value) }
           />
         </form>
       </DialogContent>

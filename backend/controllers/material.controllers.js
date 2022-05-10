@@ -4,8 +4,8 @@ const { dbQuery, dbQueryCount } = require('../database/config.db');
 const materialGet = async(req, res) => {
 
     const {limit=100, from=0} = req.query;
-    const sql = 'SELECT * from materials WHERE state=true LIMIT ? OFFSET ?';
-    const countSql = 'SELECT COUNT (id) as count from users WHERE state=true';
+    const sql = 'SELECT * from materials WHERE material_state=true LIMIT ? OFFSET ?';
+    const countSql = 'SELECT COUNT (material_id) as count from materials WHERE material_state=true';
 
     const [ total, materials ] = await Promise.all([
         dbQueryCount(countSql),
@@ -20,10 +20,10 @@ const materialGet = async(req, res) => {
 
 const materialPost = async(req, res) => {
 
-    const { reference, brand, description, pvp, ecotax } = req.body;
+    const { material_reference, material_brand, material_description, material_pvp, material_ecotax } = req.body;
 
-    const sql = 'INSERT INTO materials ( reference, brand, description, pvp, ecotax) VALUES (?, ?, ?, ?, ?)';
-    dbQuery(sql, [ reference, brand, description, pvp, ecotax]);
+    const sql = 'INSERT INTO materials ( material_reference, material_brand, material_description, material_pvp, material_ecotax) VALUES (?, ?, ?, ?, ?)';
+    dbQuery(sql, [ material_reference, material_brand, material_description, material_pvp, material_ecotax]);
 
     res.json({
         mssg: 'post API'

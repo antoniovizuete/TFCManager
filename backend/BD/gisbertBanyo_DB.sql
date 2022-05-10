@@ -2,20 +2,49 @@ CREATE DATABASE IF NOT EXISTS gisbertBanyo_DB;
 
 USE gisbertBanyo_DB;
 
-CREATE TABLE IF NOT EXISTS customers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    dni VARCHAR (9),
-    name VARCHAR (30),
-    email VARCHAR (30),
-    address VARCHAR (50),
-    city VARCHAR (30),
-    province VARCHAR (30),
-    cp INT (5),
-    phone VARCHAR (9),
-    state BIT DEFAULT 1
+CREATE TABLE IF NOT EXISTS roles(
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR (30)
 );
 
-INSERT INTO customers (dni, name, email, address, city, province, cp, phone)
+INSERT INTO roles (role_name)
+VALUES
+('Administrador'),
+('Empleado');
+
+
+
+CREATE TABLE IF NOT EXISTS users(
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_name VARCHAR (20) NOT NULL,
+    user_email VARCHAR (30) NOT NULL,
+    user_password VARCHAR (512) NOT NULL,
+    user_role INT(5) NOT NULL,
+    user_state BIT DEFAULT 1,
+    FOREIGN KEY (user_role) REFERENCES roles(role_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO users (user_name, user_email, user_password, user_role)
+VALUES
+('PedroCalvo', 'pedrojcalvo@gmail.com', '$2a$10$1ISZ7Mr2C4dr03mXI/ImLuEZjwlWJc/8LjDM83s35fccZ1xTR/c1q', 1 );
+
+
+
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_dni VARCHAR (9),
+    customer_name VARCHAR (30),
+    customer_email VARCHAR (30),
+    customer_address VARCHAR (50),
+    customer_city VARCHAR (30),
+    customer_province VARCHAR (30),
+    customer_cp INT (5),
+    customer_phone VARCHAR (9),
+    customer_state BIT DEFAULT 1
+);
+
+INSERT INTO customers (customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone)
 VALUES
 ('31559875H', 'Arturo Perez-Reverte',      'arturoperezreverte@gmail.com',   'Avenida Constitucion 17 3B', 'Elda',              'Alicante',    '03600',  '975765456'),
 ('79157842G', 'Miguel de Unamuno',         'migueldeunamuno@gmail.com',      'Plaza de las Malvas 27 4C',  'Albacete',          'Albacete',    '02006',  '691254781'),
@@ -38,45 +67,38 @@ VALUES
 
 
 
-CREATE TABLE IF NOT EXISTS users(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR (20),
-    email VARCHAR (30),
-    password VARCHAR (512),
-    role VARCHAR (20),
-    state BIT DEFAULT 1
+
+CREATE TABLE IF NOT EXISTS projects(
+    project_id INT PRIMARY KEY AUTO_INCREMENT,
+    project_name VARCHAR (20) NOT NULL,
+    project_author INT(5) NOT NULL,
+    project_customer INT(5) NOT NULL,
+    project_description VARCHAR(200),
+    project_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE(),
+    project_state BIT DEFAULT 1,
+    FOREIGN KEY (project_author) REFERENCES users(user_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (project_customer) REFERENCES customers(customer_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO users (name, email, password, role)
+INSERT INTO projects(project_name, project_author, project_customer, project_description)
 VALUES
-('PedroCalvo', 'pedrojcalvo@gmail.com', '1234567890', 'Administrador'),
-('José Gisbert', 'jgb@gmail.com', '12345677890', 'Empleado');
-
-
-
-CREATE TABLE IF NOT EXISTS roles(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    role VARCHAR (30)
-);
-
-INSERT INTO roles (role)
-VALUES
-('Administrador'),
-('Empleado');
+('Reforma Heladería Sirvent', 1, 1, 'Reforma eléctrica integral del local. Iluminación de la fachada.');
 
 
 
 CREATE TABLE IF NOT EXISTS materials(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    reference VARCHAR (50),
-    brand VARCHAR (50),
-    description VARCHAR (50),
-    pvp DECIMAL (6,2),
-    ecotax VARCHAR (10),
-    state BIT DEFAULT 1
+    material_id INT PRIMARY KEY AUTO_INCREMENT,
+    material_reference VARCHAR (50),
+    material_brand VARCHAR (50),
+    material_description VARCHAR (200),
+    material_pvp DECIMAL (6,2),
+    material_ecotax VARCHAR (10),
+    material_state BIT DEFAULT 1
 );
 
-INSERT INTO materials (reference, brand, description, pvp, ecotax)
+INSERT INTO materials (material_reference, material_brand, material_description, material_pvp, material_ecotax)
 VALUES
 ('10950-ABR', 'EFAPEL', 'ADAPT MODULAR Q45 P/CANALES C/TAPA L75 BLANCO', '1.45', 'Si'),
 ('90608-TIS', 'EFAPEL', 'TECLA INT. BIPOLAR GRIS', '3.35', 'No'),

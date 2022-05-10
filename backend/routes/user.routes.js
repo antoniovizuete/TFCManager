@@ -14,11 +14,11 @@ const router = Router();
 router.get('/', userGet);
 
 router.post('/', [
-    check('name', 'El nombre es obligatorio.').not().isEmpty(),
-    check('email', 'El email no es válido.').isEmail(),
-    check('email').custom(validUserEmail),
-    check('password', 'El password debe tener más de 8 letras.').isLength({min:8}), 
-    check('role').custom(validRole),
+    check('user_name', 'El nombre es obligatorio.').not().isEmpty(),
+    check('user_email', 'El email no es válido.').isEmail(),
+    check('user_email').custom(validUserEmail),
+    check('user_password', 'El password debe tener más de 8 letras.').isLength({min:8}), 
+    check('user_role').custom(validRole),
     validateFields
 ], userPost);
 

@@ -1,14 +1,12 @@
 
 import React, { useState } from 'react';
 import { Grid } from '@material-ui/core';
-import UsersTable from './UsersTable';
+import ProjectsTable from './ProjectsTable';
 import CreateButton from './CreateButton';
-import UsersFormModal from './UsersFormModal';
+import ProjectsFormModal from './ProjectsFormModal';
 
+const ProjectsBox = () => {
 
-
-const UserBox = () => {
-  
   const [openModal, setOpenModal] = useState(false);  
 
   const openModalHandler = () => {
@@ -21,15 +19,15 @@ const UserBox = () => {
 
   return(
     <div>
-        <Grid container className='mt-5'>
+      <Grid container className='mt-5'>
           <Grid item xs={12} sm={12} md={12} xl={12}>
             <CreateButton createHandler={openModalHandler}/>
-            <UsersTable />
-            <UsersFormModal open={openModal} handleClose={closeModalHandler}/>
+            <ProjectsTable />
+            <ProjectsFormModal open={openModal} handleClose={closeModalHandler}/>
           </Grid>
-       </Grid>
+      </Grid>
     </div>
   )
 };
 
-export default UserBox;
+export default ProjectsBox;

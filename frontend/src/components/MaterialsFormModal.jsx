@@ -7,61 +7,61 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 const MaterialsFormModal = ({open, handleClose}) => {
 
-    const [reference, setReference] = useState('');
-    const [brand, setBrand] = useState('');
-    const [description, setDescription] = useState('');
-    const [pvp, setPvp] = useState('');
-    const [ecotax, setEcotax] = useState(null);
+    const [material_reference, setMaterial_reference] = useState('');
+    const [material_brand, setMaterial_brand] = useState('');
+    const [material_description, setMaterial_description] = useState('');
+    const [material_pvp, setMaterial_pvp] = useState('');
+    const [material_ecotax, setMaterial_ecotax] = useState(null);
     const [error, setError] = useState(null);
 
     const handleChange = (event) => {
-        setEcotax(event.target.value);
+        setMaterial_ecotax(event.target.value);
     };
 
     const saveData = (event) => {
         event.preventDefault();
 
-        if(!reference.trim()){
+        if(!material_reference.trim()){
            setError('Introduce una referencia de producto.');
             return
         }
 
-        if(!brand.trim()){
+        if(!material_brand.trim()){
             setError('Introduce una marca de producto.');
             return
         }
 
-        if(!description.trim()){
+        if(!material_description.trim()){
             setError('Introduce una descripción para el producto.');
             return
         }
 
-        if(!pvp.trim()){
+        if(!material_pvp.trim()){
             setError('Selecciona un precio para el producto.');
             return
         }
 
-        if(!ecotax.trim()){
+        if(!material_ecotax.trim()){
             setError('Selecciona una opción de ecotasa para el producto.');
             return
         }
 
         const newMaterial = {
-            reference: reference,
-            brand: brand,
-            description: description,
-            pvp: pvp,
-            ecotax: ecotax
+            material_reference: material_reference,
+            material_brand: material_brand,
+            material_description: material_description,
+            material_pvp: material_pvp,
+            material_ecotax: material_ecotax
         }
 
         console.log(newMaterial);
 
         event.target.reset();
-        setReference('');
-        setBrand('');
-        setDescription('');
-        setPvp('');
-        setEcotax('');
+        setMaterial_reference('');
+        setMaterial_brand('');
+        setMaterial_description('');
+        setMaterial_pvp('');
+        setMaterial_ecotax('');
         setError(null);
 
         postMaterials(newMaterial);
@@ -74,32 +74,28 @@ const MaterialsFormModal = ({open, handleClose}) => {
         <DialogContent>
             <form onSubmit={ saveData } id="materialForm">
                 {error ? <span className="text-danger">{error}</span> : null}
-                <TextField autoFocus margin="dense" id="reference"
+                <TextField autoFocus margin="dense" id="material_reference"
                     label="Referencia" type="text" fullWidth variant="standard"
-                    onChange={ event => setReference(event.target.value) }
+                    onChange={ event => setMaterial_reference(event.target.value) }
                 />
-                <TextField autoFocus margin="dense" id="brand"
+                <TextField autoFocus margin="dense" id="material_brand"
                     label="Marca" type="text" fullWidth variant="standard"
-                    onChange={ event => setBrand(event.target.value) }
+                    onChange={ event => setMaterial_brand(event.target.value) }
                 />
-                <InputLabel className="mt-2" id="descriptionInput">Descripción</InputLabel>
-                <TextareaAutosize autoFocus margin="dense" id="description"
+                <InputLabel className="mt-2" id="material_descriptionInput">Descripción</InputLabel>
+                <TextareaAutosize autoFocus margin="dense" id="material_description"
                     label="Descripción" type="text" fullWidth variant="standard"
-                    onChange={ event => setDescription(event.target.value) }
+                    onChange={ event => setMaterial_description(event.target.value) }
                 />
                 <Input
-                    autoFocus margin="dense" id="pvp" fullWidth variant="standard"
-                    value={pvp.amount}
+                    autoFocus margin="dense" id="material_pvp" fullWidth variant="standard"
+                    value={material_pvp.amount}
                     startAdornment={<InputAdornment position="start">€</InputAdornment>}
-                    onChange={ event => setPvp(event.target.value) }
+                    onChange={ event => setMaterial_pvp(event.target.value) }
                 />
-                {/* <TextField autoFocus margin="dense" id="pvp" 
-                    label="Precio" type="number" step={0.1} fullWidth variant="standard"
-                    onChange={ event => setPvp(event.target.value) }
-                /> */}
                 <InputLabel className="mt-2" id="ecotaxInput">Ecotasa</InputLabel>
-                <Select labelId="Ecotasa" id="ecotax" style={{width: '100%'}}
-                    value={ecotax} label="Ecotasa" onChange={handleChange}> 
+                <Select labelId="Ecotasa" id="material_ecotax" style={{width: '100%'}}
+                    value={material_ecotax} label="Ecotasa" onChange={handleChange}> 
                     <MenuItem value={''}></MenuItem>
                     <MenuItem value={'Si'}>Sí</MenuItem>
                     <MenuItem value={'No'}>No</MenuItem>

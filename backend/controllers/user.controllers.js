@@ -5,8 +5,8 @@ const { dbQuery, dbQueryCount } = require('../database/config.db');
 const userGet = async(req, res) => {
 
     const {limit=100, from=0} = req.query;
-    const sql = 'SELECT * from users WHERE state=true LIMIT ? OFFSET ?';
-    const countSql = 'SELECT COUNT (id) as count from users WHERE state=true';
+    const sql = 'SELECT * FROM users INNER JOIN roles ON users.user_role = roles.role_id WHERE user_state=true LIMIT ? OFFSET ?';
+    const countSql = 'SELECT COUNT (user_id) as count from users WHERE user_state=true';
 
     const [ total, users ] = await Promise.all([
         dbQueryCount(countSql),
@@ -21,15 +21,15 @@ const userGet = async(req, res) => {
 
 const userPost = async(req, res) => {
 
-    const { name, email, password, role } = req.body;
+    const { user_name, user_email, user_password, user_role } = req.body;
 
     //encriptar password
     const salt = bcryptjs.genSaltSync();
-    const hashedPassword = bcryptjs.hashSync(password, salt);
+    const hashedPassword = bcryptjs.hashSync(user_password, salt);
 
     //guardar en BD
-    const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
-    dbQuery(sql, [name, email, hashedPassword, role]);
+    const sql = 'INSERT INTO users (user_name, user_email, user_password, user_role) VALUES (?, ?, ?, ?)';
+    dbQuery(sql, [user_name, user_email, hashedPassword, user_role]);
 
     res.json({
         mssg: 'post API'
@@ -39,7 +39,7 @@ const userPost = async(req, res) => {
 const userPut = async(req, res) => {
 
     const {id} = req.params;
-    const {_id, password, google, email, ...other } =req.body;
+    const {_id, password, google, user_email, ...other } =req.body;
 
     //Validar en base de datos.
     if(password){

@@ -13,15 +13,15 @@ import TableEditButton  from './TableEditButton';
 import TableDeleteButton from './TableDeleteButton';
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 50 },
-  { id: 'reference', label: 'Referencia', minWidth: 80 },
-  { id: 'brand', label: 'Marca', minWidth: 100 },
-  { id: 'description', label: 'Descripción', minWidth: 50},
-  { id: 'pvp', label: 'Precio', minWidth: 100 },
-  { id: 'ecotax', label: 'Ecotasa', minWidth: 50}
+  { id: 'material_id', label: 'ID', minWidth: 50 },
+  { id: 'material_reference', label: 'Referencia', minWidth: 80 },
+  { id: 'material_brand', label: 'Marca', minWidth: 100 },
+  { id: 'material_description', label: 'Descripción', minWidth: 50},
+  { id: 'material_pvp', label: 'Precio', minWidth: 100 },
+  { id: 'material_ecotax', label: 'Ecotasa', minWidth: 50}
 ];
 
-export default function UsersTable() {
+export default function MaterialsTable() {
 
     const [materials, setMaterials] = useState([]);
     useEffect( () =>{

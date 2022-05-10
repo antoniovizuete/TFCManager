@@ -15,11 +15,10 @@ const router = Router();
 router.get('/', customerGet);
 
 router.post('/',[
-    check('name', 'El nombre es obligatorio.').not().isEmpty(),
-    check('email', 'El email no es válido.').isEmail(),
-    check('email').custom(validCustomerEmail),
-    check('phone', 'El teléfono no es válido').custom(validPhone),
-    check('role').custom(validRole),
+    check('customer_name', 'El nombre es obligatorio.').not().isEmpty(),
+    check('customer_email', 'El email no es válido.').isEmail(),
+    check('customer_email').custom(validCustomerEmail),
+    check('customer_phone', 'El teléfono no es válido').custom(validPhone),
     validateFields
 ],customerPost);
 

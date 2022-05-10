@@ -7,6 +7,7 @@ import Drawercomp from './Drawercomp';
 import CustomersBox from './CustomersBox';
 import UsersBox from './UsersBox';
 import MaterialsBox from './MaterialsBox';
+import ProjectsBox from './ProjectsBox';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -43,6 +44,7 @@ const Containercomp = () => {
                     <Route path="/customers" element={<CustomersBox />}/>
                     <Route path="/users" element={<UsersBox />}/>
                     <Route path="/materials" element={<MaterialsBox />}/>
+                    <Route path="/projects" element={<ProjectsBox />}/>
                 </Routes>
             </div>
         </div>

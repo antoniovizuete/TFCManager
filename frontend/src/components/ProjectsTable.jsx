@@ -7,26 +7,27 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getUsers } from '../services/user.services';
+import { getProjects } from '../services/project.services';
 import { useEffect, useState } from 'react';
-import TableEditButton  from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
+import { Link } from '@mui/material';
+import AccessDetailsButton from './AccessDetailsButton';
 
 const columns = [
-  { id: 'user_id', label: 'ID', minWidth: 50 },
-  { id: 'user_name', label: 'Nombre', minWidth: 80 },
-  { id: 'user_email', label: 'Email', minWidth: 100 },
-  { id: 'role_name', label: 'Rol', minWidth: 50},
+  { id: 'project_id', label: 'ID', minWidth: 50 },
+  { id: 'project_name', label: 'Proyecto', minWidth: 50 },
+  { id: 'user_name', label: 'Creado Por', minWidth: 80 },
+  { id: 'customer_name', label: 'Cliente', minWidth: 100 },
+  { id: 'project_date', label: 'Fecha de creación', minWidth: 40 },
 ];
 
-export default function UsersTable() {
+export default function ProjectsTable() {
 
-    const [users, setUsers] = useState([]);
+    const [projects, setProjects] = useState([]);
     useEffect( () =>{
-        const getAllUsers = async() => {
-            setUsers(await getUsers());
+        const getAllProjects = async() => {
+            setProjects(await getProjects());
         }
-        getAllUsers();
+        getAllProjects();
     }, []);
 
     const [openModal, setOpenModal] = useState(false);  
@@ -65,19 +66,17 @@ export default function UsersTable() {
                 >
                   {column.label}
                 </TableCell>
-                
               ))}
-                 <TableCell>Editar</TableCell>
-                 <TableCell>Borrar</TableCell>
+              <TableCell>Detalles</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((users) => {
+            {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((projects) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={users.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={projects.code}>
                     {columns.map((column) => {
-                      const value = users[column.id];
+                      const value = projects[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -86,9 +85,7 @@ export default function UsersTable() {
                         </TableCell>
                       );
                     })}
-                        <TableCell><TableEditButton createHandler={openModalHandler}/></TableCell>
-                        <TableCell><TableDeleteButton createHandler={openModalHandler}/> </TableCell>
-
+                    <TableCell><AccessDetailsButton createHandler={openModalHandler}/></TableCell>
                   </TableRow>
                 );
               })}
@@ -98,7 +95,7 @@ export default function UsersTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={users.length}
+        count={projects.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

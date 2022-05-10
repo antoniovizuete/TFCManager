@@ -5,63 +5,63 @@ import { postUsers } from "../services/user.services";
 
 const UsersFormModal = ({open, handleClose}) => {
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [user_name, setUser_name] = useState('');
+    const [user_email, setUser_email] = useState('');
+    const [user_password, setUser_password] = useState('');
+    const [user_role, setUser_role] = useState('');
     const [error, setError] = useState(null);
 
     const handleChange = (event) => {
-        setRole(event.target.value);
+        setUser_role(event.target.value);
     };
 
     const saveData = (event) => {
         event.preventDefault();
 
-        if(!name.trim()){
+        if(!user_name.trim()){
            setError('Introduce un nombre de usuario.');
             return
         }
 
-        if(!email.trim()){
+        if(!user_email.trim()){
             setError('Es necesario introducir un email.');
             return
         }
 
-        if(!validator.isEmail(email)){
+        if(!validator.isEmail(user_email)){
             setError('El email introducido no es válido.');
             return
         }
 
-        if(!password.trim()){
+        if(!user_password.trim()){
             setError('Introduce una contraseña válida.');
             return
         }
 
-        if(!validator.isStrongPassword(password, {minLength: 8, 
+        if(!validator.isStrongPassword(user_password, {minLength: 8, 
             minLowercase: 1, minUppercase: 1, minNumbers: 1, 
             minSymbols: 1})){
                 setError('La contraseña debe contener 8 carácteres o más y, al menos, una mayúscula, una minúscula, un número y un símbolo.');
                 return
         }
 
-        if(!role.trim()){
+        if(user_role===''){
             setError('Selecciona un role para el usuario.');
             return
         }
 
         const newUser = {
-            name: name,
-            email: email,
-            password: password,
-            role: role
+            user_name: user_name,
+            user_email: user_email,
+            user_password: user_password,
+            user_role: user_role
         }
 
         event.target.reset();
-        setName('');
-        setEmail('');
-        setPassword('');
-        setRole('');
+        setUser_name('');
+        setUser_email('');
+        setUser_password('');
+        setUser_role('');
         setError(null);
 
         postUsers(newUser);
@@ -74,24 +74,24 @@ const UsersFormModal = ({open, handleClose}) => {
         <DialogContent>
             <form onSubmit={ saveData } id="userForm">
                 {error ? <span className="text-danger">{error}</span> : null}
-                <TextField autoFocus margin="dense" id="name"
+                <TextField autoFocus margin="dense" id="user_name"
                 label="Nombre Usuario" type="text" fullWidth variant="standard"
-                onChange={ event => setName(event.target.value) }
+                onChange={ event => setUser_name(event.target.value) }
                 />
-                <TextField autoFocus margin="dense" id="email"
-                label="dirección Email" type="email" fullWidth variant="standard"
-                onChange={ event => setEmail(event.target.value) }
+                <TextField autoFocus margin="dense" id="user_email"
+                label="Dirección Email" type="email" fullWidth variant="standard"
+                onChange={ event => setUser_email(event.target.value) }
                 />
-                <TextField autoFocus margin="dense" id="password"
+                <TextField autoFocus margin="dense" id="user_password"
                 label="Contraseña" type="password" fullWidth variant="standard"
-                onChange={ event => setPassword(event.target.value) }
+                onChange={ event => setUser_password(event.target.value) }
                 />
                 <InputLabel className="mt-2" id="RoleInput">Role</InputLabel>
-                <Select labelId="label" id="role" style={{width: '100%'}}
-                value={role} label="Role" onChange={handleChange}> 
+                <Select labelId="label" id="user_role" style={{width: '100%'}}
+                value={user_role} label="Role" onChange={handleChange}> 
                     <MenuItem value={''}></MenuItem>
-                    <MenuItem value={'Administrador'}>Administrador</MenuItem>
-                    <MenuItem value={'Empleado'}>Empleado</MenuItem>
+                    <MenuItem value={1}>Administrador</MenuItem>
+                    <MenuItem value={2}>Empleado</MenuItem>
                 </Select>
             </form>
         </DialogContent>
