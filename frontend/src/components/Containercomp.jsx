@@ -1,13 +1,15 @@
 
 import React from 'react';
 import {makeStyles, Hidden} from '@material-ui/core';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Navbar from './Navbar';
 import Drawercomp from './Drawercomp';
 import CustomersBox from './CustomersBox';
 import UsersBox from './UsersBox';
 import MaterialsBox from './MaterialsBox';
+import ProjectSubMenu from './ProjectSubMenu';
 import ProjectsBox from './ProjectsBox';
+import WorkordersBox from './WorkordersBox';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -41,10 +43,13 @@ const Containercomp = () => {
             <div className={classes.content}>
                 <div className={classes.toolbar}></div>
                 <Routes>
-                    <Route path="/customers" element={<CustomersBox />}/>
-                    <Route path="/users" element={<UsersBox />}/>
-                    <Route path="/materials" element={<MaterialsBox />}/>
-                    <Route path="/projects" element={<ProjectsBox />}/>
+                    <Route path="/customers/*" element={<CustomersBox />}/>
+                    <Route path="/users/*" element={<UsersBox />}/>
+                    <Route path="/materials/*" element={<MaterialsBox />}/>
+                    <Route path="/projects/" element={<ProjectSubMenu />}/>
+                    <Route path="/projects/projectlist" element={<ProjectsBox /> }/>
+                    <Route path="/projects/workorderlist" element={<WorkordersBox /> }/>
+     
                 </Routes>
             </div>
         </div>

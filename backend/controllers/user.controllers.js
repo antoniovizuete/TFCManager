@@ -1,21 +1,16 @@
 
 const bcryptjs = require('bcryptjs');
-const { dbQuery, dbQueryCount } = require('../database/config.db');
+const User = require('../models/Users');
 
 const userGet = async(req, res) => {
 
     const {limit=100, from=0} = req.query;
-    const sql = 'SELECT * FROM users INNER JOIN roles ON users.user_role = roles.role_id WHERE user_state=true LIMIT ? OFFSET ?';
-    const countSql = 'SELECT COUNT (user_id) as count from users WHERE user_state=true';
 
-    const [ total, users ] = await Promise.all([
-        dbQueryCount(countSql),
-        dbQuery(sql,[limit, from])
-    ]);
-
+    const users = await User.find({where:{state:true}, offset: from, limit});
+    
     res.json({
-       total,
-       users
+        count: 10,
+        users
     });
 }
 
@@ -28,12 +23,18 @@ const userPost = async(req, res) => {
     const hashedPassword = bcryptjs.hashSync(user_password, salt);
 
     //guardar en BD
-    const sql = 'INSERT INTO users (user_name, user_email, user_password, user_role) VALUES (?, ?, ?, ?)';
-    dbQuery(sql, [user_name, user_email, hashedPassword, user_role]);
+    const newUser = new User({
+        user_name : user_name, 
+        user_email: user_email, 
+        user_password: hashedPassword, 
+        user_role: user_role,
+        user_state: 1
+    });
 
-    res.json({
-        mssg: 'post API'
-    })
+    console.log(newUser);
+
+    await newUser.save();
+
 }
 
 const userPut = async(req, res) => {

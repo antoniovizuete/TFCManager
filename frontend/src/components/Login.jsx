@@ -1,26 +1,28 @@
 
 import React from 'react'
-import { getUsers } from '../services/user.services';
+import { getCheckUser } from '../services/login.services';
 import { useEffect, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 
+
 const Login = (props) => {
 
-    const [users, setUsers] = React.useState([]);
+
+    const [user, setUser] = React.useState([]);
 
     useEffect( () =>{
-        const getAllUsers = async() => {
-        setUsers(await getUsers());
+        const getAllUser = async() => {
+        setUser(await getCheckUser());
         }
-        getAllUsers();
+        getAllUser();
     }, []);
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState(null);
 
-    const procesarDatos = e => {
-        e.preventDefault();
+    const processData = event => {
+        event.preventDefault();
         if(!email.trim()){
             setError('Introduce el Email.')
             return
@@ -34,6 +36,8 @@ const Login = (props) => {
             return
         }
 
+        getCheckUser(email);
+
         setError(null);
         console.log('Login correcto.')
     };
@@ -46,7 +50,7 @@ const Login = (props) => {
                 <hr className='ms-5 me-5 mt-4'/>
                 <div className="row justify-content-center mt-4">
                     <div className="col-12 col-sm-8 col-md-6 col-xl-4">
-                        <form onSubmit ={procesarDatos}>
+                        <form onSubmit ={processData}>
                             {
                                 error && (
                                     <div className='alert alert-danger'>
@@ -54,8 +58,8 @@ const Login = (props) => {
                                     </div>
                                 )
                             }
-                            <input type="email" className="form-control mb-2" onChange={e => setEmail(e.target.value)} value={email} />
-                            <input type="password" className="form-control mb-2"  onChange={e => setPassword(e.target.value)} value={password} />
+                            <input type="email" className="form-control mb-2" onChange={event => setEmail(event.target.value)} value={email} />
+                            <input type="password" className="form-control mb-2"  onChange={event => setPassword(event.target.value)} value={password} />
                             <button className="btn btn-primary btn-lg col-12 mb-5" type='submit'>Login</button>
                         </form>
                     </div>

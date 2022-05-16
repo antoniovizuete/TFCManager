@@ -1,4 +1,5 @@
 
+const { dbQuery, dbQueryCount } = require('../database/config.db');
 const { response } = require('express');
 const bcryptjs = require('bcryptjs');
 
@@ -11,6 +12,8 @@ const loginController = async(req, res = response) => {
     try{
 
         //Verificar si email existe.
+        
+        const sql = 'SELECT * FROM users INNER JOIN roles ON users.user_role = roles.role_id WHERE user_state=true LIMIT ? OFFSET ?';
         const user = await User.findOne({ email });
         if(!user){
             return res.status(400).json({

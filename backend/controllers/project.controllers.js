@@ -9,14 +9,14 @@ const projectGet = async(req, res) => {
     
     const countSql = 'SELECT COUNT (project_id) as count from projects WHERE project_state=true';
 
-    const [ total, users ] = await Promise.all([
+    const [ total, projects ] = await Promise.all([
         dbQueryCount(countSql),
         dbQuery(sql,[limit, from])
     ]);
 
     res.json({
        total,
-       users
+       projects
     });
 }
 

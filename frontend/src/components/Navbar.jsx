@@ -33,12 +33,12 @@ const Navbar = (props) => {
                     </IconButton>
                     <Hidden mdDown>
                         <Typography variant='h2' className={classes.tittle}> 
-                            Gisbert Bañon Electricidad
+                            Gisbert Bañó Electricidad
                         </Typography>
                     </Hidden>
                     <Hidden lgUp>
                         <Typography variant='h5' className={classes.tittle}> 
-                            Gisbert Bañon Electricidad
+                            Gisbert Bañó Electricidad
                         </Typography>
                     </Hidden>
 

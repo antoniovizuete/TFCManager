@@ -105,6 +105,37 @@ VALUES
 ('10295-RBR', 'EFAPEL', 'TOPE P/CANAL 180X50 BLANCO', '2.28', 'No'),
 ('90605-TAL', 'EFAPEL', 'TECLA SIMPLE CON SIMBOLO DE CAMPANA ALUMINIO', '3.35', 'Si');
 
+CREATE TABLE IF NOT EXISTS workorders(
+    workorder_id INT PRIMARY KEY AUTO_INCREMENT,
+    workorder_author INT (5),
+    workorder_project INT (5),
+    workorder_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE(),
+    workorder_hours VARCHAR (2),
+    workorder_minutes DECIMAL (2),
+    workorder_state BIT DEFAULT 1
+);
+
+INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes)
+VALUES
+(1, 1, 8, 0);
+
+CREATE TABLE IF NOT EXISTS workorder_materials(
+    workorder_id INT (5),
+    material_id INT (5),
+    material_amount INT(3),
+    PRIMARY KEY (workorder_id, material_id),
+    FOREIGN KEY (workorder_id) REFERENCES workorders(workorder_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (material_id) REFERENCES materials(material_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+)
 
 
+-- db.users.insert({
+--     user_name: 'Pedro',
+--     user_email: 'pedrojcalvo@gmail.com',
+--     user_password: 'Lugrom012012',
+--     user_role: 'Administrador',
+--     user_state: 1
+-- })
 -- SOURCE C:/Users/34744/Desktop/TFCManager/backend/BD/gisbertBanyo_DB.sql;
