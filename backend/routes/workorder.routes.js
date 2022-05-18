@@ -7,13 +7,14 @@ const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middle
 
 const { workorderGet, workorderPut, workorderPost, workorderDelete, workorderPatch } = require('../controllers/workorder.controllers');
 const { validRole, validUserEmail } = require('../helpers/dbValidators');
+const { authorizationToken } = require('../middlewares/authorizationToken');
 
 
 const router = Router();
 
-router.get('/', workorderGet);
+router.get('/', authorizationToken, workorderGet);
 
-router.post('/', workorderPost);
+router.post('/', authorizationToken, workorderPost);
 
 router.put('/:id', workorderPut);
 

@@ -7,13 +7,14 @@ const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middle
 
 const { projectGet, projectPut, projectPost, projectDelete, projectPatch } = require('../controllers/project.controllers');
 const { validRole, validUserEmail } = require('../helpers/dbValidators');
+const { authorizationToken } = require('../middlewares/authorizationToken');
 
 
 const router = Router();
 
-router.get('/', projectGet);
+router.get('/', authorizationToken, projectGet);
 
-router.post('/', projectPost);
+router.post('/', authorizationToken, projectPost);
 
 router.put('/:id', projectPut);
 

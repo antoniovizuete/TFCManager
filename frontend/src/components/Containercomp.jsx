@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {makeStyles, Hidden} from '@material-ui/core';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import Navbar from './Navbar';
 import Drawercomp from './Drawercomp';
 import CustomersBox from './CustomersBox';
@@ -10,6 +10,7 @@ import MaterialsBox from './MaterialsBox';
 import ProjectSubMenu from './ProjectSubMenu';
 import ProjectsBox from './ProjectsBox';
 import WorkordersBox from './WorkordersBox';
+import { getUserData } from '../services/login.services';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -31,7 +32,9 @@ const Containercomp = () => {
         setDeployDrawer(!deployDrawer);
     };
 
-    return(
+    const jwtToken = getUserData();
+
+    return jwtToken ?
         <div className={classes.root}>
             <Navbar openDrawer={openDrawer}/>
             <Hidden xsDown>
@@ -51,8 +54,8 @@ const Containercomp = () => {
                     <Route path="/projects/workorderlist" element={<WorkordersBox /> }/>
                 </Routes>
             </div>
-        </div>
-    )
+        </div> : <Navigate to={{pathname: '/'}} replace={true}/>
+    
 }
 
 export default Containercomp;

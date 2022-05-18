@@ -1,50 +1,30 @@
 
-const { response } = require('express');
 const bcryptjs = require('bcryptjs');
-
+const { dbQuery } = require('../database/config.db');
 const { generateJWT } = require('../helpers/generateJWT');
 
-const loginController = async(req, res = response) => {
 
-    const { email, password } = req.body;
+const loginController = async(req, res ) => {
 
-    try{
+    const { user_email, user_password } = req.body;
+    
+    const sql = 'SELECT * FROM users WHERE user_state=true AND user_email=? ';
 
-        //Verificar si email existe.
-        const user = await User.findOne({ email });
-        if(!user){
-            return res.status(400).json({
-                mssg: 'El usuario o el password no son correctos (email)'
-            })
-        }
-        //Verificar si usuario está activo.
-        if(!user.state){
-            return res.status(400).json({
-                mssg: 'El usuario o el password no son correctos (state:false)'
-            })
-        }
+    const userLogged = await dbQuery(sql, [user_email]);
 
-        //Verificar password.
-        const validPassword = bcryptjs.compareSync(password, user.password);
-        if(!validPassword){
-            return res.status(400).json({
-                mssg: 'El usuario o el password no son correctos (password)'
-            })
-        };
+    const passwordCorrect = userLogged[0] == null ? false : await bcryptjs.compare(user_password, userLogged[0].user_password);
 
-        //Generar el JasonWebToken (JWT).
-        const token = await generateJWT(user.id);
-
-        res.json({
-            user, 
-            token
+    if(!userLogged[0] || !passwordCorrect){
+        res.status(401).json({
+            error: 'Usuario o contraseña inválido.'
         })
-
-    }catch(error){
-
-        console.log(error);
-        res.status(500).json({
-            mssg: 'Imposible logear. Hable con el administrador.'
+    }else{
+        const token = await generateJWT(userLogged[0]);
+        
+        res.json({
+            name: userLogged[0].user_name,
+            role: userLogged[0].user_role,
+            token: token
         });
     }
 }

@@ -7,12 +7,13 @@ const {Router} = require('express');
 
 const { materialGet, materialPut, materialPost, materialDelete, materialPatch } = require('../controllers/material.controllers');
 const { } = require('../helpers/dbValidators');
+const { authorizationToken } = require('../middlewares/authorizationToken');
 
 const router = Router();
 
-router.get('/', materialGet);
+router.get('/', authorizationToken, materialGet);
 
-router.post('/', materialPost);
+router.post('/', authorizationToken, materialPost);
 
 router.put('/:id', materialPut);
 

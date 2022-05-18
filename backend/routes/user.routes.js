@@ -7,20 +7,26 @@ const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middle
 
 const { userGet, userPut, userPost, userDelete, userPatch } = require('../controllers/user.controllers');
 const { validRole, validUserEmail } = require('../helpers/dbValidators');
+const { authorizationToken } = require('../middlewares/authorizationToken');
 
 
 const router = Router();
 
-router.get('/', userGet);
+router.get('/', 
+authorizationToken, 
+userGet);
 
-router.post('/', [
-    check('user_name', 'El nombre es obligatorio.').not().isEmpty(),
-    check('user_email', 'El email no es válido.').isEmail(),
-    check('user_email').custom(validUserEmail),
-    check('user_password', 'El password debe tener más de 8 letras.').isLength({min:8}), 
-    check('user_role').custom(validRole),
-    validateFields
-], userPost);
+router.post('/', 
+    authorizationToken,
+    [
+        check('user_name', 'El nombre es obligatorio.').not().isEmpty(),
+        check('user_email', 'El email no es válido.').isEmail(),
+        check('user_email').custom(validUserEmail),
+        check('user_password', 'El password debe tener más de 8 letras.').isLength({min:8}), 
+        check('user_role').custom(validRole),
+        validateFields
+    ], 
+    userPost);
 
 router.put('/:id', [
     // check('id', 'No es un ID válido').isMongoId(),

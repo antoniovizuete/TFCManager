@@ -1,41 +1,48 @@
 
 import React from 'react'
-import { getUsers } from '../services/user.services';
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import LockIcon from '@material-ui/icons/Lock';
+import { userLogin } from '../services/login.services';
 
 const Login = (props) => {
 
-    const [users, setUsers] = React.useState([]);
-
-    useEffect( () =>{
-        const getAllUsers = async() => {
-        setUsers(await getUsers());
-        }
-        getAllUsers();
-    }, []);
-
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [user_email, setUser_email] = React.useState('');
+    const [user_password, setUser_password] = React.useState('');
     const [error, setError] = React.useState(null);
+    const [userLogged, setUserLogged] = React.useState('');
 
-    const procesarDatos = e => {
+    const navigate = useNavigate();   
+
+    const procesarDatos = async (e) => {
         e.preventDefault();
-        if(!email.trim()){
-            setError('Introduce el Email.')
-            return
-        }
-        if(!password.trim()){
-            setError('Introduce la contraseña.')
-            return
-        }
-        if(password.length<10){
-            setError('La contaseña debe tener, al menos, 10 carácteres.')
-            return
-        }
+        try{        
+            if(!user_email.trim()){
+                setError('Introduce el Email.')
+                return
+            }
+            if(!user_password.trim()){
+                setError('Introduce la contraseña.')
+                return
+            }
+            if(user_password.length<10){
+                setError('La contaseña debe tener, al menos, 10 carácteres.')
+                return
+            }
 
+            const userLogged = await userLogin(user_email, user_password);
+
+            setUserLogged(userLogged.name);
+
+            setError(null);
+            setUser_email('');
+            setUser_password('');
+            setError(null);
+            navigate("/menu", { replace: true });
+        }catch(e){
+            setError('Wrong Credentials');
+        }
         setError(null);
-        console.log('Login correcto.')
     };
 
     return (
@@ -54,8 +61,8 @@ const Login = (props) => {
                                     </div>
                                 )
                             }
-                            <input type="email" className="form-control mb-2" onChange={e => setEmail(e.target.value)} value={email} />
-                            <input type="password" className="form-control mb-2"  onChange={e => setPassword(e.target.value)} value={password} />
+                            <input type="email" className="form-control mb-2" onChange={e => setUser_email(e.target.value)} value={user_email} />
+                            <input type="password" className="form-control mb-2"  onChange={e => setUser_password(e.target.value)} value={user_password} />
                             <button className="btn btn-primary btn-lg col-12 mb-5" type='submit'>Login</button>
                         </form>
                     </div>
