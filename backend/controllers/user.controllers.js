@@ -8,7 +8,8 @@ const userGet = async(req, res) => {
     const sql = 'SELECT * FROM users INNER JOIN roles ON users.user_role = roles.role_id WHERE user_state=true LIMIT ? OFFSET ?';
     const countSql = 'SELECT COUNT (user_id) as count from users WHERE user_state=true';
 
-    const [ total, users ] = await Promise.all([
+    const [ total, users ] = 
+    await Promise.all([
         dbQueryCount(countSql),
         dbQuery(sql,[limit, from])
     ]);
