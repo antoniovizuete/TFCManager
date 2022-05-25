@@ -4,19 +4,23 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 
 //middlewares
-const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares');
+const { validateFields, validateJWT } = require('../middlewares');
 
-const {customerGet, customerPut, customerPost, customerDelete, customerPatch } = require('../controllers/customer.controllers');
+const {customerGet, customerByIdGet, customerPut, customerPost, customerDelete, customerPatch, projectGetByCustomerId } = require('../controllers/customer.controllers');
 const { validCustomerEmail, validPhone, validRole } = require('../helpers/dbValidators');
 const { authorizationToken } = require('../middlewares/authorizationToken');
-
+const { isAdminRole } = require('../middlewares/validateRoles');
 
 const router = Router();
 
 router.get('/', authorizationToken, customerGet);
 
-router.post('/',
-    authorizationToken,
+router.get('/:id', authorizationToken, customerByIdGet);
+
+router.post('/:id/projects', authorizationToken, projectGetByCustomerId);
+
+router.post('/',  
+    authorizationToken, isAdminRole,
     [
         check('customer_name', 'El nombre es obligatorio.').not().isEmpty(),
         check('customer_email', 'El email no es válido.').isEmail(),
@@ -26,10 +30,19 @@ router.post('/',
     ],
     customerPost);
 
-router.put('/:id', customerPut);
+router.post('/:id', authorizationToken, isAdminRole, customerByIdGet);
 
-router.patch('/', customerPatch);
+router.put('/:id', authorizationToken, isAdminRole, 
+    [
+        check('customer_name', 'El nombre es obligatorio.').not().isEmpty(),
+        check('customer_email', 'El email no es válido.').isEmail(),
+        check('customer_phone', 'El teléfono no es válido').custom(validPhone),
+        validateFields
+    ],
+    customerPut);
 
-router.delete('/:id', customerDelete);
+router.delete('/:id', authorizationToken, isAdminRole, customerDelete);
+
+router.patch('/',  authorizationToken, isAdminRole, customerPatch);
 
 module.exports = router;

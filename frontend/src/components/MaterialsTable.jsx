@@ -11,6 +11,10 @@ import { getMaterials } from '../services/material.services';
 import { useEffect, useState } from 'react';
 import TableEditButton  from './TableEditButton';
 import TableDeleteButton from './TableDeleteButton';
+import { getUserData } from '../services/login.services';
+import TableDeleteButtonDisabled from './TableDeleteButtonDisabled';
+import TableEditButtonDisabled from './TableEditButtonDisabled';
+import AccessDetailsButton from './AccessDetailsButton';
 
 const columns = [
   { id: 'material_id', label: 'ID', minWidth: 50 },
@@ -31,16 +35,6 @@ export default function MaterialsTable() {
         getAllMaterials();
     }, []);
 
-    const [openModal, setOpenModal] = useState(false);  
-
-    const openModalHandler = () => {
-      setOpenModal(true);
-    };
-  
-    const closeModalHandler = () => {
-      setOpenModal(false);
-    }
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -52,6 +46,8 @@ export default function MaterialsTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const userLogged = getUserData();
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -69,17 +65,18 @@ export default function MaterialsTable() {
                 </TableCell>
                 
               ))}
-                 <TableCell>Editar</TableCell>
-                 <TableCell>Borrar</TableCell>
+                <TableCell>Detalles</TableCell>
+                <TableCell>Editar</TableCell>
+                <TableCell>Borrar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {materials.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((materials) => {
+              .map((material) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={materials.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={material.code}>
                     {columns.map((column) => {
-                      const value = materials[column.id];
+                      const value = material[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -88,8 +85,19 @@ export default function MaterialsTable() {
                         </TableCell>
                       );
                     })}
-                        <TableCell><TableEditButton createHandler={openModalHandler}/></TableCell>
-                        <TableCell><TableDeleteButton createHandler={openModalHandler}/> </TableCell>
+                        <TableCell><AccessDetailsButton id={material.material_id} section='materials'/></TableCell>
+                        <TableCell>
+                          {
+                            userLogged.role === 1 ? ( <TableEditButton  id={material.material_id} section='materials' />) : 
+                            (<TableEditButtonDisabled />) 
+                          }
+                        </TableCell>
+                        <TableCell>
+                          {
+                            userLogged.role === 1 ? ( <TableDeleteButton  id={material.material_id} section='materials' />) : 
+                            (<TableDeleteButtonDisabled />) 
+                          }
+                        </TableCell>
 
                   </TableRow>
                 );

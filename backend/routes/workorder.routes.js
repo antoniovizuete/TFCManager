@@ -3,23 +3,26 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 
 //middlewares
-const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares');
+const { validateFields, validateJWT } = require('../middlewares');
 
-const { workorderGet, workorderPut, workorderPost, workorderDelete, workorderPatch } = require('../controllers/workorder.controllers');
+const { workorderGet, workorderPut, workorderGetById, workorderPost, workorderDelete, workorderPatch } = require('../controllers/workorder.controllers');
 const { validRole, validUserEmail } = require('../helpers/dbValidators');
 const { authorizationToken } = require('../middlewares/authorizationToken');
+const { isAdminRole } = require('../middlewares/validateRoles');
 
 
 const router = Router();
 
 router.get('/', authorizationToken, workorderGet);
 
-router.post('/', authorizationToken, workorderPost);
+router.post('/', authorizationToken, isAdminRole, workorderPost);
 
-router.put('/:id', workorderPut);
+router.post('/:id', authorizationToken, isAdminRole, workorderGetById);
 
-router.patch('/', workorderPatch);
+router.put('/:id', authorizationToken, isAdminRole, workorderPut);
 
-router.delete('/:id', workorderDelete);
+router.patch('/', authorizationToken, isAdminRole, workorderPatch);
+
+router.delete('/:id', authorizationToken, isAdminRole, workorderDelete);
 
 module.exports = router;

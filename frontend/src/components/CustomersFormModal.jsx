@@ -1,11 +1,13 @@
 
-import { Button, TextField, Dialog, DialogActions, DialogContent, 
-  DialogContentText, DialogTitle, Select, MenuItem, InputLabel } from "@material-ui/core";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import React, { useState } from "react";
 import validator from "validator";
 import { postCustomers } from "../services/customer.services";
+import { useNavigate } from "react-router-dom";
 
 const CustomersFormModal = ({open, handleClose}) => {
+
+  const navigate = useNavigate();
 
   const [customer_dni, setCustomer_dni] = useState('');
   const [customer_name, setCustomer_name] = useState('');
@@ -17,57 +19,68 @@ const CustomersFormModal = ({open, handleClose}) => {
   const [customer_phone, setCustomer_phone] = useState('');
   const [error, setError] = useState(null);
 
-  const saveData = (event) => {
+  const saveData = async (event) => {
     event.preventDefault();
+    try{
+      if(!customer_name.trim()){
+        setError('Introduce un nombre de usuario.');
+        return
+      }
 
-    if(!customer_name.trim()){
-      setError('Introduce un nombre de usuario.');
-      return
+      if(!customer_email.trim()){
+        setError('Es necesario introducir un email.');
+        return
+      }
+
+      if(!customer_phone.trim()){
+        setError('Es necesario introducir un teléfono.');
+        return
+      }
+
+      if(!validator.isMobilePhone(customer_phone, 'es-ES')){
+        setError(`El teléfono ${customer_phone} no es válido.`);
+        return
+      }
+
+      if(!validator.isEmail(customer_email)){
+        setError('El email introducido no es válido.');
+        return
+      }
+
+      const newCustomer = {
+        customer_dni: customer_dni,
+        customer_name: customer_name,
+        customer_email: customer_email,
+        customer_address: customer_address,
+        customer_city: customer_city,
+        customer_province: customer_province,
+        customer_cp: customer_cp,
+        customer_phone: customer_phone
+      }
+
+      
+      const newCustomerResponse = await postCustomers(newCustomer);
+
+      if(newCustomerResponse.errors){
+        setError(newCustomerResponse.errors[0].msg);
+        return
+      }else{
+        navigate("/menu/customers", { replace: true });
+        event.target.reset();
+        setCustomer_dni('');
+        setCustomer_name('');
+        setCustomer_email('');
+        setCustomer_address('');
+        setCustomer_city('');
+        setCustomer_province('');
+        setCustomer_cp('');
+        setCustomer_phone('');
+        setError(null);
+      }
+      
+    }catch(error){
+      setError(error);
     }
-
-    if(!customer_email.trim()){
-      setError('Es necesario introducir un email.');
-      return
-    }
-
-    if(!customer_phone.trim()){
-      setError('Es necesario introducir un teléfono.');
-      return
-    }
-
-    if(!validator.isMobilePhone(customer_phone, 'es-ES')){
-      setError(`El teléfono ${customer_phone} no es válido.`);
-      return
-    }
-
-    if(!validator.isEmail(customer_email)){
-      setError('El email introducido no es válido.');
-      return
-    }
-
-    const newCustomer = {
-      customer_dni: customer_dni,
-      customer_name: customer_name,
-      customer_email: customer_email,
-      customer_address: customer_address,
-      customer_city: customer_city,
-      customer_province: customer_province,
-      customer_cp: customer_cp,
-      customer_phone: customer_phone
-    }
-
-    event.target.reset();
-    setCustomer_dni('');
-    setCustomer_name('');
-    setCustomer_email('');
-    setCustomer_address('');
-    setCustomer_city('');
-    setCustomer_province('');
-    setCustomer_cp('');
-    setCustomer_phone('');
-    setError(null);
-
-    postCustomers(newCustomer);
   }
 
   return (

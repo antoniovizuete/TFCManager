@@ -1,5 +1,5 @@
 
-const { dbQuery, dbQueryCount } = require('../database/config.db');
+const { dbQuery, dbQueryCount, dbQueryFindOne } = require('../database/config.db');
 
 const workorderGet = async(req, res) => {
 
@@ -19,6 +19,20 @@ const workorderGet = async(req, res) => {
     });
 }
 
+// SELECT u.user_name, COALESCE(AUX.orders,0) FROM users u LEFT JOIN (SELECT workorder_author, COUNT(*) AS orders FROM workorders GROUP BY workorder_author) AUX ON AUX.workorder_author=u.user_id;
+
+const workorderGetById = async(req, res) => {
+    const {id} = req.params;
+    const sql = 'SELECT * from workorders INNER JOIN projects ON workorders.workorder_project = projects.project_id INNER JOIN users ON workorders.workorder_author = users.user_id WHERE workorder_state=true AND workorder_id=?';
+    const [ workorder ] = await Promise.all([
+        dbQueryFindOne(sql,[id])
+    ]);
+
+    res.json({
+        workorder
+     });
+}
+
 const workorderPost = async(req, res) => {
 
     const { workorder_author, workorder_project, workorder_hours, workorder_minutes  } = req.body;
@@ -32,19 +46,16 @@ const workorderPost = async(req, res) => {
 }
 
 const workorderPut = async(req, res) => {
+    const { id } = req.params;
+    const { workorder_hours, workorder_minutes } = req.body;
 
-    const {id} = req.params;
-    const {_id, password, google, email, ...other } =req.body;
+    const sql = 'UPDATE workorders SET  workorder_hours = ?, workorder_minutes = ? WHERE workorder_id = ?';
+    const response = await dbQuery(sql,[workorder_hours, workorder_minutes, id]);
 
-    //Validar en base de datos.
-    if(password){
-        const salt = bcryptjs.genSaltSync();
-        other.password = bcryptjs.hashSync(password, salt);
-    };
+    res.json({
+        response
+    })
 
-    // const user = await User.findByIdAndUpdate(id, other);
-
-    res.json(user);
 }
 
 const workorderPatch = (req, res) => {
@@ -57,15 +68,16 @@ const workorderDelete = async(req, res) => {
 
     const { id } = req.params;
 
-    //const user = await User.findByIdAndUpdate(id, {state: false});
+    const sql = 'UPDATE workorders SET workorder_state=false WHERE workorder_id=?';
+    dbQuery(sql,[id]);
 
-    // res.json({
-    //     user
-    // })
+    res.json({
+        mssg: 'Delete Workorder'
+    })
 }
 
 module.exports = {
     workorderGet, workorderPut,
     workorderPost, workorderDelete,
-    workorderPatch
+    workorderPatch, workorderGetById
 }

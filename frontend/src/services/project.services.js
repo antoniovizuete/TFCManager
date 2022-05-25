@@ -7,6 +7,31 @@ export const getProjects = async() =>{
     return response.data.users;
 };
 
+export const getProjectsByCustomer = async(id) =>{
+    const response = await axios.post(`/api/customers/${id}/projects`, id, {headers: {Authorization: 'Bearer ' + await authHeader()}})
+    return response.data.projects;
+    
+}
+
+export const getProjectsByUser = async(id) =>{
+    const response = await axios.post(`/api/users/${id}/projects`, id, {headers: {Authorization: 'Bearer ' + await authHeader()}})
+    return response.data.projects;
+    
+}
+
+export const getProjectById = async(id)=>{
+    const response = await axios.post(`/api/projects/${id}`, id, {headers: {Authorization: 'Bearer ' + await authHeader()}})
+    return response.data.project;
+}
+
+export const deleteProjects = async(id)=>{
+    await axios.delete(`/api/projects/${id}`, {headers: {Authorization: 'Bearer ' + await authHeader()}})
+}
+
 export const postProjects = async(newProject) =>{ 
-    const response = await axios.post('/api/projects', newProject, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+    await axios.post('/api/projects', newProject, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+};
+
+export const updateProjects = async(id, editedProject) =>{ 
+    await axios.put(`/api/projects/${id}`, editedProject, {headers: {Authorization: 'Bearer ' + await authHeader()}});
 };

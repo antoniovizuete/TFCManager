@@ -1,6 +1,6 @@
 
 const bcryptjs = require('bcryptjs');
-const { dbQuery, dbQueryCount } = require('../database/config.db');
+const { dbQuery, dbQueryCount, dbQueryFindOne } = require('../database/config.db');
 
 const userGet = async(req, res) => {
 
@@ -18,6 +18,35 @@ const userGet = async(req, res) => {
        total,
        users
     });
+}
+
+const userGetById = async(req, res) => {
+    const {id} = req.params;
+    const sql = 'SELECT * from users INNER JOIN roles ON users.user_role = roles.role_id WHERE user_state=true AND user_id=?';
+    const [ user ] = await Promise.all([
+        dbQueryFindOne(sql,[id])
+    ]);
+
+    res.json({
+        user
+     });
+}
+
+const projectGetByUserId = async(req, res) => {
+
+    const {id} = req.params;
+    const {limit=100, from=0} = req.query;
+    const sql = 'SELECT * from projects INNER JOIN customers ON projects.project_customer = customers.customer_id INNER JOIN users ON projects.project_author = users.user_id WHERE project_state=true AND project_author=? LIMIT ? OFFSET ?';
+    const countSql = 'SELECT COUNT (project_id) as count from projects WHERE project_state=true';
+    const [ total, projects ] = await Promise.all([
+        dbQueryCount(countSql),
+        dbQuery(sql,[id, limit, from])
+    ]);
+
+    res.json({
+        total,
+        projects
+     });
 }
 
 const userPost = async(req, res) => {
@@ -39,18 +68,15 @@ const userPost = async(req, res) => {
 
 const userPut = async(req, res) => {
 
-    const {id} = req.params;
-    const {_id, password, google, user_email, ...other } =req.body;
+    const { id } = req.params;
+    const {user_name, user_email, user_address, user_city, user_province, user_cp, user_phone, user_role } = req.body;
 
-    //Validar en base de datos.
-    if(password){
-        const salt = bcryptjs.genSaltSync();
-        other.password = bcryptjs.hashSync(password, salt);
-    };
+    const sql = 'UPDATE users SET user_name = ?, user_email = ?, user_address = ?, user_city = ?, user_province = ?, user_cp = ?, user_phone = ?, user_role = ? WHERE user_id = ?';
+    const response = await dbQuery(sql,[user_name, user_email, user_address, user_city, user_province, user_cp, user_phone, user_role, id]);
 
-    // const user = await User.findByIdAndUpdate(id, other);
-
-    res.json(user);
+    res.json({
+        response
+    })
 }
 
 const userPatch = (req, res) => {
@@ -60,18 +86,19 @@ const userPatch = (req, res) => {
 }
 
 const userDelete = async(req, res) => {
-
     const { id } = req.params;
+    
+    const sql = 'UPDATE users SET user_state=false WHERE user_id=?';
+    dbQuery(sql,[id]);
 
-    //const user = await User.findByIdAndUpdate(id, {state: false});
-
-    // res.json({
-    //     user
-    // })
+    res.json({
+        mssg: 'Delete material'
+    })
 }
 
 module.exports = {
     userGet, userPut,
     userPost, userDelete,
-    userPatch
+    userPatch, userGetById,
+    projectGetByUserId
 }

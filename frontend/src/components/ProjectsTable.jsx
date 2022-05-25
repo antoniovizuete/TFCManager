@@ -9,8 +9,12 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { getProjects } from '../services/project.services';
 import { useEffect, useState } from 'react';
-import { Link } from '@mui/material';
 import AccessDetailsButton from './AccessDetailsButton';
+import { getUserData } from '../services/login.services';
+import TableDeleteButton from './TableDeleteButton';
+import TableDeleteButtonDisabled from './TableDeleteButtonDisabled';
+import TableEditButton  from './TableEditButton';
+import TableEditButtonDisabled from './TableEditButtonDisabled';
 
 const columns = [
   { id: 'project_id', label: 'ID', minWidth: 50 },
@@ -30,16 +34,6 @@ export default function ProjectsTable() {
         getAllProjects();
     }, []);
 
-    const [openModal, setOpenModal] = useState(false);  
-
-    const openModalHandler = () => {
-      setOpenModal(true);
-    };
-  
-    const closeModalHandler = () => {
-      setOpenModal(false);
-    }
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -51,6 +45,8 @@ export default function ProjectsTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const userLogged = getUserData();
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -67,16 +63,18 @@ export default function ProjectsTable() {
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell>Detalles</TableCell>
+                <TableCell>Detalles</TableCell>
+                <TableCell>Editar</TableCell>
+                <TableCell>Borrar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((projects) => {
+              .map((project) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={projects.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={project.code}>
                     {columns.map((column) => {
-                      const value = projects[column.id];
+                      const value = project[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -85,7 +83,19 @@ export default function ProjectsTable() {
                         </TableCell>
                       );
                     })}
-                    <TableCell><AccessDetailsButton createHandler={openModalHandler}/></TableCell>
+                    <TableCell><AccessDetailsButton id={project.project_id} section='projects'/></TableCell>
+                    <TableCell>
+                          {
+                            userLogged.role === 1 ? ( <TableEditButton  id={project.project_id} section='projects/project' />) : 
+                            (<TableEditButtonDisabled />) 
+                          }
+                        </TableCell>
+                    <TableCell>
+                      {
+                        userLogged.role === 1 ? ( <TableDeleteButton  id={project.project_id} section='projects/project' />) : 
+                        (<TableDeleteButtonDisabled />) 
+                      }
+                    </TableCell>
                   </TableRow>
                 );
               })}

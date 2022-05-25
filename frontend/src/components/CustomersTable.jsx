@@ -11,6 +11,11 @@ import { getCustomers } from '../services/customer.services';
 import { useEffect, useState } from 'react';
 import TableEditButton  from './TableEditButton';
 import TableDeleteButton from './TableDeleteButton';
+import AccessDetailsButton from './AccessDetailsButton';
+import { getUserData } from '../services/login.services';
+import TableDeleteButtonDisabled from './TableDeleteButtonDisabled';
+import TableEditButtonDisabled from './TableEditButtonDisabled';
+import { Typography } from '@material-ui/core';
 
 const columns = [
   { id: 'customer_id', label: 'ID', minWidth: 50 },
@@ -34,16 +39,6 @@ export default function CustomersTable() {
         getAllCustomers();
     }, []);
 
-    const [openModal, setOpenModal] = useState(false);  
-
-    const openModalHandler = () => {
-      setOpenModal(true);
-    };
-  
-    const closeModalHandler = () => {
-      setOpenModal(false);
-    }
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -55,6 +50,8 @@ export default function CustomersTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const userLogged = getUserData();
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -72,17 +69,18 @@ export default function CustomersTable() {
                 </TableCell>
                 
               ))}
-                 <TableCell>Editar</TableCell>
-                 <TableCell>Borrar</TableCell>
+                <TableCell>Detalles</TableCell>
+                <TableCell>Editar</TableCell>
+                <TableCell>Borrar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((customers) => {
+              .map((customer) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={customers.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={customer.code}>
                     {columns.map((column) => {
-                      const value = customers[column.id];
+                      const value = customer[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -91,9 +89,20 @@ export default function CustomersTable() {
                         </TableCell>
                       );
                     })}
-                        <TableCell><TableEditButton createHandler={openModalHandler}/></TableCell>
-                        <TableCell><TableDeleteButton createHandler={openModalHandler}/> </TableCell>
-
+                        <TableCell><AccessDetailsButton id={customer.customer_id} section='customers'/></TableCell>
+                        <TableCell>
+                          {
+                            userLogged.role === 1 ? ( <TableEditButton  id={customer.customer_id} section='customers' />) : 
+                            (<TableEditButtonDisabled />) 
+                          }
+                        </TableCell>
+                        <TableCell>
+                          {
+                            userLogged.role === 1 ? ( <TableDeleteButton  id={customer.customer_id} section='customers' />) : 
+                            (<TableDeleteButtonDisabled />) 
+                          }
+                           
+                        </TableCell>
                   </TableRow>
                 );
               })}
@@ -110,5 +119,6 @@ export default function CustomersTable() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
+    
   );
 }

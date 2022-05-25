@@ -1,5 +1,5 @@
 
-const { dbQuery, dbQueryCount } = require('../database/config.db');
+const { dbQuery, dbQueryCount, dbQueryFindOne } = require('../database/config.db');
 
 const materialGet = async(req, res) => {
 
@@ -18,6 +18,19 @@ const materialGet = async(req, res) => {
     });
 }
 
+const materialByIdGet = async(req, res) => {
+
+    const {id} = req.params;
+    const sql = 'SELECT * from materials WHERE material_state=true AND material_id=?';
+    const [ material ] = await Promise.all([
+        dbQueryFindOne(sql, [id])
+    ]);
+
+    res.json({
+       material
+    });
+}
+
 const materialPost = async(req, res) => {
 
     const { material_reference, material_brand, material_description, material_pvp, material_ecotax } = req.body;
@@ -32,18 +45,15 @@ const materialPost = async(req, res) => {
 
 const materialPut = async(req, res) => {
 
-    const {id} = req.params;
-    const {_id, password, google, email, ...other } =req.body;
+    const { id } = req.params;
+    const {material_reference, material_brand, material_description, material_pvp, material_ecotax } = req.body;
 
-    //Validar en base de datos.
-    if(password){
-        const salt = bcryptjs.genSaltSync();
-        other.password = bcryptjs.hashSync(password, salt);
-    };
+    const sql = 'UPDATE materials SET material_reference = ?, material_brand = ?, material_description = ?, material_pvp = ?, material_ecotax = ? WHERE material_id=?';
+    const response = await dbQuery(sql,[material_reference, material_brand, material_description, material_pvp, material_ecotax, id]);
 
-    // const user = await User.findByIdAndUpdate(id, other);
-
-    res.json(user);
+    res.json({
+        response
+    })
 }
 
 const materialPatch = async(req, res) => {
@@ -53,18 +63,18 @@ const materialPatch = async(req, res) => {
 }
 
 const materialDelete = async(req, res) => {
+    const { id } = req.params;
+    
+    const sql = 'UPDATE materials SET material_state=false WHERE material_id=?';
+    dbQuery(sql,[id]);
 
-    //const { id } = req.params;
-
-    //const user = await User.findByIdAndUpdate(id, {state: false});
-
-    // res.json({
-    //     user
-    // })
+    res.json({
+        mssg: 'Delete material'
+    })
 }
 
 module.exports = {
     materialGet, materialPut,
     materialPost, materialDelete,
-    materialPatch
+    materialPatch, materialByIdGet
 }

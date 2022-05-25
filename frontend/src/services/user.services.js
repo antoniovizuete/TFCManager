@@ -7,6 +7,29 @@ export const getUsers = async() =>{
     return response.data.users;
 };
 
+export const getUserById= async(id) =>{ 
+    const response = await axios.post(`/api/users/${id}`, id, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+    return response.data.user;
+};
+
+export const deleteUsers = async(id) => {
+    await axios.delete(`/api/users/${id}`, {headers: {Authorization: 'Bearer ' + await authHeader()}})
+};
+
 export const postUsers = async(newUser) =>{ 
-    const response = await axios.post('/api/users', newUser, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+    try{
+        const response = await axios.post('/api/users', newUser, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+        return response.data
+    }catch(error){
+        return error.response.data
+    }
+};
+
+export const updateUsers = async(id, editedUser) =>{ 
+    try{
+        const response = await axios.put(`/api/users/${id}`, editedUser, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+        return response.data
+    }catch(error){
+        return error.response.data
+    }
 };

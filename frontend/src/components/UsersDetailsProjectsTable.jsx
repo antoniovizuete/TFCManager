@@ -7,33 +7,31 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getUsers } from '../services/user.services';
+import { getProjectsByUser } from '../services/project.services';
 import { useEffect, useState } from 'react';
-import TableEditButton  from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
-import { getUserData } from '../services/login.services';
-import TableDeleteButtonDisabled from './TableDeleteButtonDisabled';
-import TableEditButtonDisabled from './TableEditButtonDisabled';
 import AccessDetailsButton from './AccessDetailsButton';
+import { useParams } from 'react-router-dom';
 
 const columns = [
-  { id: 'user_id', label: 'ID', minWidth: 50 },
-  { id: 'user_name', label: 'Nombre', minWidth: 80 },
-  { id: 'user_email', label: 'Email', minWidth: 100 },
-  { id: 'role_name', label: 'Rol', minWidth: 50},
+  { id: 'project_id', label: 'ID', minWidth: 50 },
+  { id: 'project_name', label: 'Proyecto', minWidth: 50 },
+  { id: 'user_name', label: 'Creado Por', minWidth: 80 },
+  { id: 'customer_name', label: 'Cliente', minWidth: 100 },
+  { id: 'project_date', label: 'Fecha de creación', minWidth: 40 },
 ];
 
-export default function UsersTable() {
+export default function UsersDetailsProjectsTable() {
 
-    const [users, setUsers] = useState([]);
+  const { id } = useParams();
+  console.log(id)
+
+    const [projects, setProjects] = useState([]);
     useEffect( () =>{
-        const getAllUsers = async() => {
-            setUsers(await getUsers());
+        const getProjects = async(id) => {
+            setProjects(await getProjectsByUser(id));
         }
-        getAllUsers();
+        getProjects(id);
     }, []);
-
-    const userLogged = getUserData();
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -48,7 +46,7 @@ export default function UsersTable() {
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper className='ms-3' sx={{ width: '97%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 650 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -61,20 +59,17 @@ export default function UsersTable() {
                 >
                   {column.label}
                 </TableCell>
-                
               ))}
-                <TableCell>Detalles</TableCell>
-                <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
+               <TableCell>Detalles</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((user) => {
+            {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((project) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={user.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={project.code}>
                     {columns.map((column) => {
-                      const value = user[column.id];
+                      const value = project[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -83,20 +78,7 @@ export default function UsersTable() {
                         </TableCell>
                       );
                     })}
-                        <TableCell><AccessDetailsButton id={user.user_id} section='users'/></TableCell>
-                        <TableCell>
-                          {
-                            userLogged.role === 1 ? ( <TableEditButton  id={user.user_id} section='users' />) : 
-                            (<TableEditButtonDisabled />) 
-                          }
-                        </TableCell>
-                        <TableCell>
-                          {
-                            userLogged.role === 1 ? ( <TableDeleteButton  id={user.user_id} section='users' />) : 
-                            (<TableDeleteButtonDisabled />) 
-                          }
-                        </TableCell>
-
+                    <TableCell><AccessDetailsButton id={project.project_id}/></TableCell>
                   </TableRow>
                 );
               })}
@@ -106,7 +88,7 @@ export default function UsersTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={users.length}
+        count={projects.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

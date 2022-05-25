@@ -10,7 +10,20 @@ import MaterialsBox from './MaterialsBox';
 import ProjectSubMenu from './ProjectSubMenu';
 import ProjectsBox from './ProjectsBox';
 import WorkordersBox from './WorkordersBox';
+import ProjectsDetailsView from './ProjectsDetailsView';
+import CustomersDetailsView from './CustomersDetailsView';
+import UsersDetailsView from './UsersDetailsView';
+import CustomersDeleteModal from './CustomersDeleteModal';
+import MaterialsDeleteModal from './MaterialsDeleteModal';
+import UsersDeleteModal from './UsersDeleteModal';
+import ProjectsDeleteModal from './ProjectsDeleteModal';
+import WorkordersDeleteModal from './WorkordersDeleteModal';
 import { getUserData } from '../services/login.services';
+import CustomersEditForm from './CustomersEditForm';
+import MaterialsEditForm from './MaterialsEditForm';
+import UsersEditForm from './UsersEditForm';
+import ProjectsEditForm from './ProjectsEditForm';
+import WorkordersEditForm from './WorkordersEditForm';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -47,11 +60,25 @@ const Containercomp = () => {
                 <div className={classes.toolbar}></div>
                 <Routes>
                     <Route path="/customers" element={<CustomersBox />}/>
+                    <Route path="/customers/:id/details" element={<CustomersDetailsView /> }/>
+                    <Route path="/customers/:id/edit" element={<CustomersEditForm /> }/>
+                    <Route path="/customers/:id/delete" element={<CustomersDeleteModal /> }/>
                     <Route path="/users" element={<UsersBox />}/>
+                    <Route path="/users/:id/details" element={<UsersDetailsView /> }/> 
+                    <Route path="/users/:id/edit" element={<UsersEditForm /> }/>
+                    <Route path="/users/:id/delete" element={<UsersDeleteModal /> }/>
                     <Route path="/materials" element={<MaterialsBox />}/>
+                    <Route path="/materials/:id/edit" element={<MaterialsEditForm /> }/>
+                    <Route path="/materials/:id/delete" element={<MaterialsDeleteModal /> }/>
                     <Route path="/projects" element={<ProjectSubMenu  />}/>
                     <Route path="/projects/projectlist" element={<ProjectsBox /> }/>
+                    <Route path="/projects/project/:id/delete" element={<ProjectsDeleteModal /> }/>
+                    <Route path="/projects/project/:id/edit" element={<ProjectsEditForm /> }/>
                     <Route path="/projects/workorderlist" element={<WorkordersBox /> }/>
+                    <Route path="/projects/workorder/:id/delete" element={<WorkordersDeleteModal /> }/>
+                    <Route path="/projects/workorder/:id/edit" element={<WorkordersEditForm /> }/>
+                    <Route path="/projects/:id/details" element={<ProjectsDetailsView /> }/>
+                    
                 </Routes>
             </div>
         </div> : <Navigate to={{pathname: '/'}} replace={true}/>

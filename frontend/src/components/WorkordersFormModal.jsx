@@ -138,6 +138,7 @@ const WorkordersFormModal = ({open, handleClose}) => {
                     startAdornment={<InputAdornment position="start">M.</InputAdornment>}
                     onChange={ event => setWorkorder_minutes(event.target.value) }
                 />
+                <p>MATERIALES</p> <button>Añadir</button>
             </form>
         </DialogContent>
         <DialogActions>

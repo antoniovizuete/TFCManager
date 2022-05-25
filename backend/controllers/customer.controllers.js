@@ -1,5 +1,5 @@
 
-const { dbQuery, dbQueryCount } = require('../database/config.db');
+const { dbQuery, dbQueryCount, dbQueryFindOne } = require('../database/config.db');
 
 const customerGet = async(req, res) => {
 
@@ -18,6 +18,36 @@ const customerGet = async(req, res) => {
     });
 }
 
+const customerByIdGet = async(req, res) => {
+
+    const {id} = req.params;
+    const sql = 'SELECT * from customers WHERE customer_state=true AND customer_id=?';
+    const [ customer ] = await Promise.all([
+        dbQueryFindOne(sql, [id])
+    ]);
+
+    res.json({
+       customer
+    });
+}
+
+const projectGetByCustomerId = async(req, res) => {
+
+    const {id} = req.params;
+    const {limit=100, from=0} = req.query;
+    const sql = 'SELECT * from projects INNER JOIN customers ON projects.project_customer = customers.customer_id INNER JOIN users ON projects.project_author = users.user_id WHERE project_state=true AND project_customer=? LIMIT ? OFFSET ?';
+    const countSql = 'SELECT COUNT (project_id) as count from projects WHERE project_state=true';
+    const [ total, projects ] = await Promise.all([
+        dbQueryCount(countSql),
+        dbQuery(sql,[id, limit, from])
+    ]);
+
+    res.json({
+        total,
+        projects
+     });
+}
+
 const customerPost = async(req, res) => {
 
     const { customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone } = req.body;
@@ -33,12 +63,27 @@ const customerPost = async(req, res) => {
 
 const customerPut = async(req, res) => {
 
-    const {id} = req.params;
-    const {_id, password, email, ...other } =req.body;
+    const { id } = req.params;
+    const {customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone } = req.body;
 
-    const customer = await User.findByIdAndUpdate(id, other);
+    const sql = 'UPDATE customers SET customer_name = ?, customer_email = ?, customer_address = ?, customer_city = ?, customer_province = ?, customer_cp = ?, customer_phone = ? WHERE customer_id=?';
+    const response = await dbQuery(sql,[customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone, id]);
 
-    res.json(customer);
+    res.json({
+        response
+    })
+}
+
+const customerDelete = async(req, res) => {
+
+    const { id } = req.params;
+    
+    const sql = 'UPDATE customers SET customer_state=false WHERE customer_id=?';
+    const response = await dbQuery(sql,[id]);
+
+    res.json({
+        response
+    })
 }
 
 const customerPatch = (req, res) => {
@@ -47,19 +92,9 @@ const customerPatch = (req, res) => {
     })
 }
 
-const customerDelete = async(req, res) => {
-
-    const { id } = req.params;
-
-    const customer = await Customer.findByIdAndUpdate(id, {state: false});
-
-    res.json({
-        customer
-    })
-}
-
 module.exports = {
-    customerGet, customerPut,
-    customerPost, customerDelete,
-    customerPatch
+    customerGet, customerByIdGet,
+    customerPut, customerPost, 
+    customerDelete, customerPatch,
+    projectGetByCustomerId
 }

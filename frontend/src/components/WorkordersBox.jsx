@@ -5,8 +5,7 @@ import WorkordersTable from './WorkordersTable';
 import CreateButton from './CreateButton';
 import WorkordersFormModal from './WorkordersFormModal';
 import WorkordersDetailsModal from './WorkordersDetailsModal';
-
-
+import Typography from '@mui/material/Typography';
 
 const WorkordersBox = () => {
   
@@ -34,6 +33,7 @@ const WorkordersBox = () => {
     <div>
         <Grid container className='mt-5'>
           <Grid item xs={12} sm={12} md={12} xl={12}>
+          <Typography variant="h4">Listado de Partes de trabajo</Typography>
             <CreateButton createHandler={openFormModalHandler}/>
             <WorkordersTable />
             <WorkordersFormModal open={openFormModal} handleClose={closeFormModalHandler}/>

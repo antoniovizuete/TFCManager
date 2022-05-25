@@ -3,16 +3,16 @@ import { Button } from '@material-ui/core';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 
-const CreateButton = ({createHandler}) => {
+const CreateButtonDisabled = () => {
 
  
 
   return (
     
     <div className='float-md-end'>
-       <Button variant="text" startIcon={<CreateNewFolderIcon color="primary"/>} onClick={createHandler}>Nuevo </Button>
+       <Button variant="text" startIcon={<CreateNewFolderIcon color="disabled"/>} disabled={true}>Nuevo </Button>
     </div>
   )
 }
 
-export default CreateButton;
+export default CreateButtonDisabled;

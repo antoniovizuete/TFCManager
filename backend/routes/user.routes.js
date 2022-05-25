@@ -3,21 +3,18 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 
 //middlewares
-const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares');
+const { validateFields, validateJWT } = require('../middlewares');
 
-const { userGet, userPut, userPost, userDelete, userPatch } = require('../controllers/user.controllers');
+const { userGet, userPut, userPost, userDelete, userPatch, userGetById, projectGetByUserId } = require('../controllers/user.controllers');
 const { validRole, validUserEmail } = require('../helpers/dbValidators');
 const { authorizationToken } = require('../middlewares/authorizationToken');
-
+const { isAdminRole } = require('../middlewares/validateRoles');
 
 const router = Router();
 
-router.get('/', 
-authorizationToken, 
-userGet);
+router.get('/', authorizationToken, userGet);
 
-router.post('/', 
-    authorizationToken,
+router.post('/', authorizationToken, isAdminRole, 
     [
         check('user_name', 'El nombre es obligatorio.').not().isEmpty(),
         check('user_email', 'El email no es válido.').isEmail(),
@@ -28,22 +25,14 @@ router.post('/',
     ], 
     userPost);
 
-router.put('/:id', [
-    // check('id', 'No es un ID válido').isMongoId(),
-    // check('id').custom(validUserId),
-    // //check('role').custom(validRole),
-    // validateFields
-], userPut);
+router.post('/:id/projects', authorizationToken, projectGetByUserId)
 
-router.patch('/', userPatch);
+router.post('/:id', authorizationToken, isAdminRole, userGetById)
 
-router.delete('/:id', [
-    // validateJWT,
-    // //isAdminRole,
-    // hasRole('Administrador', 'Empleado'),
-    // //check('id', 'No es un ID válido').isMongoId(),
-    // check('id').custom(validUserId),
-    // validateFields
-], userDelete);
+router.put('/:id', authorizationToken, isAdminRole, userPut);
+
+router.patch('/', authorizationToken, isAdminRole, userPatch);
+
+router.delete('/:id', authorizationToken, isAdminRole, userDelete);
 
 module.exports = router;

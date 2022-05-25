@@ -1,11 +1,12 @@
 
 const {Router} = require('express');
+const { isAdminRole } = require('../middlewares/validateRoles');
 //const {check} = require('express-validator');
 
 //middlewares
 //const { validateFields, validateJWT } = require('../middlewares');
 
-const { materialGet, materialPut, materialPost, materialDelete, materialPatch } = require('../controllers/material.controllers');
+const { materialGet, materialByIdGet, materialPut, materialPost, materialDelete, materialPatch } = require('../controllers/material.controllers');
 const { } = require('../helpers/dbValidators');
 const { authorizationToken } = require('../middlewares/authorizationToken');
 
@@ -13,16 +14,14 @@ const router = Router();
 
 router.get('/', authorizationToken, materialGet);
 
-router.post('/', authorizationToken, materialPost);
+router.post('/:id', authorizationToken, materialByIdGet);
 
-router.put('/:id', materialPut);
+router.post('/', authorizationToken, isAdminRole, materialPost);
 
-router.patch('/', materialPatch);
+router.put('/:id', authorizationToken, isAdminRole, materialPut);
 
-router.delete('/:id', materialDelete);
+router.patch('/', authorizationToken, isAdminRole, materialPatch);
+
+router.delete('/:id', authorizationToken, isAdminRole, materialDelete);
 
 module.exports = router;
-
-
-
-

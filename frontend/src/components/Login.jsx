@@ -30,19 +30,21 @@ const Login = (props) => {
                 return
             }
 
-            const userLogged = await userLogin(user_email, user_password);
+            const loginResponse = await userLogin(user_email, user_password);
 
-            setUserLogged(userLogged.name);
-
-            setError(null);
-            setUser_email('');
-            setUser_password('');
-            setError(null);
-            navigate("/menu", { replace: true });
+            if(loginResponse.error){
+                setError(loginResponse.error);
+            }else{
+                setUserLogged(loginResponse.name);
+                setError(null);
+                navigate("/menu", { replace: true });
+                setUser_email('');
+                setUser_password('');
+            } 
+            
         }catch(e){
             setError('Wrong Credentials');
         }
-        setError(null);
     };
 
     return (

@@ -19,15 +19,22 @@ CREATE TABLE IF NOT EXISTS users(
     user_name VARCHAR (20) NOT NULL,
     user_email VARCHAR (30) NOT NULL,
     user_password VARCHAR (512) NOT NULL,
+    user_address VARCHAR (50),
+    user_city VARCHAR (30),
+    user_province VARCHAR (30),
+    user_cp VARCHAR (5),
+    user_phone VARCHAR (9),
     user_role INT(5) NOT NULL,
-    user_state BIT DEFAULT 1,
+    user_state TINYINT DEFAULT 1,
     FOREIGN KEY (user_role) REFERENCES roles(role_id)
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO users (user_name, user_email, user_password, user_role)
+INSERT INTO users (user_name, user_email, user_password, user_address, user_city, user_province, user_cp, user_phone, user_role)
 VALUES
-('PedroCalvo', 'pedrojcalvo@gmail.com', '$2a$10$1ISZ7Mr2C4dr03mXI/ImLuEZjwlWJc/8LjDM83s35fccZ1xTR/c1q', 1 );
+('PedroCalvo', 'pedrojcalvo@gmail.com', '$2a$10$1ISZ7Mr2C4dr03mXI/ImLuEZjwlWJc/8LjDM83s35fccZ1xTR/c1q', 'Calle Lepanto Nº 7 2ºIzq', 'Elda', 'Alicante', '03600', '744626081', 1 ),
+('Admin', 'admin@gmail.com', '$2a$10$FlRlpGFCpp.1.0OiPn3PMuSI.ULF7KafuL5Ny7GiRjRViaj8rhun6', 'Calle Inventada Nº 12 3ºIzq', 'Alcantarilla', 'Murcia', '30820', '6262351231', 1),
+('Empleado', 'empleado@gmail.com', '$2a$10$kxS6ookx7ARL2NQa35bL/.RWMa6R29aO5nXpTJ/qJIsldNFPO8bla', 'Calle La calleja Nº 1 Bajo', 'Caudete', 'Albacete', '02660', '618684759', 2);
 
 
 
@@ -41,7 +48,7 @@ CREATE TABLE IF NOT EXISTS customers (
     customer_province VARCHAR (30),
     customer_cp INT (5),
     customer_phone VARCHAR (9),
-    customer_state BIT DEFAULT 1
+    customer_state TINYINT DEFAULT 1
 );
 
 INSERT INTO customers (customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone)
@@ -75,7 +82,7 @@ CREATE TABLE IF NOT EXISTS projects(
     project_customer INT(5) NOT NULL,
     project_description VARCHAR(200),
     project_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE(),
-    project_state BIT DEFAULT 1,
+    project_state TINYINT DEFAULT 1,
     FOREIGN KEY (project_author) REFERENCES users(user_id)
     ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (project_customer) REFERENCES customers(customer_id)
@@ -84,7 +91,10 @@ CREATE TABLE IF NOT EXISTS projects(
 
 INSERT INTO projects(project_name, project_author, project_customer, project_description)
 VALUES
-('Reforma Heladería Sirvent', 1, 1, 'Reforma eléctrica integral del local. Iluminación de la fachada.');
+('Reforma Heladería Sirvent', 1, 1, 'Reforma eléctrica integral del local. Iluminación de la fachada.'),
+('Iluminación Bocopa', 2, 6, 'Iluminación de fachada'),
+('Frutería Paquito', 2, 8, 'Sustitución de toda la red eléctica e iluminación de stands'),
+('Talleres Molina', 1, 12, 'Subida de potencia y mejora de iluminación.');
 
 
 
@@ -95,7 +105,7 @@ CREATE TABLE IF NOT EXISTS materials(
     material_description VARCHAR (200),
     material_pvp DECIMAL (6,2),
     material_ecotax VARCHAR (10),
-    material_state BIT DEFAULT 1
+    material_state TINYINT DEFAULT 1
 );
 
 INSERT INTO materials (material_reference, material_brand, material_description, material_pvp, material_ecotax)
@@ -103,8 +113,57 @@ VALUES
 ('10950-ABR', 'EFAPEL', 'ADAPT MODULAR Q45 P/CANALES C/TAPA L75 BLANCO', '1.45', 'Si'),
 ('90608-TIS', 'EFAPEL', 'TECLA INT. BIPOLAR GRIS', '3.35', 'No'),
 ('10295-RBR', 'EFAPEL', 'TOPE P/CANAL 180X50 BLANCO', '2.28', 'No'),
-('90605-TAL', 'EFAPEL', 'TECLA SIMPLE CON SIMBOLO DE CAMPANA ALUMINIO', '3.35', 'Si');
+('90605-TAL', 'EFAPEL', 'TECLA SIMPLE CON SIMBOLO DE CAMPANA ALUMINIO', '3.35', 'Si'),
+('12345-VRP', 'SONY', 'TRIPLE INTERRUPTOR MEC. 21', '6.12', 'No'),
+('90605-TPM', 'SONY', 'TOMA RJ45 UTP C/5E MEC 21', '6.25', 'No'),
+('90632-TBR', 'EFAPEL', 'TAPA SCHUKO C/PROTECCION BLANCA', '3.09', 'Si'),
+('90751-TPM', 'EFAPEL', 'TAPA RJ-45 NEGRO', '3.35', 'Si'),
+('10959-ABR', 'SONY', 'TAPA P/ADAPT MOD Q45 P/CANALES C/TAPA L75 BLANCO', '1.10', 'No'),
+('90632-TAL', 'SONY', 'TAPA C/PROTECCION P/BASE SCHUKO ALUMINIO', '3.40', 'Si'),
+('45972-SBR', 'EFAPEL', 'MODULO C/CONECTOR HEMBRA RJ11 CAT. 3 BLANCO', '5.42', 'No'),
+('90910-TBB', 'EFAPEL', 'MARCO SIMPLE BLANCO/BLANCO', '2.30', 'Si'); 
 
+CREATE TABLE IF NOT EXISTS workorders(
+    workorder_id INT PRIMARY KEY AUTO_INCREMENT,
+    workorder_author INT (5),
+    workorder_project INT (5),
+    workorder_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE(),
+    workorder_hours INT (2),
+    workorder_minutes INT (2),
+    workorder_state TINYINT DEFAULT 1
+);
 
+INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes)
+VALUES
+(1, 1, 8, 0),
+(2, 1, 6, 30),
+(3, 1, 9, 0),
+(2, 2, 8, 0),
+(3, 2, 8, 0),
+(3, 2, 5, 25),
+(1, 4, 6, 15),
+(3, 4, 7, 0);
+
+CREATE TABLE IF NOT EXISTS workorder_materials(
+    workorder_id INT (5),
+    material_id INT (5),
+    material_amount INT(3),
+    PRIMARY KEY (workorder_id, material_id),
+    FOREIGN KEY (workorder_id) REFERENCES workorders(workorder_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (material_id) REFERENCES materials(material_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO workorder_materials (workorder_id, material_id, material_amount)
+VALUES
+(1, 2, 12),
+(1, 3, 2),
+(1, 8, 5),
+(1, 1, 50),
+(2, 2, 1),
+(2, 9, 10),
+(2, 11, 25),
+(3, 6, 20);
 
 -- SOURCE C:/Users/34744/Desktop/TFCManager/backend/BD/gisbertBanyo_DB.sql;

@@ -9,8 +9,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { getWorkorders } from '../services/workorder.services';
 import { useEffect, useState } from 'react';
-import { Link } from '@mui/material';
 import AccessDetailsButton from './AccessDetailsButton';
+import TableEditButton from './TableEditButton';
+import TableDeleteButton from './TableDeleteButton';
 
 const columns = [
   { id: 'workorder_id', label: 'ID', minWidth: 50 },
@@ -30,16 +31,6 @@ export default function WorkordersTable() {
         }
         getAllWorkorders();
     }, []);
-
-    const [openModal, setOpenModal] = useState(false);  
-
-    const openModalHandler = () => {
-      setOpenModal(true);
-    };
-  
-    const closeModalHandler = () => {
-      setOpenModal(false);
-    }
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -68,15 +59,18 @@ export default function WorkordersTable() {
                   {column.label}
                 </TableCell>
               ))}
+                <TableCell>Detalles</TableCell>
+                <TableCell>Editar</TableCell>
+                <TableCell>Borrar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {workorders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((workorders) => {
+              .map((workorder) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={workorders.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={workorder.code}>
                     {columns.map((column) => {
-                      const value = workorders[column.id];
+                      const value = workorder[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -85,7 +79,9 @@ export default function WorkordersTable() {
                         </TableCell>
                       );
                     })}
-                    <TableCell><AccessDetailsButton createHandler={openModalHandler}/></TableCell>
+                    <TableCell><AccessDetailsButton id={workorder.workorder_id} section='workorders'/></TableCell>
+                    <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
+                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
                   </TableRow>
                 );
               })}
