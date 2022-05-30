@@ -7,6 +7,7 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import CustomersDetailsProjectsTable from './CustomersDetailsProjectsTable';
+import CustomersDetailsInactiveProjectsTable from './CustomersDetailsInactiveProjectsTable';
 import { useParams } from 'react-router-dom';
 import { getCustomersById } from '../services/customer.services';
 import { useEffect, useState } from 'react';
@@ -97,13 +98,11 @@ export default function CustomersDetailsView() {
         }
         getCustomerWorkorders(customerId);
     }, [customerId]);
-    
-    console.log(customerWorkorders)
 
     const [expanded, setExpanded] = React.useState('panel1');
     
     const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+      setExpanded(newExpanded ? panel : false);
     };
 
     return(
@@ -140,7 +139,7 @@ export default function CustomersDetailsView() {
                         <Paper elevation={3} className='p-2 mt-3 ms-4'>
                             <h6 className="card-title"><WorkIcon/>    Proyectos Activos: {activeProjects}</h6>
                             <h6 className="card-title"><WorkOffIcon/>    Proyectos Cerrados: {inactiveProjects}</h6>
-                            <h6 className="card-title"><AssignmentTurnedInIcon/>    Partes de trabajo: {}</h6>
+                            <h6 className="card-title"><AssignmentTurnedInIcon/>    Partes de trabajo: {customerWorkorders.total} </h6>
                         </Paper>
                         <Paper elevation={3} className='p-2 mt-3 ms-4'>
                             <h6 className="card-title"><AddAlertIcon/>    Avisos</h6>
@@ -156,6 +155,14 @@ export default function CustomersDetailsView() {
                 </AccordionSummary>
                 <AccordionDetails className="row">
                     <CustomersDetailsProjectsTable />
+                </AccordionDetails>
+            </Accordion>
+            <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                    <Typography variant="h6">Proyectos Cerrados</Typography>
+                </AccordionSummary>
+                <AccordionDetails className="row">
+                    <CustomersDetailsInactiveProjectsTable />
                 </AccordionDetails>
             </Accordion>
             

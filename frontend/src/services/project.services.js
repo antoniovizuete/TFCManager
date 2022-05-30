@@ -47,6 +47,15 @@ export const getInactiveProjectsByCustomerCount = async(id) =>{
     }
 };
 
+export const getInactiveProjectsByCustomer = async(id) =>{
+    try{
+        const response = await axios.post(`/api/customers/${id}/projects/inactive`, id, {headers: {Authorization: 'Bearer ' + await authHeader()}})
+        return response.data.projects;
+    }catch(error){
+        return error.response.data
+    }
+};
+
 export const getProjectsByUser = async(id) =>{
     try{
         const response = await axios.post(`/api/users/${id}/projects`, id, {headers: {Authorization: 'Bearer ' + await authHeader()}})

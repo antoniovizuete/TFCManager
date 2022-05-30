@@ -60,7 +60,7 @@ export const getWorkorderByProjectId = async(projectId)=>{
 export const getWorkorderByCustomerId = async(customerId)=>{
     try{
         const response = await axios.post(`/api/workorders/${customerId}/customer`, customerId, {headers: {Authorization: 'Bearer ' + await authHeader()}})
-        return response.data.customerWorkorders;
+        return response.data;
     }catch(error){
         return error.response.data
     }

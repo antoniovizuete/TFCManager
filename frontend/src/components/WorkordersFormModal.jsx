@@ -18,6 +18,7 @@ const WorkordersFormModal = () => {
 
     const userLogged = getUserData();
     const id = userLogged.id;
+    const name = userLogged.name;
 
     const [projects, setProjects] = useState([]);
     useEffect( () =>{
@@ -25,14 +26,6 @@ const WorkordersFormModal = () => {
             setProjects(await getProjects());
         }
         getAllProjects();
-    }, []);
-
-    const [users, setUsers] = useState([]);
-    useEffect( () =>{
-        const getAllUsers = async(id) => {
-            setUsers(await getUserById(id));
-        }
-        getAllUsers(id);
     }, []);
 
     const [hourlyrate, setHourlyrate] = useState([]);
@@ -102,7 +95,7 @@ const WorkordersFormModal = () => {
             }
 
             const newWorkorder = {
-                workorder_author: workorder_author,
+                workorder_author: id,
                 workorder_project: workorder_project,
                 workorder_hours: workorder_hours,
                 workorder_minutes: workorder_minutes,
@@ -138,11 +131,10 @@ const WorkordersFormModal = () => {
             <h3>Nuevo Parte de trabajo</h3>
             <form onSubmit={ saveData } id="workorderForm">
                 {error ? <span className="text-danger">{error}</span> : null}
-                <InputLabel className="mt-2" id="workorder_authorInput">Usuario</InputLabel>
-                <Select labelId="Usuario" id="workorder_author" style={{width: '100%'}}
-                    value={workorder_author} label="Usuario" onChange={handleChangeUser}> 
-                    <MenuItem value={`${users.user_id}`}>{users.user_name}</MenuItem>
-                </Select>
+                <TextField autoFocus margin="dense" id="workorder_author2"
+                    label="Autor del Parte del Trabajo" type="text" fullWidth variant="standard"
+                    value = {name}
+                />
                 <InputLabel className="mt-2" id="workorder_projectInput">Proyecto</InputLabel>
                 <Select labelId="Proyecto" id="workorder_project" style={{width: '100%'}}
                     value={workorder_project} label="Proyecto" onChange={handleChangeProject}> 

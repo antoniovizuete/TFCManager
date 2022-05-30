@@ -43,9 +43,15 @@ const Navbar = (props) => {
                         </Typography>
                     </Hidden>
 
-                    <Button variant='text' color='inherit'>
-                        {<NavLink to="/" onClick={closeSession}>SALIR</NavLink> }
-                    </Button>
+                    <NavLink to="/"  className="me-5" style={({ isActive }) =>
+                        isActive
+                            ? {
+                                color: '##FDFEFE',
+                                textDecoration: 'none'
+                            }
+                            : { color: '#FDFEFE', textDecoration: 'none' }
+                        } onClick={closeSession}>SALIR</NavLink>
+                
              </Toolbar>
            </AppBar>
         </div>

@@ -104,7 +104,7 @@ const workorderGetByUserId = async(req, res) => {
         const {id} = req.params;
         const {limit=100, from=0} = req.query;
         const sql = 'SELECT * from workorders INNER JOIN projects ON workorders.workorder_project = projects.project_id INNER JOIN hourlyrates ON workorders.workorder_hourlyrate = hourlyrate_id INNER JOIN users ON workorders.workorder_author = users.user_id WHERE workorder_state=true AND users.user_id=?';
-        const countSql = 'SELECT COUNT (workorder_id) as count from workorders WHERE workorder_state=true AND workorder_id = ?';
+        const countSql = 'SELECT COUNT (*) as count from workorders WHERE workorder_state=true AND workorder_id = ?';
         
         const [ total, workorders ] = await Promise.all([
             dbQueryCount(countSql, [id]),
@@ -124,8 +124,8 @@ const workorderGetByCustomerId = async(req, res) => {
     try{
         const {id} = req.params;
         const {limit=100, from=0} = req.query;
-        const sql = 'SELECT * from workorders INNER JOIN customers ON workorders.workorder_customer = customers.customer_id INNER JOIN projects ON workorders.workorder_project = projects.project_id INNER JOIN hourlyrates ON workorders.workorder_hourlyrate = hourlyrate_id INNER JOIN users ON workorders.workorder_author = users.user_id WHERE workorder_state=true AND customers.customer_id=?';
-        const countSql = 'SELECT COUNT (workorder_id) as count from workorders WHERE workorder_state=true AND workorder_id = ?';
+        const sql = 'SELECT * FROM workorders INNER JOIN projects ON workorders.workorder_project = projects.project_id WHERE workorders.workorder_state=true AND projects.project_customer = ?';
+        const countSql = 'SELECT COUNT (*) as count from workorders INNER JOIN projects ON workorders.workorder_project = projects.project_id WHERE workorder_state=true AND projects.project_customer = ?';
         
         const [ total, customerWorkorders ] = await Promise.all([
             dbQueryCount(countSql, [id]),

@@ -19,7 +19,7 @@ const CustomerBox = () => {
             {
               userLogged.role === 1 ? (<CreateButton section ='customers'/>) : 
               (<CreateButtonDisabled />) 
-            }   
+            }  
             <CustomersTable />
            
           </Grid>

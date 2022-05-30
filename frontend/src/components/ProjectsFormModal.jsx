@@ -1,7 +1,6 @@
 import { Button, TextField, Select, MenuItem, InputLabel, TextareaAutosize } from "@material-ui/core"; 
 import React, { useState, useEffect } from "react";
 import { getCustomers } from '../services/customer.services';
-import { getUserById } from '../services/user.services';
 import { postProjects } from "../services/project.services";
 import { Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ const ProjectsFormModal = () => {
 
     const userLogged = getUserData();
     const id = userLogged.id;
+    const name = userLogged.name;
 
     const [customers, setCustomers] = useState([]);
     useEffect( () =>{
@@ -23,24 +23,13 @@ const ProjectsFormModal = () => {
         getAllCustomers();
     }, []);
 
-    const [users, setUsers] = useState([]);
-    useEffect( () =>{
-        const getAllUsers = async(id) => {
-            setUsers(await getUserById(id));
-        }
-        getAllUsers(id);
-    }, []);
-
-    const [project_name, setProject_name] = useState(userLogged.name);
+    const [project_name, setProject_name] = useState('');
     const [project_author, setProject_author] = useState('');
     const [project_customer, setProject_customer] = useState('');
     const [project_description, setProject_description] = useState(null);
     const [project_alert, setProject_alert] = useState('');
     const [error, setError] = useState(null);
 
-    const handleChangeUser = (event) => {
-        setProject_author(event.target.value);
-    };
 
     const handleChangeCustomer = (event) => {
         setProject_customer(event.target.value);
@@ -67,7 +56,7 @@ const ProjectsFormModal = () => {
 
             const newProject = {
                 project_name: project_name,
-                project_author: project_author,
+                project_author: id,
                 project_customer: project_customer,
                 project_description: project_description,
                 project_alert: project_alert
@@ -103,11 +92,10 @@ const ProjectsFormModal = () => {
                     label="Nombre del proyecto" type="text" fullWidth variant="standard"
                     onChange={ event => setProject_name(event.target.value) }
                 />
-                <InputLabel className="mt-2" id="project_authorInput">Usuario</InputLabel>
-                <Select labelId="Usuario" id="project_author" style={{width: '100%'}}
-                    value={project_author} label="Usuario" onChange={handleChangeUser}> 
-                    <MenuItem value={`${users.user_id}`}>{users.user_name}</MenuItem>
-                </Select>
+                <TextField autoFocus margin="dense" id="project_author2"
+                    label="Autor del proyecto" type="text" fullWidth variant="standard"
+                    value = {name}
+                />
                 <InputLabel className="mt-2" id="descriptionInput">Descripción</InputLabel>
                 <TextareaAutosize autoFocus margin="dense" id="project_description"
                     label="Descripción" type="text" fullWidth variant="standard"

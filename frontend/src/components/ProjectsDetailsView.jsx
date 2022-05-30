@@ -197,7 +197,7 @@ export default function ProjectsDetailsView() {
                             <h6 className="card-title"><AccessTimeIcon/>     Horas imputadas: </h6>
                             {hours===null ? (<p>No hay horas imputadas al proyecto</p>) : (<p>{hours} horas y {minutes} minutos</p>)}
                             <h6 className="card-title"><AccessTimeIcon/>     Horas por empleado: </h6>
-                            {workordersMinutesByUser.length===0 ? (<p>No hay horas imputadas al proyecto </p>) :                            
+                            {workordersMinutesByUser.length === 0 ? (<p>No hay horas imputadas al proyecto </p>) :                            
                               (
                                 workordersMinutesByUser.map((minutesByUser)=>{
                                     return(
