@@ -22,6 +22,7 @@ const loginController = async(req, res ) => {
         const token = await generateJWT(userLogged[0]);
         
         res.json({
+            id: userLogged[0].user_id,
             name: userLogged[0].user_name,
             role: userLogged[0].user_role,
             token: token

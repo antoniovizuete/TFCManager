@@ -48,29 +48,30 @@ CREATE TABLE IF NOT EXISTS customers (
     customer_province VARCHAR (30),
     customer_cp INT (5),
     customer_phone VARCHAR (9),
+    customer_alert VARCHAR (1000),
     customer_state TINYINT DEFAULT 1
 );
 
-INSERT INTO customers (customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone)
+INSERT INTO customers (customer_dni, customer_name, customer_email, customer_address, customer_city, customer_province, customer_cp, customer_phone, customer_alert)
 VALUES
-('31559875H', 'Arturo Perez-Reverte',      'arturoperezreverte@gmail.com',   'Avenida Constitucion 17 3B', 'Elda',              'Alicante',    '03600',  '975765456'),
-('79157842G', 'Miguel de Unamuno',         'migueldeunamuno@gmail.com',      'Plaza de las Malvas 27 4C',  'Albacete',          'Albacete',    '02006',  '691254781'),
-('47569575B', 'Isabel Allende',            'isabelallende@gmail.com',        'Los Olivos 34 1J',           'Sevilla',           'Sevilla',     '41017',  '693459782'),
-('25843691B', 'Francisco Baldomero',       'franciscobladomero@gmail.com',   'Altiplano 25 2C',            'Lepe',              'Huelva',      '21004',  '689421689'),
-('36572158V', 'Margarita Fernandez',       'margaritafernandez@gmail.com',   'Las casitas 45',             'Cuntis',            'Pontevedra',  '36670',  '758693217'),
-('65879635S', 'Eustaquio Canto Cano',      'eustaquiocantocano@gmail.com',   'Benito Perez Galdos 34 3D',  'Villena',           'Alicante',    '03400',  '635872541'),
-('75869324L', 'Patrick Rotfus',            'patrickrotfus@gmail.com',        'Cañada 34',                  'Villena',           'Alicante',    '03400',  '755215215'),
-('58637931W', 'John Ronald Reuel Tolkien', 'jrrt@gmail.com',                 'La Comarca 32 1C',           'Bolson Cerrado',    'La Comarca',  '00010',  '658412589'),
-('75983214T', 'Robert E Howart',           'conan@gmail.com',                'Casicas del señor 12',       'Alicante',          'Alicante',    '03001',  '635213121'),
-('19657394W', 'Andrzej Sapkowski',         'thewitcher@gmail.com',           'Temeria 34',                 'Vengerberg',        'Aedirn',      '99999',  '733898741'),
-('58234498G', 'Michael Moorcock',          'campeoneterno@gmail.com',        'Grandes escritores 45',      'Madrid',            'Madrid',      '28082',  '695369963'),
-('72396542Q', 'William Faulkner',          'williamfaulkner@gmail.com',      'Estafeta 87 1D',             'Pamplona',          'Pamplona',    '31001',  '753159854'),
-('72589654H', 'Oscar Wilde',               'oscarwilde@gmail.com',           'Gran Vía 134 2D',            'Alicante',          'Alicante',    '03001',  '619736542'),
-('25731458L', 'Franz Kafka',               'franzkafka@gmail.com',           'Paseo de los Tristes 94',    'Granada',           'Granada',     '18001',  '638554221'),
-('12358641E', 'William Shakespeare',       'williamshakespeare@gmail.com',   'Marques de Larios 21',       'Málaga',            'Málaga',      '29001',  '733447147'),
-('26439874K', 'James Joyce',               'jamesjoyce@gmail.com',           'Laurel 36 2C',               'Logroño',           'Logroño',     '26001',  '722998877'),
-('68542142H', 'Philip K. Dick',            'philipkdick@gmail.com',          'Paseo de Gracia 41 5D',      'Barcelona',         'Barcelona',   '08001',  '658965874'),
-('32154785G', 'Gabriel García Márquez',    'gabrielgarciamarquez@gmail.com', 'Ruta de los Molinos 49 4A',  'Campo de Criptana', 'Ciudad Real', '13610',  '673198654');
+('31559875H', 'Arturo Perez-Reverte',      'arturoperezreverte@gmail.com',   'Avenida Constitucion 17 3B', 'Elda',              'Alicante',    '03600',  '975765456', 'Pagos pendientes'),
+('79157842G', 'Miguel de Unamuno',         'migueldeunamuno@gmail.com',      'Plaza de las Malvas 27 4C',  'Albacete',          'Albacete',    '02006',  '691254781', 'Pagos pendientes'),
+('47569575B', 'Isabel Allende',            'isabelallende@gmail.com',        'Los Olivos 34 1J',           'Sevilla',           'Sevilla',     '41017',  '693459782', ''),
+('25843691B', 'Francisco Baldomero',       'franciscobladomero@gmail.com',   'Altiplano 25 2C',            'Lepe',              'Huelva',      '21004',  '689421689', ''),
+('36572158V', 'Margarita Fernandez',       'margaritafernandez@gmail.com',   'Las casitas 45',             'Cuntis',            'Pontevedra',  '36670',  '758693217', ''),
+('65879635S', 'Eustaquio Canto Cano',      'eustaquiocantocano@gmail.com',   'Benito Perez Galdos 34 3D',  'Villena',           'Alicante',    '03400',  '635872541', 'Pagos pendientes'),
+('75869324L', 'Patrick Rotfus',            'patrickrotfus@gmail.com',        'Cañada 34',                  'Villena',           'Alicante',    '03400',  '755215215', ''),
+('58637931W', 'John Ronald Reuel Tolkien', 'jrrt@gmail.com',                 'La Comarca 32 1C',           'Bolson Cerrado',    'La Comarca',  '00010',  '658412589', ''),
+('75983214T', 'Robert E Howart',           'conan@gmail.com',                'Casicas del señor 12',       'Alicante',          'Alicante',    '03001',  '635213121', ''),
+('19657394W', 'Andrzej Sapkowski',         'thewitcher@gmail.com',           'Temeria 34',                 'Vengerberg',        'Aedirn',      '99999',  '733898741', ''),
+('58234498G', 'Michael Moorcock',          'campeoneterno@gmail.com',        'Grandes escritores 45',      'Madrid',            'Madrid',      '28082',  '695369963', 'Pagos pendientes'),
+('72396542Q', 'William Faulkner',          'williamfaulkner@gmail.com',      'Estafeta 87 1D',             'Pamplona',          'Pamplona',    '31001',  '753159854', ''),
+('72589654H', 'Oscar Wilde',               'oscarwilde@gmail.com',           'Gran Vía 134 2D',            'Alicante',          'Alicante',    '03001',  '619736542', ''),
+('25731458L', 'Franz Kafka',               'franzkafka@gmail.com',           'Paseo de los Tristes 94',    'Granada',           'Granada',     '18001',  '638554221', 'Pagos pendientes'),
+('12358641E', 'William Shakespeare',       'williamshakespeare@gmail.com',   'Marques de Larios 21',       'Málaga',            'Málaga',      '29001',  '733447147', ''),
+('26439874K', 'James Joyce',               'jamesjoyce@gmail.com',           'Laurel 36 2C',               'Logroño',           'Logroño',     '26001',  '722998877', ''),
+('68542142H', 'Philip K. Dick',            'philipkdick@gmail.com',          'Paseo de Gracia 41 5D',      'Barcelona',         'Barcelona',   '08001',  '658965874', ''),
+('32154785G', 'Gabriel García Márquez',    'gabrielgarciamarquez@gmail.com', 'Ruta de los Molinos 49 4A',  'Campo de Criptana', 'Ciudad Real', '13610',  '673198654', 'Pagos pendientes');
 
 
 
@@ -81,7 +82,8 @@ CREATE TABLE IF NOT EXISTS projects(
     project_author INT(5) NOT NULL,
     project_customer INT(5) NOT NULL,
     project_description VARCHAR(200),
-    project_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE(),
+    project_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    project_alert VARCHAR (1000),
     project_state TINYINT DEFAULT 1,
     FOREIGN KEY (project_author) REFERENCES users(user_id)
     ON DELETE CASCADE ON UPDATE CASCADE,
@@ -89,12 +91,12 @@ CREATE TABLE IF NOT EXISTS projects(
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO projects(project_name, project_author, project_customer, project_description)
+INSERT INTO projects(project_name, project_author, project_customer, project_description, project_alert)
 VALUES
-('Reforma Heladería Sirvent', 1, 1, 'Reforma eléctrica integral del local. Iluminación de la fachada.'),
-('Iluminación Bocopa', 2, 6, 'Iluminación de fachada'),
-('Frutería Paquito', 2, 8, 'Sustitución de toda la red eléctica e iluminación de stands'),
-('Talleres Molina', 1, 12, 'Subida de potencia y mejora de iluminación.');
+('Reforma Heladería Sirvent', 1, 1, 'Reforma eléctrica integral del local. Iluminación de la fachada.', ''),
+('Iluminación Bocopa', 2, 6, 'Iluminación de fachada', 'Descuadre en materiales'),
+('Frutería Paquito', 2, 8, 'Sustitución de toda la red eléctica e iluminación de stands', ''),
+('Talleres Molina', 1, 12, 'Subida de potencia y mejora de iluminación.', '');
 
 
 
@@ -123,26 +125,43 @@ VALUES
 ('45972-SBR', 'EFAPEL', 'MODULO C/CONECTOR HEMBRA RJ11 CAT. 3 BLANCO', '5.42', 'No'),
 ('90910-TBB', 'EFAPEL', 'MARCO SIMPLE BLANCO/BLANCO', '2.30', 'Si'); 
 
+CREATE TABLE IF NOT EXISTS hourlyrates(
+    hourlyrate_id INT PRIMARY KEY AUTO_INCREMENT,
+    hourlyrate_name VARCHAR (20),
+    hourlyrate_pvp DECIMAL (6,2),
+    hourlyrate_state TINYINT DEFAULT 1
+);
+
+INSERT INTO hourlyrates (hourlyrate_name, hourlyrate_pvp)
+VALUES
+('Normal', 20),
+('Reducida', 15),
+('Horas Extra', 35);
+
 CREATE TABLE IF NOT EXISTS workorders(
     workorder_id INT PRIMARY KEY AUTO_INCREMENT,
     workorder_author INT (5),
     workorder_project INT (5),
-    workorder_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE(),
+    workorder_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     workorder_hours INT (2),
     workorder_minutes INT (2),
-    workorder_state TINYINT DEFAULT 1
+    workorder_hourlyrate INT (5),
+    workorder_alert VARCHAR (1000),
+    workorder_state TINYINT DEFAULT 1,
+    FOREIGN KEY (workorder_hourlyrate) REFERENCES hourlyrates(hourlyrate_id)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes)
+INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes, workorder_hourlyrate, workorder_alert)
 VALUES
-(1, 1, 8, 0),
-(2, 1, 6, 30),
-(3, 1, 9, 0),
-(2, 2, 8, 0),
-(3, 2, 8, 0),
-(3, 2, 5, 25),
-(1, 4, 6, 15),
-(3, 4, 7, 0);
+(1, 1, 8, 0, 1, 'Problemas para acceder al recinto'),
+(2, 1, 6, 30, 1, 'Recibimos inspección de trabajo'),
+(3, 1, 9, 0, 1, ''),
+(2, 2, 8, 0, 2, ''),
+(3, 2, 8, 0, 2, ''),
+(3, 2, 5, 25, 2, ''),
+(1, 4, 6, 15, 3, ''),
+(3, 4, 7, 0, 3, 'El cliente estuvo revisando la obra');
 
 CREATE TABLE IF NOT EXISTS workorder_materials(
     workorder_id INT (5),

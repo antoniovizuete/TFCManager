@@ -6,7 +6,7 @@ const {check} = require('express-validator');
 //middlewares
 const { validateFields, validateJWT } = require('../middlewares');
 
-const {customerGet, customerByIdGet, customerPut, customerPost, customerDelete, customerPatch, projectGetByCustomerId } = require('../controllers/customer.controllers');
+const {customerGet, customerByIdGet, customerPut, customerPost, customerDelete, customerPatch, projectGetByCustomerId, projectInactiveGetByCustomerId, inactiveCustomerByIdGet, inactiveCustomerGet, retrieveCustromerById } = require('../controllers/customer.controllers');
 const { validCustomerEmail, validPhone, validRole } = require('../helpers/dbValidators');
 const { authorizationToken } = require('../middlewares/authorizationToken');
 const { isAdminRole } = require('../middlewares/validateRoles');
@@ -15,9 +15,15 @@ const router = Router();
 
 router.get('/', authorizationToken, customerGet);
 
+router.get('/inactives', authorizationToken, inactiveCustomerGet);
+
 router.get('/:id', authorizationToken, customerByIdGet);
 
+router.get('/:id/inactive', authorizationToken, inactiveCustomerByIdGet);
+
 router.post('/:id/projects', authorizationToken, projectGetByCustomerId);
+
+router.post('/:id/projects/inactive', authorizationToken, projectInactiveGetByCustomerId);
 
 router.post('/',  
     authorizationToken, isAdminRole,
@@ -40,6 +46,8 @@ router.put('/:id', authorizationToken, isAdminRole,
         validateFields
     ],
     customerPut);
+
+router.put('/:id/retrieve', authorizationToken, isAdminRole, retrieveCustromerById)
 
 router.delete('/:id', authorizationToken, isAdminRole, customerDelete);
 

@@ -5,7 +5,7 @@ const {check} = require('express-validator');
 //middlewares
 const { validateFields, validateJWT } = require('../middlewares');
 
-const { userGet, userPut, userPost, userDelete, userPatch, userGetById, projectGetByUserId } = require('../controllers/user.controllers');
+const { userGet, userPut, userPost, userDelete, userPatch, userGetById, projectGetByUserId, inactiveUserGet, retrieveUserById, inactiveUserGetById } = require('../controllers/user.controllers');
 const { validRole, validUserEmail } = require('../helpers/dbValidators');
 const { authorizationToken } = require('../middlewares/authorizationToken');
 const { isAdminRole } = require('../middlewares/validateRoles');
@@ -13,6 +13,8 @@ const { isAdminRole } = require('../middlewares/validateRoles');
 const router = Router();
 
 router.get('/', authorizationToken, userGet);
+
+router.get('/inactives', authorizationToken, inactiveUserGet);
 
 router.post('/', authorizationToken, isAdminRole, 
     [
@@ -25,11 +27,15 @@ router.post('/', authorizationToken, isAdminRole,
     ], 
     userPost);
 
-router.post('/:id/projects', authorizationToken, projectGetByUserId)
+router.post('/:id/projects', authorizationToken, projectGetByUserId);
 
-router.post('/:id', authorizationToken, isAdminRole, userGetById)
+router.post('/:id', authorizationToken, isAdminRole, userGetById);
+
+router.post('/:id/inactive', authorizationToken, isAdminRole, inactiveUserGetById);
 
 router.put('/:id', authorizationToken, isAdminRole, userPut);
+
+router.put('/:id/retrieve', authorizationToken, isAdminRole, retrieveUserById);
 
 router.patch('/', authorizationToken, isAdminRole, userPatch);
 
