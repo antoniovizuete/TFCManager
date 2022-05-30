@@ -7,11 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getWorkorders } from '../services/workorder.services';
+import { getInactiveWorkorders } from '../services/workorder.services';
 import { useEffect, useState } from 'react';
-import AccessDetailsButton from './AccessDetailsButton';
-import TableEditButton from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
+import TableRetrieveButton from './TableRetrieveButton'
 
 const columns = [
   { id: 'workorder_id', label: 'ID', minWidth: 50 },
@@ -27,7 +25,7 @@ export default function WorkordersTable() {
     const [workorders, setWorkorders] = useState([]);
     useEffect( () =>{
         const getAllWorkorders = async() => {
-            setWorkorders(await getWorkorders());
+            setWorkorders(await getInactiveWorkorders());
         }
         getAllWorkorders();
     }, []);
@@ -59,9 +57,7 @@ export default function WorkordersTable() {
                   {column.label}
                 </TableCell>
               ))}
-                <TableCell>Detalles</TableCell>
-                <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
+                <TableCell>Recuperar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,9 +75,7 @@ export default function WorkordersTable() {
                         </TableCell>
                       );
                     })}
-                    <TableCell><AccessDetailsButton id={workorder.workorder_id} section='projects/workorders'/></TableCell>
-                    <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
-                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
+                    <TableCell><TableRetrieveButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
                   </TableRow>
                 );
               })}

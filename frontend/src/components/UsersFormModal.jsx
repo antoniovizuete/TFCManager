@@ -1,10 +1,12 @@
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Select, MenuItem, InputLabel } from "@material-ui/core";
+import { Button, TextField, Select, MenuItem, InputLabel } from "@material-ui/core";
 import React, { useState } from "react";
 import validator from "validator";
 import { postUsers } from "../services/user.services";
 import { useNavigate } from "react-router-dom";
+import {NavLink} from 'react-router-dom';
+import { Paper } from "@mui/material";
 
-const UsersFormModal = ({open, handleClose}) => {
+const UsersFormModal = () => {
 
     const navigate = useNavigate();
 
@@ -66,8 +68,8 @@ const UsersFormModal = ({open, handleClose}) => {
               setError(newUserResponse.errors[0].msg);
               return
             }else{
-                navigate("/menu/users", { replace: true });
                 event.target.reset();
+                navigate("/menu/users", { replace: true });
                 setUser_name('');
                 setUser_email('');
                 setUser_password('');
@@ -81,9 +83,8 @@ const UsersFormModal = ({open, handleClose}) => {
 
     return (
 
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Registro de Empleados</DialogTitle>
-        <DialogContent>
+        <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
+            <h3>Nuevo Empleado</h3>
             <form onSubmit={ saveData } id="userForm">
                 {error ? <span className="text-danger">{error}</span> : null}
                 <TextField autoFocus margin="dense" id="user_name"
@@ -106,12 +107,11 @@ const UsersFormModal = ({open, handleClose}) => {
                     <MenuItem value={2}>Empleado</MenuItem>
                 </Select>
             </form>
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button type="submit" form="userForm">Registrar</Button>
-        </DialogActions>
-        </Dialog>
+            <div>
+                <Button component={NavLink} to={`/menu/users`}>Cancelar</Button>
+                <Button type="submit" form="userForm">Registrar</Button>
+            </div>
+        </Paper>
     );
 };
 

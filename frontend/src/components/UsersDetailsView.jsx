@@ -6,7 +6,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import UsersDetailsProjectsTable from './UsersDetailsProjectsTable';
+import UsersDetailsWorkordersTable from './UsersDetailsWorkordersTable';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Paper } from '@material-ui/core';
@@ -115,10 +115,10 @@ export default function UsersDetailsView() {
             </Accordion>
             <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                 <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                    <Typography variant="h6">Proyectos</Typography>
+                    <Typography variant="h6">Partes de trabajo</Typography>
                 </AccordionSummary>
                 <AccordionDetails className="row">
-                    <UsersDetailsProjectsTable />
+                    <UsersDetailsWorkordersTable />
                 </AccordionDetails>
             </Accordion>
             

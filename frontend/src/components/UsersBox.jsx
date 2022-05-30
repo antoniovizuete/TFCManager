@@ -9,16 +9,6 @@ import CreateButtonDisabled from './CreateButtonDisabled';
 import Typography from '@mui/material/Typography';
 
 const UserBox = () => {
-  
-  const [openModal, setOpenModal] = useState(false);  
-
-  const openModalHandler = () => {
-    setOpenModal(true);
-  };
-
-  const closeModalHandler = () => {
-    setOpenModal(false);
-  }
 
   const userLogged = getUserData();
 
@@ -28,11 +18,10 @@ const UserBox = () => {
           <Grid item xs={12} sm={12} md={12} xl={12}>
           <Typography variant="h4">Listado de Empleados</Typography>
             {
-              userLogged.role === 1 ? (<CreateButton createHandler={openModalHandler}/>) : 
+              userLogged.role === 1 ? (<CreateButton section='users'/>) : 
               (<CreateButtonDisabled />) 
             }
             <UsersTable />
-            <UsersFormModal open={openModal} handleClose={closeModalHandler}/>
           </Grid>
        </Grid>
     </div>

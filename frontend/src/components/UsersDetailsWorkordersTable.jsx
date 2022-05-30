@@ -7,30 +7,29 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getWorkorders } from '../services/workorder.services';
+import { getWorkorderByUserId } from '../services/workorder.services';
 import { useEffect, useState } from 'react';
 import AccessDetailsButton from './AccessDetailsButton';
-import TableEditButton from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
+import { useParams } from 'react-router-dom';
 
 const columns = [
   { id: 'workorder_id', label: 'ID', minWidth: 50 },
   { id: 'user_name', label: 'Creado Por', minWidth: 50 },
-  { id: 'project_name', label: 'Proyecto', minWidth: 80 },
   { id: 'workorder_date', label: 'Fecha de creación', minWidth: 100 },
   { id: 'workorder_hours', label: 'Horas', minWidth: 40 },
   { id: 'workorder_minutes', label: 'Minutos', minWidth: 40 },
 ];
 
-export default function WorkordersTable() {
+export default function UsersDetailsWorkordersTable() {
 
+    const { id } = useParams();
     const [workorders, setWorkorders] = useState([]);
     useEffect( () =>{
-        const getAllWorkorders = async() => {
-            setWorkorders(await getWorkorders());
+        const getAllWorkorders = async(id) => {
+            setWorkorders(await getWorkorderByUserId(id));
         }
-        getAllWorkorders();
-    }, []);
+        getAllWorkorders(id);
+    }, [id]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -60,8 +59,6 @@ export default function WorkordersTable() {
                 </TableCell>
               ))}
                 <TableCell>Detalles</TableCell>
-                <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -80,8 +77,6 @@ export default function WorkordersTable() {
                       );
                     })}
                     <TableCell><AccessDetailsButton id={workorder.workorder_id} section='projects/workorders'/></TableCell>
-                    <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
-                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
                   </TableRow>
                 );
               })}

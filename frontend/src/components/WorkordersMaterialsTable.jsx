@@ -7,30 +7,33 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getWorkorders } from '../services/workorder.services';
+import { getMaterialByWorkorderId } from '../services/material.services';
 import { useEffect, useState } from 'react';
-import AccessDetailsButton from './AccessDetailsButton';
-import TableEditButton from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
+import { useParams } from 'react-router-dom';
 
 const columns = [
-  { id: 'workorder_id', label: 'ID', minWidth: 50 },
-  { id: 'user_name', label: 'Creado Por', minWidth: 50 },
-  { id: 'project_name', label: 'Proyecto', minWidth: 80 },
-  { id: 'workorder_date', label: 'Fecha de creación', minWidth: 100 },
-  { id: 'workorder_hours', label: 'Horas', minWidth: 40 },
-  { id: 'workorder_minutes', label: 'Minutos', minWidth: 40 },
-];
+  { id: 'material_id', label: 'ID', minWidth: 50 },
+  { id: 'material_reference', label: 'Referencia', minWidth: 80 },
+  { id: 'material_brand', label: 'Marca', minWidth: 100 },
+  { id: 'material_description', label: 'Descripción', minWidth: 50},
+  { id: 'material_pvp', label: 'Precio', minWidth: 100 },
+  { id: 'material_ecotax', label: 'Ecotasa', minWidth: 50},
+  { id: 'material_amount', label: 'Catindad', minWidth:50},
+  { id: 'total_cost', label: 'Precio total', minWidth:50},
+  ];
 
-export default function WorkordersTable() {
+export default function WorkordersMaterialsTable() {
 
-    const [workorders, setWorkorders] = useState([]);
-    useEffect( () =>{
-        const getAllWorkorders = async() => {
-            setWorkorders(await getWorkorders());
-        }
-        getAllWorkorders();
-    }, []);
+  const { id } = useParams();
+  const workorderId = id;
+
+  const [workorderMaterials, setWorkorderMaterials] = useState([]);
+  useEffect( () =>{
+      const getWorkorderMaterials = async(workorderId) => {
+        setWorkorderMaterials(await getMaterialByWorkorderId(workorderId));
+      }
+      getWorkorderMaterials(workorderId);
+  }, [workorderId]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -58,19 +61,17 @@ export default function WorkordersTable() {
                 >
                   {column.label}
                 </TableCell>
+                
               ))}
-                <TableCell>Detalles</TableCell>
-                <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {workorders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((workorder) => {
+            {workorderMaterials.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((workorderMaterial) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={workorder.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={workorderMaterial.code}>
                     {columns.map((column) => {
-                      const value = workorder[column.id];
+                      const value = workorderMaterial[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -79,9 +80,6 @@ export default function WorkordersTable() {
                         </TableCell>
                       );
                     })}
-                    <TableCell><AccessDetailsButton id={workorder.workorder_id} section='projects/workorders'/></TableCell>
-                    <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
-                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
                   </TableRow>
                 );
               })}
@@ -91,7 +89,7 @@ export default function WorkordersTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={workorders.length}
+        count={workorderMaterials.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

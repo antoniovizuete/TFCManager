@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { updateWorkorders } from "../services/workorder.services";
 import { getWorkorderById } from '../services/workorder.services';
+import { getHourlyrate } from "../services/hourlyrate.services";
 import { useNavigate } from "react-router-dom";
 import {NavLink} from 'react-router-dom';
 import { Paper } from "@mui/material";
@@ -22,8 +23,18 @@ const WorkordersEditForm = () => {
             setWorkorder_date(workorder.workorder_date);
             setWorkorder_hours(workorder.workorder_hours);
             setWorkorder_minutes(workorder.workorder_minutes);
+            setWorkorder_alert(workorder.workorder_alert);
+            setWorkorder_hourlyrate(workorder.workorder_hourlyrate)
         }
         getWorkorder(id);
+    }, []);
+
+    const [hourlyrate, setHourlyrate] = useState([]);
+    useEffect( () =>{
+        const getAllHourlyrate = async() => {
+            setHourlyrate(await getHourlyrate());
+        }
+        getAllHourlyrate();
     }, []);
 
     const [workorder_author, setWorkorder_author] = useState('');
@@ -31,7 +42,13 @@ const WorkordersEditForm = () => {
     const [workorder_date, setWorkorder_date] = useState('');
     const [workorder_hours, setWorkorder_hours] = useState('');
     const [workorder_minutes, setWorkorder_minutes] = useState('');
+    const [workorder_alert, setWorkorder_alert] = useState('');
+    const [workorder_hourlyrate, setWorkorder_hourlyrate] = useState('');
     const [error, setError] = useState(null);
+
+    const handleChangeHourlyrate = (event) => {
+        setWorkorder_hourlyrate(event.target.value);
+    };
 
     const saveData = (event) => {
         event.preventDefault();
@@ -47,10 +64,17 @@ const WorkordersEditForm = () => {
             //     setError('Introduce la cantidad de minutos imputados.');
             //     return
             // }
+
+            // if(!workorder_hourlyrate.trim()){
+            //     setError('Asigna una tarifa al parte de trabajo.');
+            //     return
+            // }
     
             const editedWorkorder = {
                 workorder_hours: workorder_hours,
                 workorder_minutes: workorder_minutes,
+                workorder_alert: workorder_alert,
+                workorder_hourlyrate: workorder_hourlyrate,
             }
 
             const updateWorkorderResponse = updateWorkorders(id, editedWorkorder);
@@ -65,6 +89,8 @@ const WorkordersEditForm = () => {
                 setWorkorder_date('');
                 setWorkorder_hours('');
                 setWorkorder_minutes('');
+                setWorkorder_alert('');
+                setWorkorder_hourlyrate('');
                 setError(null);
             }
         }catch(error){
@@ -73,7 +99,7 @@ const WorkordersEditForm = () => {
     }
 
     return (
-        <Paper sx={{ width: '50%', overflow: 'hidden' }}>
+        <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
             <h3>Edición de Partes de trabajo</h3>
             <form onSubmit={ saveData } id="workorderEditForm">
                 {error ? <span className="text-danger">{error}</span> : null}
@@ -98,6 +124,21 @@ const WorkordersEditForm = () => {
                     label="Minutos" type="number" fullWidth variant="standard"
                     value={workorder_minutes}
                     onChange={ event => setWorkorder_minutes(event.target.value) }
+                />
+                <InputLabel className="mt-2" id="workorder_hourlyrateInput">Tarifa</InputLabel>
+                <Select labelId="Tarifa" id="workorder_hourlyrate" style={{width: '100%'}}
+                    value={workorder_hourlyrate} label="Tarifa" onChange={handleChangeHourlyrate}> 
+                
+                    {hourlyrate.map((hourlyrate) => (
+                        <MenuItem value={`${hourlyrate.hourlyrate_id}`}>{hourlyrate.hourlyrate_name} {hourlyrate.hourlyrate_pvp}€</MenuItem>
+                    ))}
+                    
+                </Select>
+                <InputLabel className="mt-2" id="workorder_alertInput">Avisos</InputLabel>
+                <TextareaAutosize autoFocus margin="dense" id="workorder_alert"
+                    label="Avisos" type="text" fullWidth variant="standard"
+                    value={workorder_alert}
+                    onChange={ event => setWorkorder_alert(event.target.value) }
                 />
                 <p>MATERIALES</p> <button>Añadir</button>
             </form>

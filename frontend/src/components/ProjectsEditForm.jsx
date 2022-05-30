@@ -29,6 +29,7 @@ const ProjectsEditForm = () => {
           setProject_author(project.user_name)
           setProject_customer(project.project_customer);
           setProject_description(project.project_description);
+          setProject_alert(project.project_alert)
         }
 
         getProject(id);
@@ -39,6 +40,7 @@ const ProjectsEditForm = () => {
     const [project_author, setProject_author] = useState('');
     const [project_customer, setProject_customer] = useState('');
     const [project_description, setProject_description] = useState('');
+    const [project_alert, setProject_alert] = useState('');
     const [error, setError] = useState(null);
 
     const handleChangeCustomer = (event) => {
@@ -65,6 +67,7 @@ const ProjectsEditForm = () => {
                 project_name: project_name,
                 project_customer: project_customer,
                 project_description: project_description,
+                project_alert: project_alert,
             }
 
             const updateProjectResponse = updateProjects(id, editedProject);
@@ -77,6 +80,7 @@ const ProjectsEditForm = () => {
                 setProject_name('');
                 setProject_customer('');
                 setProject_description('');
+                setProject_alert('');
                 setError(null);
             }
         }catch(error){
@@ -85,7 +89,7 @@ const ProjectsEditForm = () => {
     }
 
     return (
-        <Paper sx={{ width: '50%', overflow: 'hidden' }}>
+        <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
             <h3>Edición de Proyectos</h3>
             <form onSubmit={ saveData } id="projectEditForm">
                 {error ? <span className="text-danger">{error}</span> : null}
@@ -112,6 +116,12 @@ const ProjectsEditForm = () => {
                     ))}
                     
                 </Select>
+                <InputLabel className="mt-2" id="project_alertInput">Avisos</InputLabel>
+                <TextareaAutosize autoFocus margin="dense" id="project_alert"
+                    label="Avisos" type="text" fullWidth variant="standard"
+                    value={project_alert}
+                    onChange={ event => setProject_alert(event.target.value) }
+                />
             </form>
             <div>
                 <Button component={NavLink} to={`/menu/projects/projectlist`}>Cancelar</Button>

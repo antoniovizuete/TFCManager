@@ -7,29 +7,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getWorkorders } from '../services/workorder.services';
+import { getInactiveProjects } from '../services/project.services';
 import { useEffect, useState } from 'react';
 import AccessDetailsButton from './AccessDetailsButton';
-import TableEditButton from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
+import { getUserData } from '../services/login.services';
+import TableRetrieveButton from './TableRetrieveButton';
 
 const columns = [
-  { id: 'workorder_id', label: 'ID', minWidth: 50 },
-  { id: 'user_name', label: 'Creado Por', minWidth: 50 },
-  { id: 'project_name', label: 'Proyecto', minWidth: 80 },
-  { id: 'workorder_date', label: 'Fecha de creación', minWidth: 100 },
-  { id: 'workorder_hours', label: 'Horas', minWidth: 40 },
-  { id: 'workorder_minutes', label: 'Minutos', minWidth: 40 },
+  { id: 'project_id', label: 'ID', minWidth: 50 },
+  { id: 'project_name', label: 'Proyecto', minWidth: 50 },
+  { id: 'user_name', label: 'Creado Por', minWidth: 80 },
+  { id: 'customer_name', label: 'Cliente', minWidth: 100 },
+  { id: 'project_date', label: 'Fecha de creación', minWidth: 40 },
 ];
 
-export default function WorkordersTable() {
+export default function ProjectsTable() {
 
-    const [workorders, setWorkorders] = useState([]);
+    const [projects, setProjects] = useState([]);
     useEffect( () =>{
-        const getAllWorkorders = async() => {
-            setWorkorders(await getWorkorders());
+        const getAllProjects = async() => {
+            setProjects(await getInactiveProjects());
         }
-        getAllWorkorders();
+        getAllProjects();
     }, []);
 
   const [page, setPage] = React.useState(0);
@@ -43,6 +42,8 @@ export default function WorkordersTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const userLogged = getUserData();
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -59,18 +60,16 @@ export default function WorkordersTable() {
                   {column.label}
                 </TableCell>
               ))}
-                <TableCell>Detalles</TableCell>
-                <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
+                <TableCell>Recuperar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {workorders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((workorder) => {
+            {projects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((project) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={workorder.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={project.code}>
                     {columns.map((column) => {
-                      const value = workorder[column.id];
+                      const value = project[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -79,9 +78,7 @@ export default function WorkordersTable() {
                         </TableCell>
                       );
                     })}
-                    <TableCell><AccessDetailsButton id={workorder.workorder_id} section='projects/workorders'/></TableCell>
-                    <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
-                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
+                    <TableCell><TableRetrieveButton  id={project.project_id} section='projects/project' /></TableCell>
                   </TableRow>
                 );
               })}
@@ -91,7 +88,7 @@ export default function WorkordersTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={workorders.length}
+        count={projects.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

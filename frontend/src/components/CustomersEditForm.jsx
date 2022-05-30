@@ -1,5 +1,5 @@
 
-  import { Button, TextField } from "@material-ui/core";
+  import { Button, TextField, InputLabel, TextareaAutosize } from "@material-ui/core";
   import validator from "validator";
   import { getCustomersById } from "../services/customer.services";
   import { updateCustomers } from "../services/customer.services";
@@ -25,6 +25,7 @@
           setCustomer_province(customer.customer_province);
           setCustomer_cp(customer.customer_cp);
           setCustomer_phone(customer.customer_phone);
+          setCustomer_alert(customer.customer_alert);
         }
 
         getCustomer(id);
@@ -38,6 +39,7 @@
     const [customer_province, setCustomer_province] = useState('');
     const [customer_cp, setCustomer_cp] = useState('');
     const [customer_phone, setCustomer_phone] = useState('');
+    const [customer_alert, setCustomer_alert] = useState('');
     const [error, setError] = useState(null);
   
     const saveData = async (event) => {
@@ -75,7 +77,8 @@
           customer_city: customer_city,
           customer_province: customer_province,
           customer_cp: customer_cp,
-          customer_phone: customer_phone
+          customer_phone: customer_phone,
+          customer_alert: customer_alert
         }
     
         const updateCustomerResponse = await updateCustomers(id, editedCustomer);
@@ -94,6 +97,7 @@
           setCustomer_province('');
           setCustomer_cp('');
           setCustomer_phone('');
+          setCustomer_alert('');
           setError(null);
         }
     
@@ -105,7 +109,7 @@
   
     return (
   
-      <Paper sx={{ width: '50%', overflow: 'hidden' }}>
+      <Paper sx={{ width: '50%', overflow: 'hidden', p:3}}>
         <h3>Edición de Clientes</h3>
         <form onSubmit={ saveData } id="customerEditForm">
           {error ? <span className="text-danger">{error}</span> : null}
@@ -148,6 +152,12 @@
               value={customer_phone}
               onChange={ event => setCustomer_phone(event.target.value) }
           />
+          <InputLabel className="mt-2" id="descriptionInput">Avisos</InputLabel>
+          <TextareaAutosize autoFocus margin="dense" id="customer_alert"
+              label="Avisos" type="text" fullWidth variant="standard"
+              onChange={ event => setCustomer_alert(event.target.value) }
+              value={customer_alert}
+          /> 
         </form>
         
         <div>

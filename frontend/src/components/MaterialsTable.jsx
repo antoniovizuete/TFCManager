@@ -65,7 +65,6 @@ export default function MaterialsTable() {
                 </TableCell>
                 
               ))}
-                <TableCell>Detalles</TableCell>
                 <TableCell>Editar</TableCell>
                 <TableCell>Borrar</TableCell>
             </TableRow>
@@ -85,7 +84,6 @@ export default function MaterialsTable() {
                         </TableCell>
                       );
                     })}
-                        <TableCell><AccessDetailsButton id={material.material_id} section='materials'/></TableCell>
                         <TableCell>
                           {
                             userLogged.role === 1 ? ( <TableEditButton  id={material.material_id} section='materials' />) : 

@@ -20,6 +20,9 @@ const Hiddencomp = (props) => {
         <Hidden only={['lg', 'xs']}>
             <Button variant='contained' color='secondary'>Botón 4</Button>
         </Hidden>
+        <Hidden only={['lg', 'xs']}>
+            <Button variant='contained' color='secondary'>Botón 5</Button>
+        </Hidden>
     </div>
   )
 };

@@ -105,7 +105,7 @@ const UsersEditForm = () => {
 
     return (
 
-        <Paper sx={{ width: '50%', overflow: 'hidden' }}>
+        <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
             <h3>Edición de Empleados</h3>
             <form onSubmit={ saveData } id="userEditForm">
                 {error ? <span className="text-danger">{error}</span> : null}

@@ -6,6 +6,7 @@ import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import DescriptionIcon from '@material-ui/icons/Description';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
 import {NavLink} from 'react-router-dom';
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 
 const Lists = () => {
   return(
@@ -39,6 +40,14 @@ const Lists = () => {
                     <AllInboxIcon />
                 </ListItemIcon>
                 <ListItemText primary='Materiales'/>
+            </ListItem>
+
+            <ListItem button component={NavLink} to={"/menu/inactives"}>
+                <ListItemIcon>
+                    <DeleteSweepIcon />
+                </ListItemIcon>
+            
+                <ListItemText primary='Gestión de Inactivos'/>
             </ListItem>
 
             <Divider />

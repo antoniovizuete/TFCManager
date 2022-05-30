@@ -1,14 +1,23 @@
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Select, MenuItem, InputLabel, TextareaAutosize } from "@material-ui/core"; 
+import { Button, Select, MenuItem, InputLabel, TextareaAutosize, TextField } from "@material-ui/core"; 
 import React, { useState, useEffect } from "react";
 import { getProjects } from '../services/project.services';
-import { getUsers } from '../services/user.services';
-import { getMaterials } from '../services/material.services';
+import { getUserById } from '../services/user.services';
+// import { getMaterials } from '../services/material.services';
 import { postWorkorders } from "../services/workorder.services";
-import { postWorkorders_materials } from "../services/workorder_materials.services";
+import { getHourlyrate } from "../services/hourlyrate.services";
+import { getUserData } from "../services/login.services";
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {NavLink} from 'react-router-dom';
 
-const WorkordersFormModal = ({open, handleClose}) => {
+const WorkordersFormModal = () => {
+
+    const navigate = useNavigate();
+
+    const userLogged = getUserData();
+    const id = userLogged.id;
 
     const [projects, setProjects] = useState([]);
     useEffect( () =>{
@@ -20,102 +29,119 @@ const WorkordersFormModal = ({open, handleClose}) => {
 
     const [users, setUsers] = useState([]);
     useEffect( () =>{
-        const getAllUsers = async() => {
-            setUsers(await getUsers());
+        const getAllUsers = async(id) => {
+            setUsers(await getUserById(id));
         }
-        getAllUsers();
+        getAllUsers(id);
     }, []);
 
-    const [materials, setMaterials] = useState([]);
-    useEffect( ()=>{
-        const getAllMaterials = async() => {
-            setMaterials(await getMaterials());
+    const [hourlyrate, setHourlyrate] = useState([]);
+    useEffect( () =>{
+        const getAllHourlyrate = async() => {
+            setHourlyrate(await getHourlyrate());
         }
-        getAllMaterials();
+        getAllHourlyrate();
     }, []);
+
+    // const [materials, setMaterials] = useState([]);
+    // useEffect( ()=>{
+    //     const getAllMaterials = async() => {
+    //         setMaterials(await getMaterials());
+    //     }
+    //     getAllMaterials();
+    // }, []);
 
     const [workorder_author, setWorkorder_author] = useState('');
     const [workorder_project, setWorkorder_project] = useState('');
     const [workorder_hours, setWorkorder_hours] = useState('');
-    const [workorder_minutes, setWorkorder_minutes] = useState(null);
+    const [workorder_minutes, setWorkorder_minutes] = useState('');
+    const [workorder_hourlyrate, setWorkorder_hourlyrate] = useState('');
+    const [workorder_alert, setWorkorder_alert] = useState('');
     const [error, setError] = useState(null);
 
     const handleChangeUser = (event) => {
         setWorkorder_author(event.target.value);
     };
 
+    console.log(workorder_author)
     const handleChangeProject = (event) => {
         setWorkorder_project(event.target.value);
     };
 
-    const handleChangeMaterial = (event) => {
-        setMaterials(event.target.value);
+    const handleChangeHourlyrate = (event) => {
+        setWorkorder_hourlyrate(event.target.value);
     };
 
-    const saveData = (event) => {
+    // const handleChangeMaterial = (event) => {
+    //     setMaterials(event.target.value);
+    // };
+
+    const saveData = async(event) => {
         event.preventDefault();
 
-        if(!workorder_author.trim()){
-           setError('Introduce un autor para el parte.');
-            return
+        try{
+
+            if(!workorder_project.trim()){
+                setError('Asigna el parte a un proyecto.');
+                return
+            }
+
+            if(!workorder_hourlyrate.trim()){
+                setError('Asigna una tarifa al parte de trabajo.');
+                return
+            }
+
+            if(!workorder_hours.trim()){
+                setError('Introduce la cantidad de horas imputadas.');
+                return
+            }
+
+            if(!workorder_minutes.trim()){
+                setError('Introduce la cantidad de minutos imputados.');
+                return
+            }
+
+            const newWorkorder = {
+                workorder_author: workorder_author,
+                workorder_project: workorder_project,
+                workorder_hours: workorder_hours,
+                workorder_minutes: workorder_minutes,
+                workorder_alert: workorder_alert,
+                workorder_hourlyrate: workorder_hourlyrate,
+            }
+
+            const newWorkorderResponse = await  postWorkorders(newWorkorder);
+            
+            if(newWorkorderResponse.errors){
+                setError(newWorkorderResponse.errors[0].msg);
+                return
+            }else{
+                event.target.reset();
+                navigate("/menu/projects/workorderlist", { replace: true });
+                setWorkorder_author('');
+                setWorkorder_project('');
+                setWorkorder_hours('');
+                setWorkorder_minutes('');
+                setWorkorder_alert('');
+                setWorkorder_hourlyrate('');
+                setError('');
+            }
+        }catch(eror){
+            setError(error);
         }
-
-        if(!workorder_project.trim()){
-            setError('Asigna el parte a un proyecto.');
-            return
-        }
-
-        if(!workorder_hours.trim()){
-            setError('Introduce la cantidad de horas imputadas.');
-            return
-        }
-
-        if(!workorder_minutes.trim()){
-            setError('Introduce la cantidad de minutos imputados.');
-            return
-        }
-
-        const newWorkorder = {
-            workorder_author: workorder_author,
-            workorder_project: workorder_project,
-            workorder_hours: workorder_hours,
-            workorder_minutes: workorder_minutes,
-        }
-
-        const newWorkorder_material = {
-            materials: materials,
-        }
-
-        console.log(newWorkorder);
-        console.log(newWorkorder_material);
-
-        event.target.reset();
-        setWorkorder_author('');
-        setWorkorder_project('');
-        setWorkorder_hours('');
-        setWorkorder_minutes('');
-        setError('');
-
-        postWorkorders(newWorkorder);
-        postWorkorders_materials(newWorkorder_material)
 
     };
 
     return (
 
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Registro de Partes de trabajo</DialogTitle>
-        <DialogContent>
+        <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
+            <h3>Nuevo Parte de trabajo</h3>
             <form onSubmit={ saveData } id="workorderForm">
                 {error ? <span className="text-danger">{error}</span> : null}
                 <InputLabel className="mt-2" id="workorder_authorInput">Usuario</InputLabel>
                 <Select labelId="Usuario" id="workorder_author" style={{width: '100%'}}
                     value={workorder_author} label="Usuario" onChange={handleChangeUser}> 
-                
-                    {users.map((users) => (
-                        <MenuItem value={`${users.user_id}`}>{users.user_name}</MenuItem>
-                    ))}
-                    
+                    <MenuItem value={`${users.user_id}`}>{users.user_name}</MenuItem>
                 </Select>
                 <InputLabel className="mt-2" id="workorder_projectInput">Proyecto</InputLabel>
                 <Select labelId="Proyecto" id="workorder_project" style={{width: '100%'}}
@@ -138,15 +164,28 @@ const WorkordersFormModal = ({open, handleClose}) => {
                     startAdornment={<InputAdornment position="start">M.</InputAdornment>}
                     onChange={ event => setWorkorder_minutes(event.target.value) }
                 />
+                <InputLabel className="mt-2" id="workorder_hourlyrateInput">Tarifa</InputLabel>
+                <Select labelId="Tarifa" id="workorder_hourlyrate" style={{width: '100%'}}
+                    value={workorder_hourlyrate} label="Tarifa" onChange={handleChangeHourlyrate}> 
+                
+                    {hourlyrate.map((hourlyrate) => (
+                        <MenuItem value={`${hourlyrate.hourlyrate_id}`}>{hourlyrate.hourlyrate_name} {hourlyrate.hourlyrate_pvp}€</MenuItem>
+                    ))}
+                    
+                </Select>
+                <InputLabel className="mt-2" id="workorder_alertInput">Avisos</InputLabel>
+                <TextareaAutosize autoFocus margin="dense" id="workorder_alert"
+                    label="Avisos" type="text" fullWidth variant="standard"
+                    value={workorder_alert}
+                    onChange={ event => setWorkorder_alert(event.target.value) }
+                />
                 <p>MATERIALES</p> <button>Añadir</button>
             </form>
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button type="submit" form="workorderForm">Registrar</Button>
-        </DialogActions>
-        </Dialog>
-
+            <div>
+                <Button component={NavLink} to={`/menu/projects/workorderlist`}>Cancelar</Button>
+                <Button type="submit" form="workorderForm">Registrar</Button>
+            </div>
+        </Paper>
     );
 };
 

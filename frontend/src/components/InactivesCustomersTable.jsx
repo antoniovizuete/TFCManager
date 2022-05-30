@@ -7,29 +7,31 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getWorkorders } from '../services/workorder.services';
+import { getInactivesCustomers } from '../services/customer.services';
 import { useEffect, useState } from 'react';
-import AccessDetailsButton from './AccessDetailsButton';
-import TableEditButton from './TableEditButton';
-import TableDeleteButton from './TableDeleteButton';
+import TableRetrieveButton from './TableRetrieveButton';
+import { getUserData } from '../services/login.services';
 
 const columns = [
-  { id: 'workorder_id', label: 'ID', minWidth: 50 },
-  { id: 'user_name', label: 'Creado Por', minWidth: 50 },
-  { id: 'project_name', label: 'Proyecto', minWidth: 80 },
-  { id: 'workorder_date', label: 'Fecha de creación', minWidth: 100 },
-  { id: 'workorder_hours', label: 'Horas', minWidth: 40 },
-  { id: 'workorder_minutes', label: 'Minutos', minWidth: 40 },
+  { id: 'customer_id', label: 'ID', minWidth: 50 },
+  { id: 'customer_dni', label: 'DNI', minWidth: 50 },
+  { id: 'customer_name', label: 'Nombre', minWidth: 80 },
+  { id: 'customer_email', label: 'Email', minWidth: 100 },
+  { id: 'customer_address', label: 'Dirección', minWidth: 50},
+  { id: 'customer_city', label: 'Ciudad', minWidth: 40 },
+  { id: 'customer_province', label: 'Provincia', minWidth: 50 },
+  { id: 'customer_cp', label: 'CP', minWidth: 30 },
+  { id: 'customer_phone', label: 'Teléfono', minWidth: 50 },
 ];
 
-export default function WorkordersTable() {
+export default function InactivesCustomersTable() {
 
-    const [workorders, setWorkorders] = useState([]);
+    const [customers, setCustomers] = useState([]);
     useEffect( () =>{
-        const getAllWorkorders = async() => {
-            setWorkorders(await getWorkorders());
+        const getAllCustomers = async() => {
+            setCustomers(await getInactivesCustomers());
         }
-        getAllWorkorders();
+        getAllCustomers();
     }, []);
 
   const [page, setPage] = React.useState(0);
@@ -43,6 +45,8 @@ export default function WorkordersTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const userLogged = getUserData();
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -58,19 +62,19 @@ export default function WorkordersTable() {
                 >
                   {column.label}
                 </TableCell>
+                
               ))}
-                <TableCell>Detalles</TableCell>
-                <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
+                <TableCell>Recuperar</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
-            {workorders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((workorder) => {
+            {customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((customer) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={workorder.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={customer.code}>
                     {columns.map((column) => {
-                      const value = workorder[column.id];
+                      const value = customer[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -79,9 +83,7 @@ export default function WorkordersTable() {
                         </TableCell>
                       );
                     })}
-                    <TableCell><AccessDetailsButton id={workorder.workorder_id} section='projects/workorders'/></TableCell>
-                    <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
-                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
+                        <TableCell> <TableRetrieveButton  id={customer.customer_id} section='customers' /></TableCell>
                   </TableRow>
                 );
               })}
@@ -91,12 +93,13 @@ export default function WorkordersTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={workorders.length}
+        count={customers.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
+    
   );
 }

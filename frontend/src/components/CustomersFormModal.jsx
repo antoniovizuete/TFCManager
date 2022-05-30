@@ -1,11 +1,13 @@
 
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { Button, TextField, InputLabel, TextareaAutosize } from "@material-ui/core";
 import React, { useState } from "react";
 import validator from "validator";
 import { postCustomers } from "../services/customer.services";
+import { Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import {NavLink} from 'react-router-dom';
 
-const CustomersFormModal = ({open, handleClose}) => {
+const CustomersFormModal = () => {
 
   const navigate = useNavigate();
 
@@ -17,6 +19,7 @@ const CustomersFormModal = ({open, handleClose}) => {
   const [customer_province, setCustomer_province] = useState('');
   const [customer_cp, setCustomer_cp] = useState('');
   const [customer_phone, setCustomer_phone] = useState('');
+  const [customer_alert, setCustomer_alert] = useState('');
   const [error, setError] = useState(null);
 
   const saveData = async (event) => {
@@ -55,7 +58,8 @@ const CustomersFormModal = ({open, handleClose}) => {
         customer_city: customer_city,
         customer_province: customer_province,
         customer_cp: customer_cp,
-        customer_phone: customer_phone
+        customer_phone: customer_phone,
+        customer_alert: customer_alert
       }
 
       
@@ -65,8 +69,8 @@ const CustomersFormModal = ({open, handleClose}) => {
         setError(newCustomerResponse.errors[0].msg);
         return
       }else{
-        navigate("/menu/customers", { replace: true });
         event.target.reset();
+        navigate("/menu/customers", { replace: true });
         setCustomer_dni('');
         setCustomer_name('');
         setCustomer_email('');
@@ -75,6 +79,7 @@ const CustomersFormModal = ({open, handleClose}) => {
         setCustomer_province('');
         setCustomer_cp('');
         setCustomer_phone('');
+        setCustomer_alert('');
         setError(null);
       }
       
@@ -84,10 +89,8 @@ const CustomersFormModal = ({open, handleClose}) => {
   }
 
   return (
-
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Registro de Clientes</DialogTitle>
-      <DialogContent>
+      <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
+        <h3>Nuevo Cliente</h3>
         <form onSubmit={ saveData } id="customerForm">
           {error ? <span className="text-danger">{error}</span> : null}
           <TextField autoFocus margin="dense" id="customer_dni"
@@ -122,13 +125,17 @@ const CustomersFormModal = ({open, handleClose}) => {
               label="Teléfono" type="number" fullWidth variant="standard"
               onChange={ event => setCustomer_phone(event.target.value) }
           />
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
-        <Button type="submit" form="customerForm">Registrar</Button>
-      </DialogActions>
-    </Dialog>
+          <InputLabel className="mt-2" id="descriptionInput">Avisos</InputLabel>
+          <TextareaAutosize autoFocus margin="dense" id="customer_alert"
+              label="Avisos" type="text" fullWidth variant="standard"
+              onChange={ event => setCustomer_alert(event.target.value) }
+          />
+      </form>
+        <div>
+          <Button component={NavLink} to={`/menu/customers`}>Cancelar</Button>
+          <Button type="submit" form="customerForm">Registrar</Button>
+        </div>
+    </Paper>
 
   );
 };

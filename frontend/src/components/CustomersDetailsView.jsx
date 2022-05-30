@@ -17,7 +17,12 @@ import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import BusinessIcon from '@material-ui/icons/Business';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import AddAlertIcon from '@material-ui/icons/AddAlert';
-import { getProjects } from '../services/project.services';
+import WorkIcon from '@material-ui/icons/Work';
+import WorkOffIcon from '@material-ui/icons/WorkOff';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import { getProjectsByCustomerCount } from '../services/project.services';
+import { getInactiveProjectsByCustomerCount } from '../services/project.services';
+import { getWorkorderByCustomerId } from '../services/workorder.services';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -68,7 +73,32 @@ export default function CustomersDetailsView() {
         getCustomer(id);
     }, []);
 
+    const [activeProjects, setActiveProjects] = useState([]);
+    useEffect( () =>{
+        const getActiveProjects = async(id) => {
+          setActiveProjects(await getProjectsByCustomerCount(id));
+        }
+        getActiveProjects(id);
+    }, []);
    
+    const [inactiveProjects, setInactiveProjects] = useState([]);
+    useEffect( () =>{
+        const getInactiveProjects = async(id) => {
+          setInactiveProjects(await getInactiveProjectsByCustomerCount(id));
+        }
+        getInactiveProjects(id);
+    }, []);
+   
+    const customerId = customer.customer_id;
+    const [customerWorkorders, setCustomerWorkorders] = useState([]);
+    useEffect( () =>{
+        const getCustomerWorkorders = async(customerId) => {
+          setCustomerWorkorders(await getWorkorderByCustomerId(customerId));
+        }
+        getCustomerWorkorders(customerId);
+    }, [customerId]);
+    
+    console.log(customerWorkorders)
 
     const [expanded, setExpanded] = React.useState('panel1');
     
@@ -85,7 +115,7 @@ export default function CustomersDetailsView() {
                 <AccordionDetails className="row">
                     
                     <div className="col col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <Paper elevation={3} className='p-2 ms-4'>
+                        <Paper elevation={3} className='p-2 mt-3 ms-4'>
                             <h6 className="ms-2 me-2"><PersonIcon />      Cliente</h6>
                             <p className="ms-2 me-2">{customer.customer_name}</p>
                             <p className="ms-2 me-2">id: {customer.customer_id}</p>
@@ -108,8 +138,14 @@ export default function CustomersDetailsView() {
                             <p className="card-text">{customer.customer_cp}</p>
                         </Paper>
                         <Paper elevation={3} className='p-2 mt-3 ms-4'>
+                            <h6 className="card-title"><WorkIcon/>    Proyectos Activos: {activeProjects}</h6>
+                            <h6 className="card-title"><WorkOffIcon/>    Proyectos Cerrados: {inactiveProjects}</h6>
+                            <h6 className="card-title"><AssignmentTurnedInIcon/>    Partes de trabajo: {}</h6>
+                        </Paper>
+                        <Paper elevation={3} className='p-2 mt-3 ms-4'>
                             <h6 className="card-title"><AddAlertIcon/>    Avisos</h6>
-                            <p className="card-text">Sin avisos</p>
+                            <p className="card-text">
+                              {customer.customer_alert}</p>
                         </Paper>
                     </div>                 
                 </AccordionDetails>
