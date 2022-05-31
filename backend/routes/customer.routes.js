@@ -36,7 +36,7 @@ router.post('/',
     ],
     customerPost);
 
-router.post('/:id', authorizationToken, isAdminRole, customerByIdGet);
+router.post('/:id', authorizationToken, customerByIdGet);
 
 router.put('/:id', authorizationToken, isAdminRole, 
     [

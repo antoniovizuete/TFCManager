@@ -18,7 +18,7 @@ const workorderGet = async(req, res) => {
         workorders
         });
     }catch(error){
-        return  res.send({error:'No hay Partes de Trabajo en la base de datos'});
+        return  res.send({error:'No hay Partes de Trabajo en la base de datos TODOS'});
     }
 }
 

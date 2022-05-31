@@ -19,7 +19,7 @@ router.get('/inactives', authorizationToken, inactiveProjectGet);
 
 router.post('/', authorizationToken, isAdminRole, projectPost)
 
-router.post('/:id', authorizationToken, isAdminRole, projectGetById);
+router.post('/:id', authorizationToken, projectGetById);
 
 router.post('/:id/inactive', authorizationToken, isAdminRole, inactiveProjectGetById);
 

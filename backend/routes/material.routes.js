@@ -20,11 +20,11 @@ router.post('/:id', authorizationToken, materialByIdGet);
 
 router.post('/:id/inactives', authorizationToken, inactiveMaterialByIdGet);
 
-router.post('/:id/projects', authorizationToken, isAdminRole, materialsPvpAdditionByprojectId);
+router.post('/:id/projects', authorizationToken, materialsPvpAdditionByprojectId);
 
-router.post('/:id/workorders', authorizationToken, isAdminRole, getMaterialsByWorkorderId);
+router.post('/:id/workorders', authorizationToken, getMaterialsByWorkorderId);
 
-router.post('/:id/projects/total', authorizationToken, isAdminRole, materialsTotalPvpByprojectId);
+router.post('/:id/projects/total', authorizationToken, materialsTotalPvpByprojectId);
 
 router.post('/', authorizationToken, isAdminRole, materialPost);
 

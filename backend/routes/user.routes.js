@@ -29,9 +29,9 @@ router.post('/', authorizationToken, isAdminRole,
 
 router.post('/:id/projects', authorizationToken, projectGetByUserId);
 
-router.post('/:id', authorizationToken, isAdminRole, userGetById);
+router.post('/:id', authorizationToken, userGetById);
 
-router.post('/:id/inactive', authorizationToken, isAdminRole, inactiveUserGetById);
+router.post('/:id/inactive', authorizationToken, inactiveUserGetById);
 
 router.put('/:id', authorizationToken, isAdminRole, userPut);
 

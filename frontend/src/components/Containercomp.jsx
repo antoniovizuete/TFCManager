@@ -41,6 +41,7 @@ import InactivesUsersTable from './InactivesUsersTable';
 import InactivesProjectsTable from './InactivesProjectsTable';
 import InactivesWorkordersTable from './InactivesWorkordersTable';
 import InactivesMaterialsTable from './InactivesMaterialsTable';
+import ContainercompEmployee from './ContainercompEmployee';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -63,59 +64,65 @@ const Containercomp = () => {
     };
 
     const jwtToken = getUserData();
+    const userLogged = getUserData();
 
-    return jwtToken ?
-        <div className={classes.root}>
-            <Navbar openDrawer={openDrawer}/>
-            <Hidden xsDown>
-                <Drawercomp variant='permanent' open={true}/>
-            </Hidden>
-            <Hidden smUp>
-                <Drawercomp variant='temporary' open={deployDrawer} onClose={openDrawer}/>
-            </Hidden>
-            <div className={classes.content}>
-                <div className={classes.toolbar}></div>
-                <Routes>
-                    <Route path="/customers" element={<CustomersBox />}/>
-                    <Route path="/customers/:id/details" element={<CustomersDetailsView /> }/>
-                    <Route path="/customers/:id/edit" element={<CustomersEditForm /> }/>
-                    <Route path="/customers/:id/delete" element={<CustomersDeleteModal /> }/>
-                    <Route path="/customers/:id/retrieve" element={<CustomersRetrieveModal /> }/>
-                    <Route path="/customers/create" element={<CustomersFormModal /> }/>
-                    <Route path="/users" element={<UsersBox />}/>
-                    <Route path="/users/:id/details" element={<UsersDetailsView /> }/> 
-                    <Route path="/users/:id/edit" element={<UsersEditForm /> }/>
-                    <Route path="/users/:id/delete" element={<UsersDeleteModal /> }/>
-                    <Route path="/users/:id/retrieve" element={<UsersRetrieveModal /> }/>
-                    <Route path="/users/create" element={<UsersFormModal /> }/>
-                    <Route path="/materials" element={<MaterialsBox />}/>
-                    <Route path="/materials/:id/edit" element={<MaterialsEditForm /> }/>
-                    <Route path="/materials/:id/delete" element={<MaterialsDeleteModal /> }/>
-                    <Route path="/materials/:id/retrieve" element={<MaterialsRetrieveModal /> }/>
-                    <Route path="/materials/create" element={<MaterialsFormModal /> }/>
-                    <Route path="/projects" element={<ProjectSubMenu  />}/>
-                    <Route path="/projects/projectlist" element={<ProjectsBox /> }/>
-                    <Route path="/projects/project/:id/delete" element={<ProjectsDeleteModal /> }/>
-                    <Route path="/projects/project/:id/retrieve" element={<ProjectsRetrieveModal /> }/>
-                    <Route path="/projects/project/:id/edit" element={<ProjectsEditForm /> }/>
-                    <Route path="/projects/project/create" element={<ProjectsFormModal /> }/>
-                    <Route path="/projects/:id/details" element={<ProjectsDetailsView /> }/>
-                    <Route path="/projects/workorderlist" element={<WorkordersBox /> }/>
-                    <Route path="/projects/workorder/:id/delete" element={<WorkordersDeleteModal /> }/>
-                    <Route path="/projects/workorder/:id/retrieve" element={<WorkordersRetrieveModal /> }/>
-                    <Route path="/projects/workorder/:id/edit" element={<WorkordersEditForm /> }/>
-                    <Route path="/projects/workorders/:id/details" element={<WorkordersDetailsView /> }/>
-                    <Route path="/projects/workorder/create" element={<WorkordersFormModal /> }/>
-                    <Route path="/inactives" element={<InactivesBox />}/>
-                    <Route path="/inactives/customers" element={<InactivesCustomersTable />}/>
-                    <Route path="/inactives/users" element={<InactivesUsersTable />}/>
-                    <Route path="/inactives/projects" element={<InactivesProjectsTable />}/>
-                    <Route path="/inactives/workorders" element={<InactivesWorkordersTable />}/>
-                    <Route path="/inactives/materials" element={<InactivesMaterialsTable />}/>
-                    
-                </Routes>
-            </div>
-        </div> : <Navigate to={{pathname: '/'}} replace={true}/>
+    return  (userLogged.role===1 ?
+            <div className={classes.root}>
+                <Navbar openDrawer={openDrawer}/>
+                <Hidden xsDown>
+                    <Drawercomp variant='permanent' open={true}/>
+                </Hidden>
+                <Hidden smUp>
+                    <Drawercomp variant='temporary' open={deployDrawer} onClose={openDrawer}/>
+                </Hidden>
+                <div className={classes.content}>
+                    <div className={classes.toolbar}></div>
+                    <Routes>
+                        
+                        <Route path="/customers" element={<CustomersBox />}/>
+                        <Route path="/customers/:id/details" element={<CustomersDetailsView /> }/>
+                        <Route path="/customers/:id/edit" element={<CustomersEditForm /> }/>
+                        <Route path="/customers/:id/delete" element={<CustomersDeleteModal /> }/>
+                        <Route path="/customers/:id/retrieve" element={<CustomersRetrieveModal /> }/>
+                        <Route path="/customers/create" element={<CustomersFormModal /> }/>
+
+                        <Route path="/users" element={<UsersBox />}/>
+                        <Route path="/users/:id/details" element={<UsersDetailsView /> }/> 
+                        <Route path="/users/:id/edit" element={<UsersEditForm /> }/>
+                        <Route path="/users/:id/delete" element={<UsersDeleteModal /> }/>
+                        <Route path="/users/:id/retrieve" element={<UsersRetrieveModal /> }/>
+                        <Route path="/users/create" element={<UsersFormModal /> }/>
+
+                        <Route path="/materials" element={<MaterialsBox />}/>
+                        <Route path="/materials/:id/edit" element={<MaterialsEditForm /> }/>
+                        <Route path="/materials/:id/delete" element={<MaterialsDeleteModal /> }/>
+                        <Route path="/materials/:id/retrieve" element={<MaterialsRetrieveModal /> }/>
+                        <Route path="/materials/create" element={<MaterialsFormModal /> }/>
+
+                        <Route path="/projects/projectlist" element={<ProjectsBox /> }/>
+                        <Route path="/projects" element={<ProjectSubMenu  />}/>
+                        <Route path="/projects/project/:id/delete" element={<ProjectsDeleteModal /> }/>
+                        <Route path="/projects/project/:id/retrieve" element={<ProjectsRetrieveModal /> }/>
+                        <Route path="/projects/project/:id/edit" element={<ProjectsEditForm /> }/>
+                        <Route path="/projects/project/create" element={<ProjectsFormModal /> }/>
+                        <Route path="/projects/:id/details" element={<ProjectsDetailsView /> }/>
+
+                        <Route path="/projects/workorder/:id/delete" element={<WorkordersDeleteModal /> }/>
+                        <Route path="/projects/workorder/:id/retrieve" element={<WorkordersRetrieveModal /> }/>
+                        <Route path="/projects/workorderlist" element={<WorkordersBox /> }/>
+                        <Route path="/projects/workorder/:id/edit" element={<WorkordersEditForm /> }/>
+                        <Route path="/projects/workorders/:id/details" element={<WorkordersDetailsView /> }/>
+                        <Route path="/projects/workorder/create" element={<WorkordersFormModal /> }/>
+
+                        <Route path="/inactives" element={<InactivesBox />}/>
+                        <Route path="/inactives/customers" element={<InactivesCustomersTable />}/>
+                        <Route path="/inactives/users" element={<InactivesUsersTable />}/>
+                        <Route path="/inactives/projects" element={<InactivesProjectsTable />}/>
+                        <Route path="/inactives/workorders" element={<InactivesWorkordersTable />}/>
+                        <Route path="/inactives/materials" element={<InactivesMaterialsTable />}/>  
+                    </Routes>
+                </div>
+            </div> : <ContainercompEmployee />)
     
 }
 

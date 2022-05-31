@@ -6,6 +6,7 @@ import {ThemeProvider} from '@material-ui/core/styles';
 import theme from './themeConfig';
 import Login from './components/Login';
 import Containercomp from './components/Containercomp';
+import ContainercompEmployee from './components/ContainercompEmployee';
 
 const useStyle = makeStyles({
   botonPersonalizado:{
@@ -29,6 +30,7 @@ function App() {
           <Routes>
             <Route path="/" strict element={<Login />} />
             <Route path="/menu/*" element={<Containercomp />} />
+            <Route path="/menu/*" element={<ContainercompEmployee />} />
           </Routes>
         </div>
       </Router>

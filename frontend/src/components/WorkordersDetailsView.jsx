@@ -19,6 +19,7 @@ import AccessDetailsButton from './AccessDetailsButton';
 import WorkordersMaterialsTable from './WorkordersMaterialsTable';
 import AccessibilityIcon from '@material-ui/icons/Accessibility';
 import { getWorkorderByUserId } from '../services/workorder.services';
+import { getUserData } from '../services/login.services';
 
 const Accordion = styled((props) => (
         <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -59,6 +60,7 @@ const Accordion = styled((props) => (
     export default function WorkordersDetailsView() {
 
         const { id } = useParams();
+        const userLogged = getUserData()
 
         const [workorder, setWorkorder] = useState([]);
         useEffect( () =>{
@@ -92,8 +94,6 @@ const Accordion = styled((props) => (
           setExpanded(newExpanded ? panel : false);
         };
 
-        console.log(workordersByUser)
-
         return(
             <div>
                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
@@ -114,6 +114,7 @@ const Accordion = styled((props) => (
                                 <h6 className="card-title"><PersonIcon />   Parte creado por</h6>
                                 <p className="card-text">{workorder.user_name}</p>
                             </Paper>
+                            
                             <Paper elevation={3} className='p-2 mt-3 ms-4'>
                                 <h6 className="card-title"><AddAlertIcon/>    Avisos</h6>         
                                 {
@@ -125,24 +126,22 @@ const Accordion = styled((props) => (
                         <div className="col col-sm-12 col-md-12 col-lg-6 col-xl-6">
                             <Paper elevation={3} className='p-2 mt-3 ms-4'>                
                                     <h6 className="card-title"><AccountTreeIcon />    Otros Partes del Proyecto</h6>
-                                    {projectWorkorders.map((projectWorkorder)=>{
-                                    return(
-                                    <p className="card-text">id: {projectWorkorder.workorder_id}<span> - {projectWorkorder.user_name}</span><br></br><span> Fecha: {projectWorkorder.workorder_date}</span><AccessDetailsButton id={projectWorkorder.workorder_id} section='projects/workorders'/></p>
+                                    { userLogged.role === 1 ? (projectWorkorders.map((projectWorkorder)=>{
+                                                return(<p className="card-text">id: {projectWorkorder.workorder_id}<span> - {projectWorkorder.user_name}</span><br></br><span> Fecha: {projectWorkorder.workorder_date}</span><AccessDetailsButton id={projectWorkorder.workorder_id} section='projects/workorders'/></p>)
+                                            })) : 
+                                            (<p className="card-text"> No tienes permisos para ver esta información</p>)
+                                    }
                                     
-                                    )
-                                })
-                                }
                             </Paper>
 
                             <Paper elevation={3} className='p-2 mt-3 ms-4'>                
                                     <h6 className="card-title"><AccessibilityIcon />    Otros Partes del Usuario</h6>
                                     {workordersByUser.map((userWorkorders)=>{
-                                    return(
-                                    <p className="card-text">id: {userWorkorders.workorder_id}<span> - {userWorkorders.project_name}</span><br></br><span> Fecha: {userWorkorders.workorder_date}</span><AccessDetailsButton id={userWorkorders.workorder_id} section='projects/workorders'/></p>
-                                    
-                                    )
-                                })
-                                }
+                                        return(
+                                              <p className="card-text">id: {userWorkorders.workorder_id}<span> - {userWorkorders.project_name}</span><br></br><span> Fecha: {userWorkorders.workorder_date}</span><AccessDetailsButton id={userWorkorders.workorder_id} section='projects/workorders'/></p>
+                                            )
+                                        })
+                                    }
                             </Paper>
                          
                         </div>      

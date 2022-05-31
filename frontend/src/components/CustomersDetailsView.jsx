@@ -66,29 +66,17 @@ export default function CustomersDetailsView() {
     const { id } = useParams();
 
     const [customer, setCustomer] = useState([]);
-
-    useEffect( () =>{
-        const getCustomer = async(id) => {
-            setCustomer(await getCustomersById(id));
-        }
-        getCustomer(id);
-    }, []);
-
     const [activeProjects, setActiveProjects] = useState([]);
-    useEffect( () =>{
-        const getActiveProjects = async(id) => {
-          setActiveProjects(await getProjectsByCustomerCount(id));
-        }
-        getActiveProjects(id);
-    }, []);
-   
     const [inactiveProjects, setInactiveProjects] = useState([]);
-    useEffect( () =>{
-        const getInactiveProjects = async(id) => {
-          setInactiveProjects(await getInactiveProjectsByCustomerCount(id));
-        }
-        getInactiveProjects(id);
-    }, []);
+
+    useEffect(() => {
+      const executeRequest = async() => {
+        setCustomer(await getCustomersById(id));
+        setActiveProjects(await getProjectsByCustomerCount(id));
+        setInactiveProjects(await getInactiveProjectsByCustomerCount(id));
+      }  
+      executeRequest()
+    }, [id]);
    
     const customerId = customer.customer_id;
     const [customerWorkorders, setCustomerWorkorders] = useState([]);

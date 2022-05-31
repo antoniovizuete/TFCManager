@@ -11,10 +11,6 @@ import { getMaterials } from '../services/material.services';
 import { useEffect, useState } from 'react';
 import TableEditButton  from './TableEditButton';
 import TableDeleteButton from './TableDeleteButton';
-import { getUserData } from '../services/login.services';
-import TableDeleteButtonDisabled from './TableDeleteButtonDisabled';
-import TableEditButtonDisabled from './TableEditButtonDisabled';
-import AccessDetailsButton from './AccessDetailsButton';
 
 const columns = [
   { id: 'material_id', label: 'ID', minWidth: 50 },
@@ -46,8 +42,6 @@ export default function MaterialsTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  const userLogged = getUserData();
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -84,19 +78,8 @@ export default function MaterialsTable() {
                         </TableCell>
                       );
                     })}
-                        <TableCell>
-                          {
-                            userLogged.role === 1 ? ( <TableEditButton  id={material.material_id} section='materials' />) : 
-                            (<TableEditButtonDisabled />) 
-                          }
-                        </TableCell>
-                        <TableCell>
-                          {
-                            userLogged.role === 1 ? ( <TableDeleteButton  id={material.material_id} section='materials' />) : 
-                            (<TableDeleteButtonDisabled />) 
-                          }
-                        </TableCell>
-
+                    <TableCell><TableEditButton  id={material.material_id} section='materials' /></TableCell>
+                    <TableCell><TableDeleteButton  id={material.material_id} section='materials' /></TableCell>
                   </TableRow>
                 );
               })}

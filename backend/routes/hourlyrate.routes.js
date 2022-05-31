@@ -15,14 +15,14 @@ const router = Router();
 
 router.get('/', authorizationToken, hourlyrateGet );
 
-router.post('/', authorizationToken, hourlyratePost );
+router.post('/', authorizationToken, isAdminRole, hourlyratePost );
 
 router.post('/:id', authorizationToken, hourlyrateGetById);
 
-router.put('/:id', authorizationToken, hourlyratePut);
+router.put('/:id', authorizationToken, isAdminRole, hourlyratePut);
 
-router.patch('/', authorizationToken, hourlyratePatch);
+router.patch('/', authorizationToken, isAdminRole, hourlyratePatch);
 
-router.delete('/:id', authorizationToken, deleteHourlyrate);
+router.delete('/:id', authorizationToken, isAdminRole, deleteHourlyrate);
 
 module.exports = router;

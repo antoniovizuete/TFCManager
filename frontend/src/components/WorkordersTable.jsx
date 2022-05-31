@@ -7,11 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getWorkorders } from '../services/workorder.services';
+import { getWorkorders, getWorkorderByUserId } from '../services/workorder.services';
 import { useEffect, useState } from 'react';
 import AccessDetailsButton from './AccessDetailsButton';
 import TableEditButton from './TableEditButton';
 import TableDeleteButton from './TableDeleteButton';
+import { getUserData } from '../services/login.services';
 
 const columns = [
   { id: 'workorder_id', label: 'ID', minWidth: 50 },
@@ -24,13 +25,22 @@ const columns = [
 
 export default function WorkordersTable() {
 
-    const [workorders, setWorkorders] = useState([]);
+  const userLogged = getUserData();
+  const id = userLogged.id;
+
+  const [workorders, setWorkorders] = useState([]);
+ 
     useEffect( () =>{
         const getAllWorkorders = async() => {
+          if(userLogged.role === 1){ 
             setWorkorders(await getWorkorders());
+          }else{
+            setWorkorders(await getWorkorderByUserId(id));
+          }
         }
         getAllWorkorders();
     }, []);
+ 
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -61,7 +71,7 @@ export default function WorkordersTable() {
               ))}
                 <TableCell>Detalles</TableCell>
                 <TableCell>Editar</TableCell>
-                <TableCell>Borrar</TableCell>
+                {userLogged.role === 1 ? (<TableCell>Borrar</TableCell>) : (<TableCell></TableCell>)}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -81,7 +91,7 @@ export default function WorkordersTable() {
                     })}
                     <TableCell><AccessDetailsButton id={workorder.workorder_id} section='projects/workorders'/></TableCell>
                     <TableCell><TableEditButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
-                    <TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>
+                    {userLogged.role === 1 ? (<TableCell><TableDeleteButton  id={workorder.workorder_id} section='projects/workorder' /></TableCell>):(<TableCell></TableCell>)}
                   </TableRow>
                 );
               })}
