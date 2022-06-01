@@ -118,9 +118,19 @@ const projectPatch = (req, res) => {
 const projectDelete = async(req, res) => {
     try{
         const { id } = req.params;
-        
-        const sql = 'UPDATE projects SET project_state=false WHERE project_id=?';
-        dbQuery(sql,[id]);
+        const beginT = await dbQuery('start transaction');
+        try{
+            
+            const sql = 'UPDATE projects SET project_state=false WHERE project_id=?';
+            dbQuery(sql,[id]);
+
+            const sqlWorkorder = 'UPDATE workorders SET workorder_state=false WHERE workorder_project=? ';
+            const responseWorkorder = await dbQuery(sqlWorkorder,[id]);
+            const commit = await dbQuery('commit');
+        }catch(error){
+            const rollback = await dbQuery('rollback'); 
+            throw(error);
+        };
 
         res.json({
             mssg: 'Delete Project'

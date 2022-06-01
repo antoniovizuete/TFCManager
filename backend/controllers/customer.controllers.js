@@ -149,9 +149,23 @@ const customerPut = async(req, res) => {
 const customerDelete = async(req, res) => {
     try{
         const { id } = req.params;
-        
-        const sql = 'UPDATE customers SET customer_state=false WHERE customer_id=?';
-        const response = await dbQuery(sql,[id]);
+        const beginT = await dbQuery('start transaction'); //comienza la transacción, hasta que no se ejecuta el commit no se lanzan los cambios a la BD
+        try{
+            
+            const sql = 'UPDATE customers SET customer_state=false WHERE customer_id=?';
+            const response = await dbQuery(sql,[id]);
+
+            const sqlProject = 'UPDATE projects SET project_state=false WHERE project_customer=?';
+            const responseProject = await dbQuery(sqlProject,[id]);
+
+            const sqlWorkorder = 'UPDATE workorders SET workorder_state=false WHERE workorder_project IN(SELECT project_id FROM projects WHERE project_customer=?)';
+            const responseWorkorder = await dbQuery(sqlWorkorder,[id]);
+            const commit = await dbQuery('commit');//gurada los cambios en la base de datos
+
+        }catch(error){
+            const rollback = await dbQuery('rollback'); //deshace los cambios si ha saltado un error en alguna de las querys
+            throw(error);
+        };
 
         res.json({
             response
