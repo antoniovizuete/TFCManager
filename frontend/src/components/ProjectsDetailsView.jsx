@@ -23,6 +23,7 @@ import { getMaterialByProjectId } from '../services/material.services';
 import { getMaterialTotalPvpByProjectId } from '../services/material.services';
 import { getWorkorderHoursPvpByProjectId } from '../services/workorder.services';
 import AccessDetailsButton from './AccessDetailsButton';
+import ProjectMaterialsTable from './ProjectMaterialsTable';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
@@ -232,13 +233,22 @@ export default function ProjectsDetailsView() {
         expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}
       >
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+      <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
           <Typography variant="h6">Partes de Trabajo</Typography>
         </AccordionSummary>
         <AccordionDetails className="row">
           <ProjectsDetailsWorkorderTable />
         </AccordionDetails>
       </Accordion>
-    </div>
+
+      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+              <Typography variant="h6">Materiales usados en el proyecto</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="row">
+              <ProjectMaterialsTable />
+          </AccordionDetails>
+      </Accordion>
+</div>
   );
 }; 

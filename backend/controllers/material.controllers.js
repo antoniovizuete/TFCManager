@@ -93,7 +93,7 @@ const materialsPvpAdditionByprojectId =async(req, res) =>{
     try{
         const {id} = req.params;
 
-        const sql = 'SELECT wo.workorder_project,m.material_description,sum(m.material_pvp*wom.material_amount) AS total_cost FROM workorders wo INNER JOIN workorder_materials wom on wom.workorder_id=wo.workorder_id INNER JOIN materials m on m.material_id=wom.material_id WHERE wo.workorder_project=? GROUP BY wo.workorder_project,m.material_description';
+        const sql = 'SELECT wo.workorder_project, m.material_id, m.material_reference, m.material_brand, m.material_description, m.material_pvp, m.material_ecotax, sum(wom.material_amount) AS material_amount, sum(m.material_pvp*wom.material_amount) AS total_cost FROM workorders wo INNER JOIN workorder_materials wom on wom.workorder_id=wo.workorder_id INNER JOIN materials m on m.material_id=wom.material_id WHERE wo.workorder_project=? GROUP BY wo.workorder_project, m.material_id, m.material_reference, m.material_brand, m.material_description, m.material_pvp, m.material_ecotax';
         const [ materialsByProject ] = await Promise.all([
             dbQuery(sql,[id])
         ]);

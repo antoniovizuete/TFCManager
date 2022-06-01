@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { getMaterialByWorkorderId } from '../services/material.services';
+import { getMaterialByProjectId } from '../services/material.services';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -22,18 +22,20 @@ const columns = [
   { id: 'total_cost', label: 'Precio total', minWidth:50},
   ];
 
-export default function WorkordersMaterialsTable() {
+export default function ProjectMaterialsTable() {
 
   const { id } = useParams();
-  const workorderId = id;
+  const projectId = id;
 
-  const [workorderMaterials, setWorkorderMaterials] = useState([]);
+  const [projectMaterials, setProjectMaterials] = useState([]);
   useEffect( () =>{
-      const getWorkorderMaterials = async(workorderId) => {
-        setWorkorderMaterials(await getMaterialByWorkorderId(workorderId));
+      const getProjectMaterials = async(projectId) => {
+        setProjectMaterials(await getMaterialByProjectId(projectId));
       }
-      getWorkorderMaterials(workorderId);
-  }, [workorderId]);
+      getProjectMaterials(projectId);
+  }, [projectId]);
+
+  console.log(projectMaterials)
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -66,12 +68,12 @@ export default function WorkordersMaterialsTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {workorderMaterials.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((workorderMaterial) => {
+            {projectMaterials.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((projectMaterial) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={workorderMaterial.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={projectMaterial.code}>
                     {columns.map((column) => {
-                      const value = workorderMaterial[column.id];
+                      const value = projectMaterial[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format && typeof value === 'number'
@@ -89,7 +91,7 @@ export default function WorkordersMaterialsTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={workorderMaterials.length}
+        count={projectMaterials.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

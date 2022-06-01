@@ -148,13 +148,13 @@ const Accordion = styled((props) => (
                     </AccordionDetails>
                 </Accordion>
                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                    <Typography variant="h6">Materiales aportados al proyecto</Typography>
-                </AccordionSummary>
-                <AccordionDetails className="row">
-                    <WorkordersMaterialsTable />
-                </AccordionDetails>
-            </Accordion>
+                    <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                        <Typography variant="h6">Materiales aportados al proyecto</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails className="row">
+                        <WorkordersMaterialsTable />
+                    </AccordionDetails>
+                </Accordion>
             </div>
         )
     }

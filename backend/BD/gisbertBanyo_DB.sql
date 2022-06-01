@@ -78,9 +78,9 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS projects(
     project_id INT PRIMARY KEY AUTO_INCREMENT,
-    project_name VARCHAR (20) NOT NULL,
-    project_author INT(5) NOT NULL,
-    project_customer INT(5) NOT NULL,
+    project_name VARCHAR (20),
+    project_author INT(5) DEFAULT NULL,
+    project_customer INT(5) DEFAULT NULL,
     project_description VARCHAR(200),
     project_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     project_alert VARCHAR (1000),
@@ -140,12 +140,12 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS workorders(
     workorder_id INT PRIMARY KEY AUTO_INCREMENT,
-    workorder_author INT (5),
-    workorder_project INT (5),
+    workorder_author INT (5) DEFAULT NULL,
+    workorder_project INT (5) DEFAULT NULL,
     workorder_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     workorder_hours INT (2),
     workorder_minutes INT (2),
-    workorder_hourlyrate INT (5),
+    workorder_hourlyrate INT (5) DEFAULT NULL,
     workorder_alert VARCHAR (1000),
     workorder_state TINYINT DEFAULT 1,
     FOREIGN KEY (workorder_hourlyrate) REFERENCES hourlyrates(hourlyrate_id)
@@ -170,8 +170,8 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS workorder_materials(
     workorderMaterials_id INT PRIMARY KEY AUTO_INCREMENT,
-    workorder_id INT (5),
-    material_id INT (5),
+    workorder_id INT (5) DEFAULT NULL,
+    material_id INT (5) DEFAULT NULL,
     material_amount INT(3),
     FOREIGN KEY (workorder_id) REFERENCES workorders(workorder_id)
     ON DELETE CASCADE ON UPDATE CASCADE,

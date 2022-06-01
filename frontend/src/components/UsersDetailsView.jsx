@@ -106,10 +106,6 @@ export default function UsersDetailsView() {
                             <p className="card-tex">{`${user.user_city} (${user.user_cp})`}</p>
                             <p className="card-text">{user.user_province}</p>
                         </Paper>
-                        <Paper elevation={3} className='p-2 mt-3 ms-4'>
-                            <h6 className="card-title"><AddAlertIcon/>    Avisos</h6>
-                            <p className="card-text">Sin avisos</p>
-                        </Paper>
                     </div>                 
                 </AccordionDetails>
             </Accordion>
