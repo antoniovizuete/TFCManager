@@ -16,6 +16,7 @@ class Server {
         this.projectsPath = '/api/projects';
         this.workordersPath = '/api/workorders';
         this.hourlyratePath = '/api/hourlyrate';
+        this.workorder_materialsPath = '/api/workorder_materials';
 
         //Conectar a BD
         this.connectDB();
@@ -52,6 +53,7 @@ class Server {
         this.app.use(this.projectsPath, require('../routes/project.routes'));
         this.app.use(this.workordersPath, require('../routes/workorder.routes'));
         this.app.use(this.hourlyratePath, require('../routes/hourlyrate.routes'));
+        this.app.use(this.workorder_materialsPath, require('../routes/workorder_materials.routes'));
     }
 
     listen(){

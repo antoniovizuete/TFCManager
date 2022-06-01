@@ -149,7 +149,12 @@ CREATE TABLE IF NOT EXISTS workorders(
     workorder_alert VARCHAR (1000),
     workorder_state TINYINT DEFAULT 1,
     FOREIGN KEY (workorder_hourlyrate) REFERENCES hourlyrates(hourlyrate_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (workorder_author) REFERENCES users(user_id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (workorder_project) REFERENCES projects(project_id)
     ON DELETE CASCADE ON UPDATE CASCADE
+
 );
 
 INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes, workorder_hourlyrate, workorder_alert)
@@ -164,10 +169,10 @@ VALUES
 (3, 4, 7, 0, 3, 'El cliente estuvo revisando la obra');
 
 CREATE TABLE IF NOT EXISTS workorder_materials(
+    workorderMaterials_id INT PRIMARY KEY AUTO_INCREMENT,
     workorder_id INT (5),
     material_id INT (5),
     material_amount INT(3),
-    PRIMARY KEY (workorder_id, material_id),
     FOREIGN KEY (workorder_id) REFERENCES workorders(workorder_id)
     ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (material_id) REFERENCES materials(material_id)

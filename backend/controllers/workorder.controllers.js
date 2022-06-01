@@ -191,15 +191,32 @@ const WorkorderMinutesByUserIdAndProjectId = async(req, res) => {
 
 const workorderPost = async(req, res) => {
     try{
-        const { workorder_author, workorder_project, workorder_hours, workorder_minutes,  workorder_hourlyrate, workorder_alert} = req.body;
+        const { workorder_author, workorder_project, workorder_hours, workorder_minutes,  workorder_hourlyrate, workorder_alert, material_list} = req.body;
 
-        const sql = 'INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes, workorder_hourlyrate, workorder_alert) VALUES (?, ?, ?, ?, ?, ?)';
-        dbQuery(sql, [workorder_author, workorder_project, workorder_hours, workorder_minutes, workorder_hourlyrate, workorder_alert]);
+        const beginT = await dbQuery('start transaction'); 
+        try{
+            const sql = 'INSERT INTO workorders (workorder_author, workorder_project, workorder_hours, workorder_minutes, workorder_hourlyrate, workorder_alert) VALUES (?, ?, ?, ?, ?, ?)';
+            const workorderResponse = await dbQuery(sql, [workorder_author, workorder_project, workorder_hours, workorder_minutes, workorder_hourlyrate, workorder_alert]);
+            
+            const sqlMaterials = 'INSERT INTO workorder_materials (workorder_id, material_id, material_amount) VALUES (?, ?, ?)';
+            
+            const materialListPromises = material_list.map(async (element) => {
+                await dbQuery(sqlMaterials, [workorderResponse.insertId, element.material_id, element.material_amount]);
+            });
+            
+            await Promise.all(materialListPromises);
+
+            const commit = await dbQuery('commit');
+        }catch(error){
+            const rollback = await dbQuery('rollback'); 
+            throw(error);
+        };
 
         res.json({
             mssg: 'post API'
         });
     }catch(error){
+        console.log(error)
         return  res.send({error:'No ha podido crear el Parte de Trabajo'});
     }
 }

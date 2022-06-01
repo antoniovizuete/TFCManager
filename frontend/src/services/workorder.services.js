@@ -102,9 +102,9 @@ export const getWorkorderMinutesByUserIdAndProjectId = async(projectId)=>{
     }
 }
 
-export const postWorkorders = async(newWorkorder) =>{ 
+export const postWorkorders = async(newWorkorderAndMaterials) =>{ 
     try{
-        const response = await axios.post('/api/workorders', newWorkorder, {headers: {Authorization: 'Bearer ' + await authHeader()}});
+        const response = await axios.post('/api/workorders', newWorkorderAndMaterials, {headers: {Authorization: 'Bearer ' + await authHeader()}});
         return response.data;
     }catch(error){
         return error.response.data

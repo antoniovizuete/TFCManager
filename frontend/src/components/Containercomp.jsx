@@ -66,7 +66,7 @@ const Containercomp = () => {
     const jwtToken = getUserData();
     const userLogged = getUserData();
 
-    return  (userLogged.role===1 ?
+    return  (jwtToken && userLogged.role===1 ?
             <div className={classes.root}>
                 <Navbar openDrawer={openDrawer}/>
                 <Hidden xsDown>

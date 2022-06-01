@@ -11,7 +11,6 @@ import { Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {NavLink} from 'react-router-dom';
 import DeleteForeverIcon from '@material-ui/icons//DeleteForever';
-import { fontSize } from "@mui/system";
 
 
 const WorkordersFormModal = () => {
@@ -107,20 +106,26 @@ const WorkordersFormModal = () => {
                 return
             }
 
-            const newWorkorder = {
+            const newWorkorderAndMaterials = {
                 workorder_author: id,
                 workorder_project: workorder_project,
                 workorder_hours: workorder_hours,
                 workorder_minutes: workorder_minutes,
                 workorder_alert: workorder_alert,
                 workorder_hourlyrate: workorder_hourlyrate,
+                material_list: list.map(element =>{
+                        return {material_id: element.material.material_id, 
+                                material_amount: element.amount }
+                        })
             }
 
-            const newWorkorderResponse = await  postWorkorders(newWorkorder);
+            const newWorkorderAndMaterialsResponse = await  postWorkorders(newWorkorderAndMaterials);
+            console.log(list);
+        
             
             
-            if(newWorkorderResponse.errors){
-                setError(newWorkorderResponse.errors[0].msg);
+            if(newWorkorderAndMaterialsResponse.errors){
+                setError(newWorkorderAndMaterialsResponse.errors[0].msg);
                 return
             }else{
                 event.target.reset();
@@ -136,7 +141,6 @@ const WorkordersFormModal = () => {
         }catch(eror){
             setError(error);
         }
-
     };
 
     return (
@@ -150,7 +154,7 @@ const WorkordersFormModal = () => {
                     value = {name}
                 />
                 <InputLabel id="workorder_projectInput">Proyecto</InputLabel>
-                <Select labelId="Proyecto" id="workorder_project" className="mt-4 col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+                <Select labelId="Proyecto" id="workorder_project" className="mt-2 col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
                     value={workorder_project} label="Proyecto" onChange={handleChangeProject}> 
                 
                     {projects.map((projects) => (
