@@ -8,7 +8,7 @@
     "yarn": "1.22.18"
   },
   "scripts": {
-    "start": "cd ./backend && yarn start && cd ./models && node server.js",
+    "start": "cd ./backend && yarn install && yarn start",
     "heroku-postbuild": "cd ./frontend && yarn install && yarn build"
   },
   "keywords": [],
