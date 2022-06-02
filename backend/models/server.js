@@ -1,7 +1,7 @@
 
 const express = require('express');
 const cors = require('cors');
-
+const path = require('path');
 const {dbConnect } = require('../database/config.db');
 
 class Server {
@@ -45,7 +45,7 @@ class Server {
     }
 
     routes(){
-       
+        this.app.use(express.static(path.resolve(__dirname, '../public')))
         this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.usersPath, require('../routes/user.routes'));
         this.app.use(this.customersPath, require('../routes/customer.routes'));
@@ -54,6 +54,9 @@ class Server {
         this.app.use(this.workordersPath, require('../routes/workorder.routes'));
         this.app.use(this.hourlyratePath, require('../routes/hourlyrate.routes'));
         this.app.use(this.workorder_materialsPath, require('../routes/workorder_materials.routes'));
+        this.app.get('*', function(request, response) {
+            response.sendFile(path.resolve(__dirname, '../public', 'index.html'));
+        });
     }
 
     listen(){

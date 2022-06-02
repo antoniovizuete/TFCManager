@@ -8,15 +8,9 @@
     "yarn": "1.22.18"
   },
   "scripts": {
-    "client": "cd ./frontend && yarn install && yarn build",
-    "backend": "cd ./backend && yarn install && yarn start",
-    "start": "yarn install && cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn backend\" \"yarn client\""
+    "start": "cd ./backend && yarn install && yarn start"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^7.2.1",
-    "cross-env": "^7.0.3"
-  }
+  "license": "ISC"
 }
