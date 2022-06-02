@@ -7,8 +7,8 @@
     "node": "16.14.0"
   },
   "scripts": {
-    "start": "cd ./backend && yarn start",
-    "heroku-postbuild": "cd ./frontend && yarn start"
+    "start": "cd ./backend && npm start",
+    "heroku-postbuild": "cd ./frontend && npm install && npm build"
   },
   "keywords": [],
   "author": "",
