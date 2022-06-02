@@ -8,10 +8,15 @@
     "yarn": "1.22.18"
   },
   "scripts": {
-    "start": "cd ./backend && yarn install && yarn start",
-    "heroku-postbuild": "cd ./frontend && yarn install && yarn build"
+    "client": "cd ./frontend && yarn install && yarn build",
+    "backend": "cd ./backend && yarn install && yarn start",
+    "start": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn backend\" \"yarn client\""
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.2.1",
+    "cross-env": "^7.0.3"
+  }
 }
