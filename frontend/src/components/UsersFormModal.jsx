@@ -1,6 +1,6 @@
 import { Button, TextField, Select, MenuItem, InputLabel } from "@material-ui/core";
 import React, { useState } from "react";
-import validator from "validator";
+// import validator from "validator";
 import { postUsers } from "../services/user.services";
 import { useNavigate } from "react-router-dom";
 import {NavLink} from 'react-router-dom';
@@ -33,22 +33,22 @@ const UsersFormModal = () => {
                 return
             }
 
-            if(!validator.isEmail(user_email)){
-                setError('El email introducido no es válido.');
-                return
-            }
+            // if(!validator.isEmail(user_email)){
+            //     setError('El email introducido no es válido.');
+            //     return
+            // }
 
             if(!user_password.trim()){
                 setError('Introduce una contraseña válida.');
                 return
             }
 
-            if(!validator.isStrongPassword(user_password, {minLength: 8, 
-                minLowercase: 1, minUppercase: 1, minNumbers: 1, 
-                minSymbols: 1})){
-                    setError('La contraseña debe contener 8 carácteres o más y, al menos, una mayúscula, una minúscula, un número y un símbolo.');
-                    return
-            }
+            // if(!validator.isStrongPassword(user_password, {minLength: 8, 
+            //     minLowercase: 1, minUppercase: 1, minNumbers: 1, 
+            //     minSymbols: 1})){
+            //         setError('La contraseña debe contener 8 carácteres o más y, al menos, una mayúscula, una minúscula, un número y un símbolo.');
+            //         return
+            // }
 
             if(user_role===''){
                 setError('Selecciona un role para el usuario.');

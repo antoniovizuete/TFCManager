@@ -1,6 +1,6 @@
 
   import { Button, TextField, InputLabel, TextareaAutosize } from "@material-ui/core";
-  import validator from "validator";
+  // import validator from "validator";
   import { getCustomersById } from "../services/customer.services";
   import { updateCustomers } from "../services/customer.services";
   import { useParams } from 'react-router-dom';
@@ -60,15 +60,15 @@
           return
         }
     
-        if(!validator.isMobilePhone(customer_phone)){
-          setError(`El teléfono ${customer_phone} no es válido.`);
-          return
-        }
+        // if(!validator.isMobilePhone(customer_phone)){
+        //   setError(`El teléfono ${customer_phone} no es válido.`);
+        //   return
+        // }
     
-        if(!validator.isEmail(customer_email)){
-          setError('El email introducido no es válido.');
-          return
-        }
+        // if(!validator.isEmail(customer_email)){
+        //   setError('El email introducido no es válido.');
+        //   return
+        // }
 
         const editedCustomer = {
           customer_name: customer_name,

@@ -7,7 +7,7 @@ import { getUserById } from "../services/user.services";
 import { useNavigate } from "react-router-dom";
 import {NavLink} from 'react-router-dom';
 import { Paper } from "@mui/material";
-import validator from "validator";
+// import validator from "validator";
 
 const UsersEditForm = () => {
 
@@ -60,10 +60,10 @@ const UsersEditForm = () => {
                 return
             }
     
-            if(!validator.isEmail(user_email)){
-                setError('El email introducido no es válido.');
-                return
-            }
+            // if(!validator.isEmail(user_email)){
+            //     setError('El email introducido no es válido.');
+            //     return
+            // }
     
             if(user_role===''){
                 setError('Selecciona un role para el usuario.');

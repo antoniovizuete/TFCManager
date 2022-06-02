@@ -1,7 +1,7 @@
 
 import { Button, TextField, InputLabel, TextareaAutosize } from "@material-ui/core";
 import React, { useState } from "react";
-import validator from "validator";
+// import validator from "validator";
 import { postCustomers } from "../services/customer.services";
 import { Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -40,15 +40,15 @@ const CustomersFormModal = () => {
         return
       }
 
-      if(!validator.isMobilePhone(customer_phone, 'es-ES')){
-        setError(`El teléfono ${customer_phone} no es válido.`);
-        return
-      }
+      // if(!validator.isMobilePhone(customer_phone, 'es-ES')){
+      //   setError(`El teléfono ${customer_phone} no es válido.`);
+      //   return
+      // }
 
-      if(!validator.isEmail(customer_email)){
-        setError('El email introducido no es válido.');
-        return
-      }
+      // if(!validator.isEmail(customer_email)){
+      //   setError('El email introducido no es válido.');
+      //   return
+      // }
 
       const newCustomer = {
         customer_dni: customer_dni,
