@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "cd ./backend && yarn start",
-    "heroku-postbuild": "cd ./frontend && yarn build"
+    "heroku-postbuild": "cd ./frontend && yarn start"
   },
   "keywords": [],
   "author": "",
