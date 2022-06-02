@@ -19,7 +19,7 @@ const columns = [
   { id: 'role_name', label: 'Rol', minWidth: 50},
 ];
 
-export default function UsersTable() {
+export default function InactivesUsersTable() {
 
     const [users, setUsers] = useState([]);
     useEffect( () =>{
