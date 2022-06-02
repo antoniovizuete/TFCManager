@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Grid } from '@material-ui/core';
-import UsersTable from './UsersTable';
+// import UsersTable from './UsersTable';
 import CreateButton from './CreateButton';
 import UsersFormModal from './UsersFormModal';
 import { getUserData } from '../services/login.services';
@@ -21,7 +21,7 @@ const UserBox = () => {
               userLogged.role === 1 ? (<CreateButton section='users'/>) : 
               (<CreateButtonDisabled />) 
             }
-            <UsersTable />
+            {/* <UsersTable /> */}
           </Grid>
        </Grid>
     </div>
