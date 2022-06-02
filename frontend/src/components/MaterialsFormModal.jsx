@@ -81,7 +81,7 @@ const MaterialsFormModal = () => {
     return (
 
         <Paper sx={{ width: '50%', overflow: 'hidden', p:3 }}>
-            <h3>Nuevo Producto</h3>
+            <h3>Nuevo Material</h3>
             <form onSubmit={ saveData } id="materialForm">
                 {error ? <span className="text-danger">{error}</span> : null}
                 <TextField autoFocus margin="dense" id="material_reference"

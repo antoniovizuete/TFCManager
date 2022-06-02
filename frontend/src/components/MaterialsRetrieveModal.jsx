@@ -32,10 +32,10 @@ export default function MaterialsRetrieveModal() {
                 <CardContent>
 
                     <Typography variant="h5" component="div">
-                    Recuperación de Productos
+                    Recuperación de MAeriales
                     </Typography>
                     <Typography variant="bold" sx={{ mt: 2, mb: 2 }} color="text.secondary">
-                        El producto con la referencia {material.material_reference} será borrado de la base de datos.
+                        El material con la referencia {material.material_reference} será borrado de la base de datos.
                     </Typography>
                 </CardContent>
                 <CardActions>

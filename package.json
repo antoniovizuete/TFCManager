@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines":{
+  "engines": {
     "node": "16.14.0"
   },
   "scripts": {
     "start": "cd ./backend && yarn start",
-    "heroku-postbuild": "cd ./frontend && yarn install && yarn build"
+    "heroku-postbuild": "cd ./frontend && yarn install --force && yarn build"
   },
   "keywords": [],
   "author": "",

@@ -13,7 +13,7 @@ const MaterialBox = () => {
   return(
     <div>
         <Grid container className='mt-5'>
-        <Typography variant="h4">Listado de Productos</Typography>
+        <Typography variant="h4">Listado de Materiales</Typography>
           <Grid item xs={12} sm={12} md={12} xl={12}>
             {
               userLogged.role === 1 ? (<CreateButton section='materials'/>) : 
