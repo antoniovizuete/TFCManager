@@ -10,7 +10,7 @@
   "scripts": {
     "client": "cd ./frontend && yarn install && yarn build",
     "backend": "cd ./backend && yarn install && yarn start",
-    "start": "cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn backend\" \"yarn client\""
+    "start": "yarn install && cross-env NODE_ENV=development concurrently --kill-others-on-fail \"yarn backend\" \"yarn client\""
   },
   "keywords": [],
   "author": "",
