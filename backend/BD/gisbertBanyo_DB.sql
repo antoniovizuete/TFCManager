@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS gisbertBanyo_DB;
-
+﻿CREATE DATABASE IF NOT EXISTS gisbertBanyo_DB CHARSET='utf8' COLLATE='utf8_general_ci';
 USE gisbertBanyo_DB;
 
 CREATE TABLE IF NOT EXISTS roles(
