@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "16.14.0"
+    "node": "16.14.0",
+    "yarn": "1.22.18"
   },
   "scripts": {
-    "start": "cd ./backend && npm start",
-    "heroku-postbuild": "cd ./frontend && npm install && npm build"
+    "start": "cd ./backend && yarn start",
+    "heroku-postbuild": "cd ./frontend && yarn install && yarn build"
   },
   "keywords": [],
   "author": "",
