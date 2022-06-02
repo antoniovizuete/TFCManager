@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app",
-    "debug": "node --inspect app",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "debug": "node --inspect app"
   },
   "keywords": [],
   "author": "",
