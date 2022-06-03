@@ -15,15 +15,15 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS users(
     user_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_name VARCHAR (20) NOT NULL,
-    user_email VARCHAR (30) NOT NULL,
+    user_name VARCHAR (200) NOT NULL,
+    user_email VARCHAR (50) NOT NULL,
     user_password VARCHAR (512) NOT NULL,
-    user_address VARCHAR (50),
+    user_address VARCHAR (100),
     user_city VARCHAR (30),
     user_province VARCHAR (30),
     user_cp VARCHAR (5),
     user_phone VARCHAR (9),
-    user_role INT(5) NOT NULL,
+    user_role INT NOT NULL,
     user_state TINYINT DEFAULT 1,
     FOREIGN KEY (user_role) REFERENCES roles(role_id)
     ON DELETE CASCADE ON UPDATE CASCADE
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS users(
 INSERT INTO users (user_name, user_email, user_password, user_address, user_city, user_province, user_cp, user_phone, user_role)
 VALUES
 ('PedroCalvo', 'pedrojcalvo@gmail.com', '$2a$10$1ISZ7Mr2C4dr03mXI/ImLuEZjwlWJc/8LjDM83s35fccZ1xTR/c1q', 'Calle Lepanto Nº 7 2ºIzq', 'Elda', 'Alicante', '03600', '744626081', 1 ),
-('Admin', 'admin@gmail.com', '$2a$10$FlRlpGFCpp.1.0OiPn3PMuSI.ULF7KafuL5Ny7GiRjRViaj8rhun6', 'Calle Inventada Nº 12 3ºIzq', 'Alcantarilla', 'Murcia', '30820', '6262351231', 1),
+('Admin', 'admin@gmail.com', '$2a$10$FlRlpGFCpp.1.0OiPn3PMuSI.ULF7KafuL5Ny7GiRjRViaj8rhun6', 'Calle Inventada Nº 12 3ºIzq', 'Alcantarilla', 'Murcia', '30820', '626235123', 1),
 ('Empleado', 'empleado@gmail.com', '$2a$10$kxS6ookx7ARL2NQa35bL/.RWMa6R29aO5nXpTJ/qJIsldNFPO8bla', 'Calle La calleja Nº 1 Bajo', 'Caudete', 'Albacete', '02660', '618684759', 2);
 
 
@@ -77,10 +77,10 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS projects(
     project_id INT PRIMARY KEY AUTO_INCREMENT,
-    project_name VARCHAR (20),
-    project_author INT(5) DEFAULT NULL,
-    project_customer INT(5) DEFAULT NULL,
-    project_description VARCHAR(200),
+    project_name VARCHAR (200),
+    project_author INT DEFAULT NULL,
+    project_customer INT DEFAULT NULL,
+    project_description VARCHAR(1000),
     project_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     project_alert VARCHAR (1000),
     project_state TINYINT DEFAULT 1,
@@ -101,9 +101,9 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS materials(
     material_id INT PRIMARY KEY AUTO_INCREMENT,
-    material_reference VARCHAR (50),
+    material_reference VARCHAR (100),
     material_brand VARCHAR (50),
-    material_description VARCHAR (200),
+    material_description VARCHAR (500),
     material_pvp DECIMAL (6,2),
     material_ecotax VARCHAR (10),
     material_state TINYINT DEFAULT 1
@@ -126,7 +126,7 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS hourlyrates(
     hourlyrate_id INT PRIMARY KEY AUTO_INCREMENT,
-    hourlyrate_name VARCHAR (20),
+    hourlyrate_name VARCHAR (30),
     hourlyrate_pvp DECIMAL (6,2),
     hourlyrate_state TINYINT DEFAULT 1
 );
@@ -139,12 +139,12 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS workorders(
     workorder_id INT PRIMARY KEY AUTO_INCREMENT,
-    workorder_author INT (5) DEFAULT NULL,
-    workorder_project INT (5) DEFAULT NULL,
+    workorder_author INT DEFAULT NULL,
+    workorder_project INT DEFAULT NULL,
     workorder_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     workorder_hours INT (2),
     workorder_minutes INT (2),
-    workorder_hourlyrate INT (5) DEFAULT NULL,
+    workorder_hourlyrate INT DEFAULT NULL,
     workorder_alert VARCHAR (1000),
     workorder_state TINYINT DEFAULT 1,
     FOREIGN KEY (workorder_hourlyrate) REFERENCES hourlyrates(hourlyrate_id)
@@ -169,8 +169,8 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS workorder_materials(
     workorderMaterials_id INT PRIMARY KEY AUTO_INCREMENT,
-    workorder_id INT (5) DEFAULT NULL,
-    material_id INT (5) DEFAULT NULL,
+    workorder_id INT DEFAULT NULL,
+    material_id INT DEFAULT NULL,
     material_amount INT(3),
     FOREIGN KEY (workorder_id) REFERENCES workorders(workorder_id)
     ON DELETE CASCADE ON UPDATE CASCADE,
